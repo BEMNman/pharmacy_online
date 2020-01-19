@@ -1,7 +1,7 @@
 package com.epam.finalproject.pharmacy.entity;
 
-public enum  RoleType {
-    BUYER,
+public enum UserRole {
+    PACIENT,
     DOCTOR,
-    PHARMACY
+    PHARMACIST
 }

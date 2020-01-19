@@ -6,5 +6,5 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface Command {
 
-    String execute(HttpServletRequest request) throws ServerException;
+    CommandResult execute(HttpServletRequest request) throws ServerException;
 }

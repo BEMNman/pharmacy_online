@@ -2,17 +2,21 @@ package com.epam.finalproject.pharmacy.controller;
 
 import com.epam.finalproject.pharmacy.command.Command;
 import com.epam.finalproject.pharmacy.command.CommandFactory;
+import com.epam.finalproject.pharmacy.command.CommandResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@WebServlet(name = "login", urlPatterns = {"/login"})
 public class ActionController extends HttpServlet {
+
+    private static final Logger logger = LogManager.getLogger(ActionController.class.getName());
 
     public void init(ServletConfig config) throws
             ServletException {
@@ -23,17 +27,23 @@ public class ActionController extends HttpServlet {
             throws ServletException, java.io.IOException {
 
         String page;
-
         try {
+            System.err.println("Command: "+ request.getParameter("command"));
             Command command = CommandFactory.create(request.getParameter("command"));
-            page = command.execute(request);
+            CommandResult commandResult = command.execute(request);
+            page = commandResult.getPage();
 
+            if (commandResult.isRedirect()) {
+                redirect(response, page);
+            } else {
+                forward(request, response, page);
+            }
         } catch (Exception e) {
+            logger.warn(e);
             page = "error.jsp";
+            redirect(response, page);
         }
-        dispatch(request, response, page);
     }
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {
@@ -45,9 +55,17 @@ public class ActionController extends HttpServlet {
         processRequest(request, response);
     }
 
-    protected void dispatch(HttpServletRequest request, HttpServletResponse response, String page)
+    protected void forward(HttpServletRequest request, HttpServletResponse response, String page)
             throws javax.servlet.ServletException, java.io.IOException {
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+
+        logger.debug("Forward to page: " + page);
+
         dispatcher.forward(request, response);
+    }
+
+    protected void redirect( HttpServletResponse response, String page) throws IOException {
+        logger.debug("Redirect to page: " + page);
+        response.sendRedirect(page);
     }
 }

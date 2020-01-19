@@ -1,5 +1,7 @@
 package com.epam.finalproject.pharmacy.entity;
 
-public interface Identifable {
+import java.io.Serializable;
+
+public interface Identifable extends Serializable {
     long getId();
 }

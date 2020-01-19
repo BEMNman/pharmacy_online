@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 public class Recipe implements Identifable{
-    private final Client doctor;
-    private final Client pacient;
+    private final User doctor;
+    private final User pacient;
     private final Date dateIssue;
     private final Date dateExp;
     private List<Medicament> medicines;
 
-    public Recipe(Client doctor, Client pacient, Date dateIssue, Date dateExp, List<Medicament> medicines) {
+    public Recipe(User doctor, User pacient, Date dateIssue, Date dateExp, List<Medicament> medicines) {
         this.doctor = doctor;
         this.pacient = pacient;
         this.dateIssue = dateIssue;
@@ -18,11 +18,11 @@ public class Recipe implements Identifable{
         this.medicines = medicines;
     }
 
-    public Client getDoctor() {
+    public User getDoctor() {
         return doctor;
     }
 
-    public Client getPacient() {
+    public User getPacient() {
         return pacient;
     }
 

@@ -1,50 +1,69 @@
 package com.epam.finalproject.pharmacy.entity;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
-public class Order implements Identifable{
-    private final Client pacient;
-    private List<Medicament> medicines;
-    private int totalPrice;
-    private boolean paid;
+public class Order implements Identifable {
 
-    public Order(Client pacient, List<Medicament> medicines, int totalPrice, boolean paid) {
-        this.pacient = pacient;
-        this.medicines = medicines;
-        this.totalPrice = totalPrice;
-        this.paid = paid;
+    public static final String NAME_TABLE_IN_DB = "orders";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_CREATION_DATE = "creationDate";
+    public static final String COLUMN_USER_ID = "userId";
+    public static final String COLUMN_PRICE = "price";
+    public static final String COLUMN_STATUS = "status";
+
+    private long id;
+    private final Timestamp creationDate;
+    private final long userId;
+    private final BigDecimal price;
+
+    private OrderStatus status;
+
+    private Order(Timestamp creationDate, long userId, BigDecimal price, OrderStatus status) {
+        this.creationDate = creationDate;
+        this.userId = userId;
+        this.price = price;
+        this.status = status;
     }
 
-    public Client getPacient() {
-        return pacient;
+    public Order(long id, Timestamp creationDate, long userId, BigDecimal price, OrderStatus status) {
+        this.id = id;
+        this.creationDate = creationDate;
+        this.userId = userId;
+        this.price = price;
+        this.status = status;
     }
 
-    public List<Medicament> getMedicines() {
-        return medicines;
-    }
-
-    public void setMedicines(List<Medicament> medicines) {
-        this.medicines = medicines;
-    }
-
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public boolean isPaid() {
-        return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
+    public static Order newOrder(long userId, BigDecimal totalPrice) {
+        return new Order(new Timestamp(System.currentTimeMillis()), userId, totalPrice, OrderStatus.PROCESS);
     }
 
     @Override
     public long getId() {
-        return 0;
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }
