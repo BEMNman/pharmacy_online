@@ -2,7 +2,7 @@ package com.epam.finalproject.pharmacy.service;
 
 import com.epam.finalproject.pharmacy.dao.DaoHelper;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
-import com.epam.finalproject.pharmacy.dao.OrderDao;
+import com.epam.finalproject.pharmacy.dao.order.OrderDao;
 import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.entity.Order;
 import com.epam.finalproject.pharmacy.entity.User;
@@ -31,11 +31,19 @@ public class OrderService {
         }
     }
 
-    public long saveNewOrderForUser(User user, Map<Medicament, Integer> medicinesInOrder) throws ServerException  {
+    public Long saveNewOrderForUser(User user, Map<Medicament, Integer> medicinesInOrder,
+                                    String[] correctedMedicinesQuantity) throws ServerException  {
+        if(medicinesInOrder.size() != correctedMedicinesQuantity.length) {
+            throw new ServerException("Invalid data received");
+        }
         BigDecimal totalPriceOrder = new BigDecimal(0);
+        int startIndexQuantity = 0;
         for (Medicament medicament: medicinesInOrder.keySet()) {
-            BigDecimal amount = new BigDecimal(medicinesInOrder.get(medicament));
-            BigDecimal tempPrice = medicament.getPrice().multiply(amount);
+            BigDecimal quantity = new BigDecimal(correctedMedicinesQuantity[startIndexQuantity++]);
+            if(quantity.compareTo(new BigDecimal("0")) == -1) {
+                throw new ServerException("Quantity of medicament less than '0'");
+            }
+            BigDecimal tempPrice = medicament.getPrice().multiply(quantity);
             totalPriceOrder = tempPrice.add(totalPriceOrder);
         }
         long userId = user.getId();

@@ -2,6 +2,18 @@ package com.epam.finalproject.pharmacy.dao;
 
 import com.epam.finalproject.pharmacy.connection.ConnectionPool;
 import com.epam.finalproject.pharmacy.connection.ProxyConnection;
+import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDao;
+import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDaoImpl;
+import com.epam.finalproject.pharmacy.dao.order.OrderDao;
+import com.epam.finalproject.pharmacy.dao.order.OrderDaoImpl;
+import com.epam.finalproject.pharmacy.dao.order.OrderDetailsDao;
+import com.epam.finalproject.pharmacy.dao.order.OrderDetailsDaoImpl;
+import com.epam.finalproject.pharmacy.dao.recipe.RecipeDao;
+import com.epam.finalproject.pharmacy.dao.recipe.RecipeDaoImpl;
+import com.epam.finalproject.pharmacy.dao.recipe.RecipeDtoDao;
+import com.epam.finalproject.pharmacy.dao.recipe.RecipeDtoDaoImpl;
+import com.epam.finalproject.pharmacy.dao.user.UserDao;
+import com.epam.finalproject.pharmacy.dao.user.UserDaoImpl;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,6 +59,16 @@ public class DaoHelper implements AutoCloseable {
         return new OrderDetailsDaoImpl(connection);
     }
 
+    public RecipeDao createRecipeDao() {
+        logger.debug("RecipeDaoImpl was created");
+        return new RecipeDaoImpl(connection);
+    }
+
+    public RecipeDtoDao createRecipeDtoDao() {
+        logger.debug("RecipeDaoImpl was created");
+        return new RecipeDtoDaoImpl(connection);
+    }
+
     @Override
     public void close(){
         connection.close();
@@ -59,4 +81,6 @@ public class DaoHelper implements AutoCloseable {
             throw new DaoException(e);
         }
     }
+
+
 }

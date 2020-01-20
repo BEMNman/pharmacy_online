@@ -1,49 +1,63 @@
 package com.epam.finalproject.pharmacy.entity;
 
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
 
-public class Recipe implements Identifable{
-    private final User doctor;
-    private final User pacient;
-    private final Date dateIssue;
-    private final Date dateExp;
-    private List<Medicament> medicines;
+public class Recipe implements Identifable {
+    public final static String NAME_TABLE_IN_DB = "recipes";
+    public final static String COLUMN_ID = "id";
+    public final static String COLUMN_CREATION_DATE = "creationDate";
+    public final static String COLUMN_EXP_DATE = "expDate";
+    public final static String COLUMN_MEDICAMENT_ID = "medicamentId";
+    public final static String COLUMN_AMOUNT = "amount";
+    public final static String COLUMN_PATIENT_ID = "patientId";
+    public final static String COLUMN_DOCTOR_ID = "doctorId";
 
-    public Recipe(User doctor, User pacient, Date dateIssue, Date dateExp, List<Medicament> medicines) {
-        this.doctor = doctor;
-        this.pacient = pacient;
-        this.dateIssue = dateIssue;
-        this.dateExp = dateExp;
-        this.medicines = medicines;
+    private final Long id;
+    private final Timestamp createdDate;
+    private final Timestamp expDate;
+    private final Long medicamentId;
+    private final Integer amount;
+    private final Long patientId;
+    private final Long doctorId;
+
+
+    public Recipe(Long id, Timestamp createdDate, Timestamp expDate, Long medicamentId, Integer amount,
+                  Long patientId, Long doctorId) {
+        this.id = id;
+        this.createdDate = createdDate;
+        this.expDate = expDate;
+        this.medicamentId = medicamentId;
+        this.amount = amount;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
     }
 
-    public User getDoctor() {
-        return doctor;
+    public Timestamp getCreatedDate() {
+        return createdDate;
     }
 
-    public User getPacient() {
-        return pacient;
+    public Timestamp getExpDate() {
+        return expDate;
     }
 
-    public Date getDateIssue() {
-        return dateIssue;
+    public Long getMedicamentId() {
+        return medicamentId;
     }
 
-    public Date getDateExp() {
-        return dateExp;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public List<Medicament> getMedicines() {
-        return medicines;
+    public Long getPatientId() {
+        return patientId;
     }
 
-    public void setMedicines(List<Medicament> medicines) {
-        this.medicines = medicines;
+    public Long getDoctorId() {
+        return doctorId;
     }
 
     @Override
-    public long getId() {
-        return 0;
+    public Long getId() {
+        return id;
     }
 }

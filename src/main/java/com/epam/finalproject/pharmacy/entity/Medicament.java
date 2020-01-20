@@ -13,16 +13,17 @@ public class Medicament implements Identifable {
     public static final String COLUMN_PRICE = "price";
     public static final String COLUMN_QUANTITY_IN_STOCK = "quantity";
 
-    private final long id;
+    private final Long id;
     private final String name;
     private final MedicamentForm form;
     private final String dosage;
     private final boolean recipe;
-    private int amountInPack;
+    private Integer amountInPack;
     private final BigDecimal price;
-    private int quantity;
+    private Integer quantity;
 
-    public Medicament(long id, String name, MedicamentForm form, String dosage, boolean recipe, int amountInPack, BigDecimal price, int quantity) {
+    public Medicament(Long id, String name, MedicamentForm form, String dosage, boolean recipe,
+                      Integer amountInPack, BigDecimal price, Integer quantity) {
         this.id = id;
         this.name = name;
         this.form = form;
@@ -45,7 +46,7 @@ public class Medicament implements Identifable {
         return dosage;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -57,7 +58,7 @@ public class Medicament implements Identifable {
         return price;
     }
 
-    public int getAmountInPack() {
+    public Integer getAmountInPack() {
         return amountInPack;
     }
 
@@ -66,7 +67,7 @@ public class Medicament implements Identifable {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -77,11 +78,11 @@ public class Medicament implements Identifable {
 
         Medicament that = (Medicament) o;
 
-        return getName() != null ? getName().equals(that.getName()) : that.getName() == null;
+        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
     }
 
     @Override
     public int hashCode() {
-        return getName() != null ? getName().hashCode() : 0;
+        return getId() != null ? getId().hashCode() : 0;
     }
 }

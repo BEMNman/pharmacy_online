@@ -1,6 +1,7 @@
-package com.epam.finalproject.pharmacy.dao;
+package com.epam.finalproject.pharmacy.dao.medicament;
 
-import com.epam.finalproject.pharmacy.builder.MedicamentRowMapper;
+import com.epam.finalproject.pharmacy.dao.AbstractDao;
+import com.epam.finalproject.pharmacy.mapper.MedicamentRowMapper;
 import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 
@@ -18,7 +19,7 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
                     "WHERE od.orderId=?";
 
 
-    protected MedicamentDaoImpl(Connection connection) {
+    public MedicamentDaoImpl(Connection connection) {
         super(connection);
     }
 

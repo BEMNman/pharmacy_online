@@ -1,4 +1,4 @@
-package com.epam.finalproject.pharmacy.builder;
+package com.epam.finalproject.pharmacy.mapper;
 
 import com.epam.finalproject.pharmacy.entity.*;
 

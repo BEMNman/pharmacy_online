@@ -1,6 +1,6 @@
 package com.epam.finalproject.pharmacy.dao;
 
-import com.epam.finalproject.pharmacy.builder.RowMapper;
+import com.epam.finalproject.pharmacy.mapper.RowMapper;
 import com.epam.finalproject.pharmacy.entity.Identifable;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import org.apache.logging.log4j.LogManager;

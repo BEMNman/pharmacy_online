@@ -2,7 +2,7 @@ package com.epam.finalproject.pharmacy.service;
 
 import com.epam.finalproject.pharmacy.dao.DaoHelper;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
-import com.epam.finalproject.pharmacy.dao.UserDao;
+import com.epam.finalproject.pharmacy.dao.user.UserDao;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import com.epam.finalproject.pharmacy.exception.ServerException;

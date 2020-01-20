@@ -2,10 +2,7 @@ package com.epam.finalproject.pharmacy.command;
 
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
 import com.epam.finalproject.pharmacy.exception.ServerException;
-import com.epam.finalproject.pharmacy.service.MedicamentService;
-import com.epam.finalproject.pharmacy.service.OrderDetailsService;
-import com.epam.finalproject.pharmacy.service.OrderService;
-import com.epam.finalproject.pharmacy.service.UserService;
+import com.epam.finalproject.pharmacy.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,6 +56,15 @@ public class CommandFactory {
             case "viewOrderDetails":
                 logger.debug("Command 'viewOrderDetails' was created");
                 return new ViewOrderDetailsCommand(new MedicamentService(new DaoHelperFactory()));
+
+            case "openRecipes":
+                logger.debug("Command 'openRecipes' was created");
+                return new ShowRecipesCommand(new RecipeDtoService(new DaoHelperFactory()));
+
+            case "payOrder":
+                logger.debug("Command 'payOrder' was created");
+                return new PayOrderCommand(new OrderService(new DaoHelperFactory()),
+                        new MedicamentService(new DaoHelperFactory()));
 
             default:
                 logger.error("Unknown command: " + command);

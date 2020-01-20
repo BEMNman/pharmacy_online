@@ -18,7 +18,9 @@ public class AddMedicamentInBasketCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
         String stringMedicamentId = request.getParameter("medicamentId");
-        long medicamentId = Long.parseLong(stringMedicamentId);
+        Long medicamentId = Long.parseLong(stringMedicamentId);
+        String stringCount = request.getParameter("count");
+        Integer count = Integer.parseInt(stringCount);
         HttpSession session = request.getSession();
         List<Long> listIdItems = (ArrayList<Long>) session.getAttribute(SESSION_ATTRIBUTE_LIST_ID_ITEMS);
         listIdItems.add(medicamentId);

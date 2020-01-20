@@ -105,21 +105,20 @@
 <div id="content">
 
     <div style="border: 1px black">
-        <h2>Tables Name</h2>
-    </div>
-
-    <div style="border: 1px black">
-        <c:if test="${requestScope.medicinesInBasket==null && requestScope.medicines!=null}">
+        <c:if test="${requestScope.medicines!=null}">
             <jsp:include page="medicinesTable.jsp"/>
         </c:if>
-        <c:if test="${requestScope.medicinesInBasket!=null}">
+        <c:if test="${sessionScope.medicinesInBasket!=null}">
             <jsp:include page="basketTable.jsp"/>
         </c:if>
         <c:if test="${requestScope.orders!=null}">
             <jsp:include page="ordersTable.jsp"/>
         </c:if>
         <c:if test="${requestScope.medicinesInOrder!=null}">
-            <jsp:include page="medicinesInOrderTable.jsp"/>
+            <jsp:include page="orderDetailsTable.jsp"/>
+        </c:if>
+        <c:if test="${requestScope.recipes != null}">
+            <jsp:include page="recipesPatientTable.jsp"/>
         </c:if>
     </div>
 

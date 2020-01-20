@@ -8,7 +8,8 @@ import com.epam.finalproject.pharmacy.service.OrderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Hashtable;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SaveOrderCommand implements Command {
@@ -24,14 +25,21 @@ public class SaveOrderCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("medicinesInOrder") == null) {
+        User user = (User) session.getAttribute("user");
+        String[] counts = request.getParameterValues("count");
+
+        System.out.println("count:   " + Arrays.toString(counts));
+        String[] ids = request.getParameterValues("id");
+        System.out.println("ids:   " + Arrays.toString(ids));
+
+        if(session.getAttribute("medicinesInBasket") == null) {
             return CommandResult.redirect("/error.jsp");
         }
-        User user = (User)session.getAttribute("user");
-        Map<Medicament, Integer> medicinesInOrder = (Hashtable)session.getAttribute("medicinesInOrder");
-        long idNewOrder = service.saveNewOrderForUser(user, medicinesInOrder);
-        orderDetailsService.saveOrderDetails(idNewOrder, medicinesInOrder);
-        session.removeAttribute("medicinesInOrder");
+        Map<Medicament, Integer> medicinesInOrder = (LinkedHashMap) session.getAttribute("medicinesInBasket");
+
+        long idNewOrder = service.saveNewOrderForUser(user, medicinesInOrder, counts);
+        orderDetailsService.saveOrderDetails(idNewOrder, medicinesInOrder, counts);
+        session.removeAttribute("medicinesInBasket");
         session.removeAttribute("listIdItems");
         return CommandResult.redirect("controller?command=authorization");
     }

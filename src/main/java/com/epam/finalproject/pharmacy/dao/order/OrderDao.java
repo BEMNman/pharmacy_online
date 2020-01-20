@@ -1,5 +1,6 @@
-package com.epam.finalproject.pharmacy.dao;
+package com.epam.finalproject.pharmacy.dao.order;
 
+import com.epam.finalproject.pharmacy.dao.Dao;
 import com.epam.finalproject.pharmacy.entity.Order;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 

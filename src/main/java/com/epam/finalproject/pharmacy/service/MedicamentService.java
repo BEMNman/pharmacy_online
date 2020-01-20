@@ -2,15 +2,13 @@ package com.epam.finalproject.pharmacy.service;
 
 import com.epam.finalproject.pharmacy.dao.DaoHelper;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
-import com.epam.finalproject.pharmacy.dao.MedicamentDao;
+import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDao;
 import com.epam.finalproject.pharmacy.entity.Medicament;
+import com.epam.finalproject.pharmacy.entity.Recipe;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class MedicamentService {
     private MedicamentDao medicamentDao;
@@ -47,8 +45,8 @@ public class MedicamentService {
         }
     }
 
-    public Map<Medicament, Integer> createMapMedicamentsAmount(List<Long> listIdItems) throws ServerException {
-        Map<Medicament, Integer> medicinesInOrder = new Hashtable<>();
+    public Map<Medicament, Integer> createMapMedicinesQuantity(List<Long> listIdItems) throws ServerException {
+        Map<Medicament, Integer> medicinesInOrder = new LinkedHashMap<>();
         for (Long id : listIdItems) {
             Optional<Medicament> optionalMedicament = findMedicamentById(id);
             if (optionalMedicament.isPresent()) {
@@ -64,11 +62,48 @@ public class MedicamentService {
         return medicinesInOrder;
     }
 
-    public List<Medicament> findMedicamentForOrder(long orderId) throws ServerException {
+    public List<Medicament> findMedicamentForOrder(Long orderId) throws ServerException {
         try {
             return medicamentDao.getAllMedicamentForOrder(orderId);
         } catch (DaoException e) {
             throw new ServerException(e);
         }
+    }
+
+    public boolean checkMedicinesInUsersOrder(Long userId, Long orderId) throws ServerException {
+        List<Medicament> medicinesInOrder = findMedicamentForOrder(orderId);
+        for (Medicament medicament : medicinesInOrder) {
+            Long medicamentId = medicament.getId();
+            try {
+                Optional<Medicament> medicamentTemp = medicamentDao.getById(medicamentId);
+                Medicament medicamentFromStock = null;
+                if (medicamentTemp.isPresent()) {
+                    medicamentFromStock = medicamentTemp.get();
+                } else {
+                    return false;
+                }
+                if (checkQuantityMedicines(medicament, medicamentFromStock)) {
+                    if (medicament.isRecipe()) {
+                        if (getActualRecipes(userId, medicamentId).size() == 0) {
+                            return false;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+            } catch (DaoException e) {
+                throw new ServerException(e);
+            }
+        }
+        return true;
+    }
+
+    private List<Recipe> getActualRecipes(Long userId, Long medicamentId) throws ServerException {
+        RecipeService recipeService = new RecipeService(new DaoHelperFactory());
+        return recipeService.findAllRecipesUserForMedicamentForCurrentDate(userId, medicamentId);
+    }
+
+    private boolean checkQuantityMedicines(Medicament medicament, Medicament medicamentFromStock) {
+        return medicament.getQuantity() <= medicamentFromStock.getQuantity();
     }
 }

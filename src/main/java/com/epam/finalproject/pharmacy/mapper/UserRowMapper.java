@@ -1,4 +1,4 @@
-package com.epam.finalproject.pharmacy.builder;
+package com.epam.finalproject.pharmacy.mapper;
 
 import com.epam.finalproject.pharmacy.entity.UserRole;
 import com.epam.finalproject.pharmacy.entity.User;
@@ -33,4 +33,15 @@ public class UserRowMapper implements RowMapper<User> {
                 .append(User.COLUMN_LOCKED);
         return fieldsString.toString();
     }
+
+//    @Override
+//    public Map<String, Object> getFieldsValues(User user) {
+//        Map<String, Object> mapFieldsValues = new LinkedHashMap<>();
+//        mapFieldsValues.put(User.COLUMN_NAME, user.getName());
+//        mapFieldsValues.put(User.COLUMN_LOGIN, user.getLogin());
+//        mapFieldsValues.put(User.COLUMN_PASSWORD, user.getName());
+//        mapFieldsValues.put(User.COLUMN_ROLE, user.getRole().name());
+//        mapFieldsValues.put(User.COLUMN_LOCKED, user.isLocked());
+//        return mapFieldsValues;
+//    }
 }

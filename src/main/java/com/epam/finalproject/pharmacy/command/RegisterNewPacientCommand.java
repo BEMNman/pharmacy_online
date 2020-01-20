@@ -26,7 +26,7 @@ public class RegisterNewPacientCommand implements Command {
             return CommandResult.redirect("error.jsp");
         }
         String pacientName = request.getParameter("name");
-        User pacient = User.newPacient(pacientName, login, password);
+        User pacient = User.newPatient(pacientName, login, password);
         service.registerNewUserByPacient(pacient);
         return CommandResult.redirect("index.jsp");
 

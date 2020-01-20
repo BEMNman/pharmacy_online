@@ -1,7 +1,8 @@
-package com.epam.finalproject.pharmacy.dao;
+package com.epam.finalproject.pharmacy.dao.order;
 
-import com.epam.finalproject.pharmacy.builder.OrderRowMapper;
-import com.epam.finalproject.pharmacy.builder.RowMapper;
+import com.epam.finalproject.pharmacy.dao.AbstractDao;
+import com.epam.finalproject.pharmacy.mapper.OrderRowMapper;
+import com.epam.finalproject.pharmacy.mapper.RowMapper;
 import com.epam.finalproject.pharmacy.entity.Order;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
-    protected OrderDaoImpl(Connection connection) {
+    public OrderDaoImpl(Connection connection) {
         super(connection);
     }
 

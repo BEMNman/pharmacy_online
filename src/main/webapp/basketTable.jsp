@@ -10,47 +10,54 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <body>
-<table class="w3-centered" bgcolor="#808080" style="border: 2px solid; width: 600px; text-align:center;">
 
-    <tr>
-        <th class="w3-centered" bgcolor="white">Name</th>
-        <th class="w3-centered" bgcolor="white">Form</th>
-        <th class="w3-centered" bgcolor="white">Dosage</th>
-        <th class="w3-centered" bgcolor="white">Recipe</th>
-        <th class="w3-centered" bgcolor="white">In stock</th>
-        <th class="w3-centered" bgcolor="white">Price</th>
-        <th class="w3-centered" bgcolor="white">Amount</th>
-        <th class="w3-centered" bgcolor="white"></th>
-    </tr>
-
-    <tbody class="w3-centered" bgcolor="white">
-    <c:forEach items="${requestScope.medicinesInBasket.keySet()}" var="medicament">
+<div style="border: 1px black">
+    <h2>Basket</h2>
+</div>
+<form id="saveOrder" method="post">
+    <table>
         <tr>
-            <td height="30px" align="left"><c:out value="${medicament.name}"/></td>
-            <td height="30px" align="left"><c:out value="${medicament.form}"/></td>
-            <td height="30px" align="left"><c:out value="${medicament.dosage}"/></td>
-
-            <c:if test="${medicament.recipe == true}">
-                <td><c:out value="yes"/></td>
-            </c:if>
-            <c:if test="${medicament.recipe == false}">
-                <td><c:out value="no"/></td>
-            </c:if>
-
-            <td><c:out value="${medicament.quantity}"/></td>
-            <td><c:out value="${medicament.price}"/></td>
-            <td><c:out value="${requestScope.medicinesInBasket.get(medicament)}"/></td>
-            <td height="30px" align="centre">
-                <form action="addMedicamentInBasket" method="post"
-                      style="display: inline-block; margin: 0;">
-                    <input type="hidden" name="command" value="addMedicamentInBasket"/>
-                    <input type="hidden" name="medicamentId" value="${medicament.id}">
-                    <input type="submit" value="add"/>
-                </form>
-            </td>
+            <th>Name</th>
+            <th>Form</th>
+            <th>Dosage</th>
+            <th>Recipe</th>
+            <th>In stock</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th></th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        <tbody>
+
+        <tbody>
+        <c:forEach items="${sessionScope.medicinesInBasket.keySet()}" var="medicament">
+            <tr>
+                <td><c:out value="${medicament.name}"/></td>
+                <td><c:out value="${medicament.form}"/></td>
+                <td><c:out value="${medicament.dosage}"/></td>
+                <td><c:out value="${medicament.recipe == true ? 'yes' : 'no'}"/></td>
+                <td><c:out value="${medicament.quantity}"/></td>
+                <td><c:out value="${medicament.price}"/></td>
+                <td><c:out value="${sessionScope.medicinesInBasket.get(medicament)}"/></td>
+                <td>
+                    <input name="id" hidden value="${medicament.id}">
+                    <input name="count"
+                           type="number"
+                           min="0"
+                           max="${medicament.quantity}"
+                           value="${sessionScope.medicinesInBasket.get(medicament)}"
+                           placeholder="${sessionScope.medicinesInBasket.get(medicament)}"
+                           style="width: 4em"/>
+                </td>
+            </tr>
+        </c:forEach>
+
+        </tbody>
+    </table>
+    <input type="hidden" name="command" value="saveOrder"/>
+    <input type="submit" th:href="controller?command=saveOrder"/>
+</form>
+
+<a href="controller?command=pacientMain">Cancel</a>
+
 </body>
 </html>

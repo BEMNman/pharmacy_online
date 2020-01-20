@@ -12,19 +12,19 @@ public class OrderDetails implements Identifable{
     public static final String COLUMN_PRICE = "price";
 
     private long id;
-    private final long orderId;
-    private final long medicamentId;
-    private final int quantity;
+    private final Long orderId;
+    private final Long medicamentId;
+    private final Integer quantity;
     private final BigDecimal price;
 
-    public OrderDetails(long orderId, long medicamentId, int quantity, BigDecimal price) {
+    public OrderDetails(Long orderId, Long medicamentId, Integer quantity, BigDecimal price) {
         this.orderId = orderId;
         this.medicamentId = medicamentId;
         this.quantity = quantity;
         this.price = price;
     }
 
-    public OrderDetails(long id, long orderId, long medicamentId, int quantity, BigDecimal price) {
+    public OrderDetails(Long id, Long orderId, Long medicamentId, Integer quantity, BigDecimal price) {
         this.id = id;
         this.orderId = orderId;
         this.medicamentId = medicamentId;
@@ -33,19 +33,19 @@ public class OrderDetails implements Identifable{
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public long getMedicamentId() {
+    public Long getMedicamentId() {
         return medicamentId;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 

@@ -20,10 +20,11 @@ public class OpenBasketCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws ServerException {
         HttpSession session = request.getSession();
         List<Long> listIdItems = (ArrayList<Long>) session.getAttribute("listIdItems");
-
-        Map<Medicament, Integer> medicinesInBasket = service.createMapMedicamentsAmount(listIdItems);
-
-        request.setAttribute("medicinesInBasket", medicinesInBasket);
+        Map<Medicament, Integer> medicinesInBasket = null;
+        if(listIdItems.size() != 0) {
+            medicinesInBasket = service.createMapMedicinesQuantity(listIdItems);
+        }
+        session.setAttribute("medicinesInBasket", medicinesInBasket);
         return CommandResult.forward("/pacientMain.jsp");
     }
 }

@@ -1,6 +1,7 @@
-package com.epam.finalproject.pharmacy.dao;
+package com.epam.finalproject.pharmacy.dao.user;
 
-import com.epam.finalproject.pharmacy.builder.UserRowMapper;
+import com.epam.finalproject.pharmacy.dao.AbstractDao;
+import com.epam.finalproject.pharmacy.mapper.UserRowMapper;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 
