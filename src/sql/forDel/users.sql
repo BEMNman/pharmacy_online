@@ -8,7 +8,7 @@ CREATE TABLE pharmacy.users
     `name`     varchar(45)                              NOT NULL,
     `login`    varchar(45)                              NOT NULL,
     `password` varchar(45)                              NOT NULL,
-    `role`     enum ('PACIENT', 'DOCTOR', 'PHARMACIST') NOT NULL,
+    `role`     enum ('PATIENT', 'DOCTOR', 'PHARMACIST') NOT NULL,
     `locked`   boolean DEFAULT '0',
     PRIMARY KEY (`id`)
 )
@@ -16,6 +16,6 @@ CREATE TABLE pharmacy.users
     DEFAULT CHARSET = utf8;
 
 INSERT INTO pharmacy.users (name, login,  password, role, locked)
-VALUES ('Ivan', 'ivanMan', MD5('111'), 'PACIENT', false),
+VALUES ('Ivan', 'ivanMan', MD5('111'), 'PATIENT', false),
        ('Sasha', 'sashaMan', MD5('222'), 'DOCTOR', false),
        ('Vasya', 'vasyaMan', MD5('333'), 'PHARMACIST', false);

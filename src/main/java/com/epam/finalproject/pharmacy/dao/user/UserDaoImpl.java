@@ -12,7 +12,8 @@ import java.util.Optional;
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
-    private static final String FIND_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ? AND password = MD5(?) AND locked = false";
+    private static final String FIND_BY_LOGIN_AND_PASSWORD =
+            "SELECT * FROM users WHERE login = ? AND password = MD5(?) AND locked = false";
 
     public UserDaoImpl(Connection connection) {
         super(connection);
@@ -31,7 +32,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     /*
-    new method - getVAluesItemByStringForQuery()
+    new method - getValuesItemByStringForQuery()
      */
     protected Map<String, Object> getFieldsValues(User user) {
         Map<String, Object> mapFieldsValues = new LinkedHashMap<>();
@@ -50,10 +51,5 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     @Override
     protected String getTableName() {
         return User.NAME_TABLE_IN_DB;
-    }
-
-    @Override
-    public void removeById(Long id) {
-
     }
 }

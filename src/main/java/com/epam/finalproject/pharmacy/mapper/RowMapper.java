@@ -19,6 +19,8 @@ public interface RowMapper<T extends Identifable> {
                 return new OrderRowMapper();
             case OrderDetails.NAME_TABLE_IN_DB:
                 return new OrderDetailsRowMapper();
+            case Request.NAME_TABLE_IN_DB:
+                return new RequestRowMapper();
             default:
                 throw new IllegalArgumentException("Unknown table = " + table);
         }

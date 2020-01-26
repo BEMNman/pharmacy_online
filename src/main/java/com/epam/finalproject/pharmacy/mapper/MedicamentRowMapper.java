@@ -19,8 +19,8 @@ public class MedicamentRowMapper implements RowMapper<Medicament> {
         int amount = resultSet.getInt(Medicament.COLUMN_AMOUNT_IN_PACK);
         BigDecimal price = resultSet.getBigDecimal(Medicament.COLUMN_PRICE);
         int quantityInStock = resultSet.getInt(Medicament.COLUMN_QUANTITY_IN_STOCK);
-
-        return new Medicament(id, name, medicamentForm, dosage, needRecipe, amount, price, quantityInStock);
+        boolean archive = resultSet.getBoolean(Medicament.COLUMN_ARCHIVE);
+        return new Medicament(id, name, medicamentForm, dosage, needRecipe, amount, price, quantityInStock ,archive);
     }
 
     @Override
@@ -32,7 +32,8 @@ public class MedicamentRowMapper implements RowMapper<Medicament> {
                 .append(Medicament.COLUMN_RECIPE).append(", ")
                 .append(Medicament.COLUMN_AMOUNT_IN_PACK).append(", ")
                 .append(Medicament.COLUMN_PRICE).append(", ")
-                .append(Medicament.COLUMN_QUANTITY_IN_STOCK);
+                .append(Medicament.COLUMN_QUANTITY_IN_STOCK).append(", ")
+                .append(Medicament.COLUMN_ARCHIVE);
         return fieldsValues.toString();
     }
 }

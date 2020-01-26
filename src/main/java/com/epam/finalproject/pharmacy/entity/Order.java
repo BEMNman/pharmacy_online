@@ -2,6 +2,7 @@ package com.epam.finalproject.pharmacy.entity;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Order implements Identifable {
 
@@ -13,20 +14,20 @@ public class Order implements Identifable {
     public static final String COLUMN_STATUS = "status";
 
     private Long id;
-    private final Timestamp creationDate;
+    private final LocalDateTime creationDate;
     private final Long userId;
     private final BigDecimal price;
 
     private OrderStatus status;
 
-    private Order(Timestamp creationDate, Long userId, BigDecimal price, OrderStatus status) {
+    private Order(LocalDateTime creationDate, Long userId, BigDecimal price, OrderStatus status) {
         this.creationDate = creationDate;
         this.userId = userId;
         this.price = price;
         this.status = status;
     }
 
-    public Order(Long id, Timestamp creationDate, Long userId, BigDecimal price, OrderStatus status) {
+    public Order(Long id, LocalDateTime creationDate, Long userId, BigDecimal price, OrderStatus status) {
         this.id = id;
         this.creationDate = creationDate;
         this.userId = userId;
@@ -35,7 +36,7 @@ public class Order implements Identifable {
     }
 
     public static Order newOrder(Long userId, BigDecimal totalPrice) {
-        return new Order(new Timestamp(System.currentTimeMillis()), userId, totalPrice, OrderStatus.PROCESS);
+        return new Order(LocalDateTime.now(), userId, totalPrice, OrderStatus.PAID);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class Order implements Identifable {
         this.id = id;
     }
 
-    public Timestamp getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 

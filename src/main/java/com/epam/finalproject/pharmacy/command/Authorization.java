@@ -1,5 +1,6 @@
 package com.epam.finalproject.pharmacy.command;
 
+import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.entity.UserRole;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.ServerException;
@@ -17,19 +18,17 @@ public class Authorization implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
-        User user = (User) request.getSession().getAttribute("user");
-        UserRole userRole = user.getRole();
-        switch (userRole) {
-            case PACIENT:
-                return CommandResult.redirect("controller?command=pacientMain");
-
-            case DOCTOR:
-                return CommandResult.redirect("controller?command=doctorMain");
-
-            case PHARMACIST:
-                return CommandResult.redirect("controller?command=pharmacistMain");
-
-            default: return CommandResult.redirect("/error.jsp");
-        }
+//        User user = (User) request.getSession().getAttribute("user");
+//        UserRole userRole = user.getRole();
+//        switch (userRole) {
+//            case PATIENT:
+//                return CommandResult.redirectToCommand(Page.PATIENT_MAIN);
+//            case DOCTOR:
+                return CommandResult.redirectToCommand("patientMain");
+//            case PHARMACIST:
+//                return CommandResult.redirectToCommand(Page.PHARMACIST_MAIN);
+//            default:
+//                return CommandResult.redirect(Page.ERROR);
+//        }
     }
 }

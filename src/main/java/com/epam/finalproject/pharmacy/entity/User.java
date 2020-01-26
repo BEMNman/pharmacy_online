@@ -35,7 +35,7 @@ public class User implements Identifable{
     }
 
     public static User newPatient(String name, String login, String password){
-        return new User(name, login, password, UserRole.PACIENT, false);
+        return new User(name, login, password, UserRole.PATIENT, false);
     }
 
     public String getName() {

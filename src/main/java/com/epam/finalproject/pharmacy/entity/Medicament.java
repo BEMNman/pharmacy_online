@@ -12,18 +12,20 @@ public class Medicament implements Identifable {
     public static final String COLUMN_AMOUNT_IN_PACK = "amountInPack";
     public static final String COLUMN_PRICE = "price";
     public static final String COLUMN_QUANTITY_IN_STOCK = "quantity";
+    public static final String COLUMN_ARCHIVE = "archive";
 
     private final Long id;
     private final String name;
     private final MedicamentForm form;
     private final String dosage;
     private final boolean recipe;
-    private Integer amountInPack;
+    private final Integer amountInPack;
     private final BigDecimal price;
     private Integer quantity;
+    private final boolean archive;
 
     public Medicament(Long id, String name, MedicamentForm form, String dosage, boolean recipe,
-                      Integer amountInPack, BigDecimal price, Integer quantity) {
+                      Integer amountInPack, BigDecimal price, Integer quantity, boolean archive) {
         this.id = id;
         this.name = name;
         this.form = form;
@@ -32,6 +34,7 @@ public class Medicament implements Identifable {
         this.price = price;
         this.amountInPack = amountInPack;
         this.quantity = quantity;
+        this.archive = archive;
     }
 
     public String getName() {
@@ -50,6 +53,10 @@ public class Medicament implements Identifable {
         return quantity;
     }
 
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     public boolean isRecipe() {
         return recipe;
     }
@@ -62,8 +69,8 @@ public class Medicament implements Identifable {
         return amountInPack;
     }
 
-    public void setAmountInPack(int amountInPack) {
-        this.amountInPack = amountInPack;
+    public boolean isArchive() {
+        return archive;
     }
 
     @Override

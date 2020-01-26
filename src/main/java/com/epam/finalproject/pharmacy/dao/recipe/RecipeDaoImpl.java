@@ -1,7 +1,5 @@
 package com.epam.finalproject.pharmacy.dao.recipe;
 
-import com.epam.finalproject.pharmacy.dto.RecipeDto;
-import com.epam.finalproject.pharmacy.mapper.RecipeDtoRowMapper;
 import com.epam.finalproject.pharmacy.mapper.RecipeRowMapper;
 import com.epam.finalproject.pharmacy.dao.AbstractDao;
 import com.epam.finalproject.pharmacy.entity.Recipe;
@@ -28,12 +26,6 @@ public class RecipeDaoImpl extends AbstractDao<Recipe> implements RecipeDao {
     @Override
     protected String getTableName() {
         return Recipe.NAME_TABLE_IN_DB;
-    }
-
-
-    @Override
-    public void removeById(Long id) throws DaoException {
-
     }
 
     @Override

@@ -21,7 +21,7 @@ public class RecipeDtoService {
 
     public RecipeDtoService(DaoHelperFactory daoHelperFactory) throws ServerException {
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            this.recipeDao = daoHelper.createRecipeDtoDao();
+            recipeDao = daoHelper.createRecipeDtoDao();
         } catch (DaoException e) {
             logger.warn("RecipeDao wasn't created " + e);
 

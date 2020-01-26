@@ -1,5 +1,9 @@
 package com.epam.finalproject.pharmacy.command;
 
+import com.epam.finalproject.pharmacy.command.patient.*;
+import com.epam.finalproject.pharmacy.command.pharmacist.DeleteMedicamentCommand;
+import com.epam.finalproject.pharmacy.command.pharmacist.EditMedicamentCommand;
+import com.epam.finalproject.pharmacy.command.util.Calculator;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.*;
@@ -24,34 +28,33 @@ public class CommandFactory {
                 logger.debug("Command 'logout' was created");
                 return new LogoutCommand();
 
-            case "registerNewPacient":
-                logger.debug("Command 'registerNewPacient' was created");
-                return new ShowPageCommand("registerNewPacient.jsp");
+            case "registerNewPatient":
+                logger.debug("Command 'registerNewPatient' was created");
+                return new ShowPageCommand("registerNewPatient.jsp");
 
-            case "saveNewPacient":
-                logger.debug("Command 'saveNewPacient' was created");
-                return new RegisterNewPacientCommand(new UserService(new DaoHelperFactory()));
+            case "saveNewPatient":
+                logger.debug("Command 'saveNewPatient' was created");
+                return new RegisterNewPatientCommand(new UserService(new DaoHelperFactory()));
 
             case "openBasket":
                 logger.debug("Command 'openBasket' was created");
-                return new OpenBasketCommand(new MedicamentService(new DaoHelperFactory()));
+                return new OpenBasketCommand();
 
-            case "pacientMain":
-                logger.debug("Command 'pacientMain' was created");
-                return new PacientMainCommand(new MedicamentService(new DaoHelperFactory()));
+            case "patientMain":
+                logger.debug("Command 'patientMain' was created");
+                return new PatientMainCommand(new MedicamentService(new DaoHelperFactory()));
 
             case "addMedicamentInBasket":
                 logger.debug("Command 'addMedicamentInBasket' was created");
-                return new AddMedicamentInBasketCommand();
+                return new AddMedicamentInBasketCommand(new MedicamentService(new DaoHelperFactory()));
 
             case "saveOrder":
                 logger.debug("Command 'saveOrder' was created");
-                return new SaveOrderCommand(new OrderService(new DaoHelperFactory())
-                        , new OrderDetailsService(new DaoHelperFactory()));
+                return new SaveOrderCommand(new OrderService(new DaoHelperFactory()));
 
             case "openOrders":
                 logger.debug("Command 'openOrders' was created");
-                return new OpenOrderCommand(new OrderService(new DaoHelperFactory()));
+                return new ShowOrderDetailsCommand(new OrderService(new DaoHelperFactory()));
 
             case "viewOrderDetails":
                 logger.debug("Command 'viewOrderDetails' was created");
@@ -61,10 +64,33 @@ public class CommandFactory {
                 logger.debug("Command 'openRecipes' was created");
                 return new ShowRecipesCommand(new RecipeDtoService(new DaoHelperFactory()));
 
-            case "payOrder":
+            case "continueOrder":
+                logger.debug("Command 'continueOrder' was created");
+                return new CheckOrderCommand(new MedicamentService(new DaoHelperFactory()));
+
+            case "openOrder":
+                logger.debug("Command 'openOrder' was created");
+                return new OpenOrderCommand(new Calculator());
+
+            case "clearBasket":
+                logger.debug("Command 'openOrder' was created");
+                return new ClearBasketCommand();
+
+            case "pay":
                 logger.debug("Command 'payOrder' was created");
-                return new PayOrderCommand(new OrderService(new DaoHelperFactory()),
-                        new MedicamentService(new DaoHelperFactory()));
+                return new PayOrderCommand(new OrderService(new DaoHelperFactory()));
+
+            case "sendRecipeRequest":
+                logger.debug("Command 'sendRequestRecipe' was created");
+                return new SendRecipeRequestCommand(new RequestService(new DaoHelperFactory()));
+
+            case "deleteMedicament":
+                logger.debug("Command 'deleteMedicament' was created");
+                return new DeleteMedicamentCommand(new MedicamentService(new DaoHelperFactory()));
+
+            case "editMedicament":
+                logger.debug("Command 'editMedicament' was created");
+                return new EditMedicamentCommand(new MedicamentService(new DaoHelperFactory()));
 
             default:
                 logger.error("Unknown command: " + command);

@@ -1,6 +1,7 @@
 package com.epam.finalproject.pharmacy.entity;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class Recipe implements Identifable {
     public final static String NAME_TABLE_IN_DB = "recipes";
@@ -13,15 +14,15 @@ public class Recipe implements Identifable {
     public final static String COLUMN_DOCTOR_ID = "doctorId";
 
     private final Long id;
-    private final Timestamp createdDate;
-    private final Timestamp expDate;
+    private final LocalDate createdDate;
+    private final LocalDate expDate;
     private final Long medicamentId;
     private final Integer amount;
     private final Long patientId;
     private final Long doctorId;
 
 
-    public Recipe(Long id, Timestamp createdDate, Timestamp expDate, Long medicamentId, Integer amount,
+    public Recipe(Long id, LocalDate createdDate, LocalDate expDate, Long medicamentId, Integer amount,
                   Long patientId, Long doctorId) {
         this.id = id;
         this.createdDate = createdDate;
@@ -32,11 +33,11 @@ public class Recipe implements Identifable {
         this.doctorId = doctorId;
     }
 
-    public Timestamp getCreatedDate() {
+    public LocalDate getCreatedDate() {
         return createdDate;
     }
 
-    public Timestamp getExpDate() {
+    public LocalDate getExpDate() {
         return expDate;
     }
 

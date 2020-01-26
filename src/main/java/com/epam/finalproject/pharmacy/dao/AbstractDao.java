@@ -20,6 +20,7 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
     private static final String FIND_ALL = "SELECT * FROM ";
     private static final String SAVE_NEW_ITEM_IN_DB = "INSERT INTO ";
     private static final String VALUES = " VALUE(";
+    private static final String DELETE_ALL_FROM = "DELETE FROM ";
 
     private Connection connection;
 
@@ -63,14 +64,14 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
     }
 
     @Override
-    public List<T> getAll() throws DaoException {
+    public List<T> findAll() throws DaoException {
         String table = getTableName();
         RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);
         return executeQuery(FIND_ALL + table, mapper);
     }
 
     @Override
-    public Optional<T> getById(Long id) throws DaoException {
+    public Optional<T> findById(Long id) throws DaoException {
         String table = getTableName();
         RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);
 
@@ -85,13 +86,31 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
         RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);
         String stringByItemFields = mapper.getFieldsMapperByStringForQuery();
         String stringByItemValues = getValuesItemByStringForQuery(item);
-        try (PreparedStatement statement = createStatement(SAVE_NEW_ITEM_IN_DB
-                + table + "(" + stringByItemFields + ")" + VALUES + stringByItemValues + ")")) {
-
+        String query = SAVE_NEW_ITEM_IN_DB + table + "(" + stringByItemFields + ")" + VALUES + stringByItemValues + ")";
+        try (PreparedStatement statement = createStatement(query)) {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    public void update(String query, Object...params)  throws DaoException {
+        try (PreparedStatement statement = createStatement(query, params)) {
+            statement.executeUpdate();
+        } catch (SQLException | DaoException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void removeById(Long id) throws DaoException {
+        String query = DELETE_ALL_FROM + getTableName() + WHERE_VALUE_ID;
+        try (PreparedStatement statement = createStatement(query, id)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
     }
 
     protected Optional<T> executeForSingleResult(String query, RowMapper<T> builder, Object... params) throws DaoException {
@@ -105,6 +124,16 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
         }
     }
 
+    protected boolean checkExistingRow(String query, Object...params) throws DaoException {
+        try (PreparedStatement statement = createStatement(query, params)) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int countId = resultSet.getInt(1);
+            return countId > 0;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
 
     protected abstract String getValuesItemByStringForQuery(T item);
 

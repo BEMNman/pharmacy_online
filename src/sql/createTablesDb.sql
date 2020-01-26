@@ -8,7 +8,7 @@ CREATE TABLE pharmacy.users
     `name`     varchar(45)                              NOT NULL,
     `login`    varchar(45)                              NOT NULL UNIQUE,
     `password` varchar(45)                              NOT NULL,
-    `role`     enum ('PACIENT', 'DOCTOR', 'PHARMACIST') NOT NULL,
+    `role`     enum ('PATIENT', 'DOCTOR', 'PHARMACIST') NOT NULL,
     `locked`   boolean DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -26,6 +26,7 @@ CREATE TABLE pharmacy.medicines
     `amountInPack` int(11) DEFAULT '0',
     `price`        decimal(10, 2),
     `quantity`     int(11) DEFAULT '0',
+    `archive`      boolean DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
@@ -65,13 +66,13 @@ CREATE TABLE pharmacy.orderDetails
 DROP TABLE IF EXISTS pharmacy.recipes;
 CREATE TABLE pharmacy.recipes
 (
-    `id`           int(11)  NOT NULL AUTO_INCREMENT,
-    `creationDate` datetime NOT NULL,
-    `expDate`      datetime NOT NULL,
-    `medicamentId` int(11)  NOT NULL,
-    `amount`       int(11)  NOT NULL,
-    `patientId`    int(11)  NOT NULL,
-    `doctorId`     int(11)  NOT NULL,
+    `id`           int(11) NOT NULL AUTO_INCREMENT,
+    `creationDate` date    NOT NULL,
+    `expDate`      date    NOT NULL,
+    `medicamentId` int(11) NOT NULL,
+    `amount`       int(11) NOT NULL,
+    `patientId`    int(11) NOT NULL,
+    `doctorId`     int(11) NOT NULL,
     PRIMARY KEY (`id`),
     KEY `fk_recipes_users1_idx` (`patientId`),
     KEY `fk_recipes_users2_idx` (`doctorId`),
@@ -79,6 +80,21 @@ CREATE TABLE pharmacy.recipes
     CONSTRAINT `fk_recipes_medicines1` FOREIGN KEY (`medicamentId`) REFERENCES pharmacy.medicines (`id`),
     CONSTRAINT `fk_recipes_users1` FOREIGN KEY (`patientId`) REFERENCES pharmacy.users (`id`),
     CONSTRAINT `fk_recipes_users2` FOREIGN KEY (`doctorId`) REFERENCES pharmacy.users (`id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS pharmacy.request;
+CREATE TABLE pharmacy.request
+(
+    `id`              int(11)                NOT NULL AUTO_INCREMENT,
+    `creationDate`    date                   NOT NULL,
+    `recipeId`        int(11)                NOT NULL,
+    `requestedPeriod` int(2)                 NOT NULL,
+    `status`          enum ('NEW', 'CLOSED') NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fk_request_recipe_idx` (`recipeId`),
+    CONSTRAINT `fk_request_recipes` FOREIGN KEY (`recipeId`) REFERENCES pharmacy.recipes (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = utf8;

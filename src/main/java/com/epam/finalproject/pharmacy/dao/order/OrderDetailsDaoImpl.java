@@ -31,12 +31,4 @@ public class OrderDetailsDaoImpl extends AbstractDao<OrderDetails> implements Or
         return OrderDetails.NAME_TABLE_IN_DB;
     }
 
-    @Override
-    public void saveDetailsForOrder(Order order, OrderDetails orderDetails) throws DaoException {
-    }
-
-    @Override
-    public void removeById(Long id) throws DaoException {
-
-    }
 }

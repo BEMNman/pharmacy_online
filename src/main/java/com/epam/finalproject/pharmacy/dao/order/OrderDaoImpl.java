@@ -32,11 +32,6 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     }
 
     @Override
-    public void removeById(Long id) throws DaoException {
-
-    }
-
-    @Override
     public long saveAndGetIdLastSavedOrder(Order order) throws DaoException {
         String query = "INSERT INTO "
                 + getTableName() + "(" + RowMapper.create(getTableName()).getFieldsMapperByStringForQuery() + ")"

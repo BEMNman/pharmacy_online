@@ -3,6 +3,8 @@ package com.epam.finalproject.pharmacy.controller;
 import com.epam.finalproject.pharmacy.command.Command;
 import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
+import com.epam.finalproject.pharmacy.command.constant.Page;
+import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,8 +30,7 @@ public class ActionController extends HttpServlet {
 
         String page;
         try {
-            System.err.println("Command: "+ request.getParameter("command"));
-            Command command = CommandFactory.create(request.getParameter("command"));
+            Command command = CommandFactory.create(request.getParameter(RequestParameterConst.COMMAND));
             CommandResult commandResult = command.execute(request);
             page = commandResult.getPage();
 
@@ -40,7 +41,7 @@ public class ActionController extends HttpServlet {
             }
         } catch (Exception e) {
             logger.warn(e);
-            page = "error.jsp";
+            page = Page.ERROR;
             redirect(response, page);
         }
     }

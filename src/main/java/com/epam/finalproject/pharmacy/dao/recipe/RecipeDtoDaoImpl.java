@@ -36,9 +36,4 @@ public class RecipeDtoDaoImpl extends AbstractDao<RecipeDto> implements RecipeDt
     public List<RecipeDto> getAllRecipesDtoForUser(Long userId) throws DaoException {
         return executeQuery(GET_ALL_RECIPES_DTO_FOR_USER, new RecipeDtoRowMapper(), userId);
     }
-
-    @Override
-    public void removeById(Long id) throws DaoException {
-
-    }
 }

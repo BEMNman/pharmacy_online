@@ -12,7 +12,7 @@
 <body>
 
 <div style="border: 1px black">
-    <h2>Resipes</h2>
+    <h2>Reсipes</h2>
 </div>
 
 <table>
@@ -35,12 +35,15 @@
             <td><c:out value="${recipe.doctorName}"/></td>
 
             <td height="30px" align="centre">
-                <form action="viewOrderDetails" method="post"
-                      style="display: inline-block; margin: 0;">
-                    <input type="hidden" name="command" value="viewOrderDetails"/>
-                    <input type="hidden" name="orderId" value="${order.id}">
-                    <input type="submit" value="open"/>
-                </form>
+                <c:if test="${recipe.expDate >= requestScope.currentDate}">
+                    <form action="sendRecipeRequest" method="post"
+                          style="display: inline-block; margin: 0;">
+                        <input type="hidden" name="command" value="sendRecipeRequest"/>
+                        <input type="hidden" name="recipeId" value="${recipe.id}">
+                        <input type="number" name="requestedPeriod">
+                        <input type="submit" value="request"/>
+                    </form>
+                </c:if>
             </td>
         </tr>
     </c:forEach>

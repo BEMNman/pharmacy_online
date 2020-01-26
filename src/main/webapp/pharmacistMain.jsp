@@ -1,6 +1,13 @@
 <%--
   Created by IntelliJ IDEA.
   User: Gogolinsky
+  Date: 26.01.2020
+  Time: 13:35
+  To change this template use File | Settings | File Templates.
+--%>
+<%--
+  Created by IntelliJ IDEA.
+  User: Gogolinsky
   Date: 17.01.2020
   Time: 22:10
   To change this template use File | Settings | File Templates.
@@ -16,42 +23,42 @@
     <style>
         body {
             min-width: 800px;
-            font: 11pt Arial, Helvetica, sans-serif; /* Рубленый шрифт текста */
-            margin: 0 20% 0 20%; /* Отступы на странице */
+            font: 11pt Arial, Helvetica, sans-serif;
+            margin: 0 20% 0 20%;
         }
 
         h1 {
-            font-size: 36px; /* Размер шрифта */
-            margin: 0; /* Убираем отступы */
-            color: #fc6; /* Цвет текста */
+            font-size: 36px;
+            margin: 0;
+            color: #fc6;
         }
 
         h2 {
-            margin-top: 0; /* Убираем отступ сверху */
+            margin-top: 0;
         }
 
-        #header { /* Верхний блок */
-            background: #0080c0; /* Цвет фона */
-            padding: 10px; /* Поля вокруг текста */
+        #header {
+            background: #0080c0;
+            padding: 10px;
         }
 
         #basket {
-            background: #1080c1; /* Цвет фона */
+            background: #1080c1;
             text-align: right;
-            padding: 0 30px 5px 0px; /* Поля вокруг текста */
+            padding: 0 30px 5px 0px;
         }
 
         #logo-left { /* Левая колонка */
 
             float: left; /* Обтекание справа */
             width: 400px; /* Ширина колонки */
-            border: 1px solid #333; /* Параметры рамки вокруг */
+            /*border: 1px solid #333; !* Параметры рамки вокруг *!*/
 
         }
 
         #logo-right { /* Правая колонка */
             margin: 0px 0px 0px 400px; /* Значения отступов */
-            border: 1px solid #333; /* Параметры рамки вокруг */
+            /*border: 1px solid #333; !* Параметры рамки вокруг *!*/
             text-align: right;
             padding: 0 20px 5px 0px; /* Поля вокруг текста */
         }
@@ -76,10 +83,23 @@
         }
 
         #footer { /* Нижний блок */
-            background: #333; /* Цвет фона */
-            padding: 5px; /* Поля вокруг текста */
+            width: 100%;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            float: bottom;
+            /*background: #0080c0; !* Цвет фона *!*/
+            padding: 20px; /* Поля вокруг текста */
             color: #fff; /* Цвет текста */
             clear: left; /* Отменяем действие float */
+
+            background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+            background: -moz-linear-gradient(right, #76b852, #8DC26F);
+            background: -o-linear-gradient(right, #76b852, #8DC26F);
+            background: linear-gradient(to left, #76b852, #8DC26F);
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
     </style>
 </head>
@@ -90,35 +110,18 @@
 </div>
 
 <div id="sidebar">
-    <p><a href="controller?command=pacientMain">Medicines</a></p>
-    <c:if test="${sessionScope.user.role.name().equals('PACIENT')}">
-        <p><a href="controller?command=openOrders">Orders</a></p>
-    </c:if>
-    <c:if test="${sessionScope.user.role.name().equals('PACIENT') || sessionScope.user.role.name().equals('DOCTOR')}">
-        <p><a href="controller?command=openRecipes">Recipes</a></p>
-    </c:if>
-    <c:if test="${sessionScope.user.role.name().equals('PHARMACIST') || sessionScope.user.role.name().equals('DOCTOR')}">
-        <p><a href="XXXXXXXXXXXl">Users</a></p>
-    </c:if>
+    <jsp:include page="menu.jsp"/>
 </div>
 
 <div id="content">
 
     <div style="border: 1px black">
-        <c:if test="${requestScope.medicines!=null}">
-            <jsp:include page="medicinesTable.jsp"/>
+        <c:if test="${requestScope.medicines != null
+                   && requestScope.orderSuccessful == null}">
+            <jsp:include page="tables/medicinesForPharmacistTable.jsp"/>
         </c:if>
-        <c:if test="${sessionScope.medicinesInBasket!=null}">
-            <jsp:include page="basketTable.jsp"/>
-        </c:if>
-        <c:if test="${requestScope.orders!=null}">
-            <jsp:include page="ordersTable.jsp"/>
-        </c:if>
-        <c:if test="${requestScope.medicinesInOrder!=null}">
-            <jsp:include page="orderDetailsTable.jsp"/>
-        </c:if>
-        <c:if test="${requestScope.recipes != null}">
-            <jsp:include page="recipesPatientTable.jsp"/>
+        <c:if test="${requestScope.orderSuccessful != null}">
+            <jsp:include page="message.jsp"/>
         </c:if>
     </div>
 
@@ -127,3 +130,4 @@
 <div id="footer">&copy; Олег Гоголинский</div>
 </body>
 </html>
+

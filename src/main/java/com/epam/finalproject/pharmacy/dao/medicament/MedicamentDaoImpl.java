@@ -8,15 +8,20 @@ import com.epam.finalproject.pharmacy.exception.DaoException;
 import java.sql.Connection;
 import java.util.List;
 
-public class MedicamentDaoImpl extends AbstractDao<Medicament> implements MedicamentDao{
+public class MedicamentDaoImpl extends AbstractDao<Medicament> implements MedicamentDao {
 
-
-    private static final String INSERT_NEW_OR_UPDATE = "INSERT INTO medicines (name, price) VALUES(?,?)";
     public static final String JOIN_ORDER_DETAILS_AND_ORDER =
             "SELECT m.id, m.name, m.form, m.dosage, m.recipe, m.amountInPack, od.price, od.quantity " +
                     "FROM orderdetails AS od " +
                     "JOIN medicines AS m ON od.medicamentId=m.id " +
                     "WHERE od.orderId=?";
+    public static final String QUERY_TO_CHECK_QUANTITY =
+            "SELECT COUNT(m.id) FROM medicines m WHERE m.id = ? AND m.quantity >= ?";
+    public static final String QUERY_TO_CHECK_RECIPE =
+            "SELECT COUNT(r.id) FROM recipes r " +
+                    "WHERE r.medicamentId = ? " +
+                    "AND r.patientId = ? AND TO_DAYS(r.expDate) > TO_DAYS(NOW()) AND r.amount >= ? ";
+    private static final String SEND_MEDICAMENT_TO_ARCHIVE = "UPDATE medicines  SET archive = '1' WHERE id = ?";
 
 
     public MedicamentDaoImpl(Connection connection) {
@@ -42,14 +47,23 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
         return Medicament.NAME_TABLE_IN_DB;
     }
 
-
-       @Override
-    public void removeById(Long id) {
-
+    @Override
+    public List<Medicament> findAllMedicamentForOrder(long orderId) throws DaoException {
+        return executeQuery(JOIN_ORDER_DETAILS_AND_ORDER, new MedicamentRowMapper(), orderId);
     }
 
     @Override
-    public List<Medicament> getAllMedicamentForOrder(long orderId) throws DaoException {
-        return executeQuery(JOIN_ORDER_DETAILS_AND_ORDER, new MedicamentRowMapper(), orderId);
+    public boolean checkQuantityInStock(Long medicamentId, Integer quantity) throws DaoException {
+        return checkExistingRow(QUERY_TO_CHECK_QUANTITY, medicamentId, quantity);
+    }
+
+    @Override
+    public boolean checkAvailableRecipe(Long userId, Long medicamentId, Integer tempTotalQuantity) throws DaoException {
+        return checkExistingRow(QUERY_TO_CHECK_RECIPE,medicamentId, userId, tempTotalQuantity);
+    }
+
+    @Override
+    public void sendMedicamentToArchive(Long id) throws DaoException {
+       update(SEND_MEDICAMENT_TO_ARCHIVE, id);
     }
 }
