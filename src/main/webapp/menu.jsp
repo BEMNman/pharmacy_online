@@ -10,7 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <p><a href="controller?command=patientMain">Medicines</a></p>
+    <p><a href="controller?command=mainPage">Medicines</a></p>
     <c:if test="${sessionScope.user.role.name() =='PATIENT'}">
         <p><a href="controller?command=openOrders">Orders</a></p>
     </c:if>
@@ -18,7 +18,7 @@
         <p><a href="controller?command=openRecipes">Recipes</a></p>
     </c:if>
     <c:if test="${sessionScope.user.role.name() =='DOCTOR'}">
-        <p><a href="XXXXXXXXXXXl">Request</a></p>
+        <p><a href="controller?command=openRequests">Requests</a></p>
     </c:if>
 </head>
 <body>

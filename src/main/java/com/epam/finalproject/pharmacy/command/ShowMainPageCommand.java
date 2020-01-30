@@ -1,9 +1,10 @@
-package com.epam.finalproject.pharmacy.command.patient;
+package com.epam.finalproject.pharmacy.command;
 
 import com.epam.finalproject.pharmacy.command.Command;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
+import com.epam.finalproject.pharmacy.command.constant.SessionAttributeConst;
 import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.entity.UserRole;
@@ -13,18 +14,18 @@ import com.epam.finalproject.pharmacy.service.MedicamentService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class PatientMainCommand implements Command {
+public class ShowMainPageCommand implements Command {
 
 
     private MedicamentService service;
 
-    public PatientMainCommand(MedicamentService service) {
+    public ShowMainPageCommand(MedicamentService service) {
         this.service = service;
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(SessionAttributeConst.USER);
         UserRole userRole = user.getRole();
 
         List<Medicament> medicines = service.showAll();

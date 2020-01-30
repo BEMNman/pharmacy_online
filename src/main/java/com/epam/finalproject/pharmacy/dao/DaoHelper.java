@@ -14,6 +14,8 @@ import com.epam.finalproject.pharmacy.dao.recipe.RecipeDtoDao;
 import com.epam.finalproject.pharmacy.dao.recipe.RecipeDtoDaoImpl;
 import com.epam.finalproject.pharmacy.dao.request.RequestDao;
 import com.epam.finalproject.pharmacy.dao.request.RequestDaoImpl;
+import com.epam.finalproject.pharmacy.dao.request.RequestDtoDao;
+import com.epam.finalproject.pharmacy.dao.request.RequestDtoDaoImpl;
 import com.epam.finalproject.pharmacy.dao.user.UserDao;
 import com.epam.finalproject.pharmacy.dao.user.UserDaoImpl;
 import com.epam.finalproject.pharmacy.exception.DaoException;
@@ -38,37 +40,35 @@ public class DaoHelper implements AutoCloseable {
     }
 
     public UserDao createUserDao() {
-        logger.debug("UserDaoImpl was created");
         return new UserDaoImpl(connection);
     }
 
     public MedicamentDao createMedicamentDao() {
-        logger.debug("MedicamentDaoImpl was created");
         return new MedicamentDaoImpl(connection);
     }
 
     public OrderDao createOrderDao() {
-        logger.debug("OrderDaoImpl was created");
         return new OrderDaoImpl(connection);
     }
 
     public OrderDetailsDao createOrderDetailsDao() {
-        logger.debug("OrderDetailsDaoImpl was created");
         return new OrderDetailsDaoImpl(connection);
     }
 
     public RecipeDao createRecipeDao() {
-        logger.debug("RecipeDaoImpl was created");
         return new RecipeDaoImpl(connection);
     }
 
     public RecipeDtoDao createRecipeDtoDao() {
-        logger.debug("RecipeDaoImpl was created");
         return new RecipeDtoDaoImpl(connection);
     }
 
     public RequestDao createRequestDao() {
         return new RequestDaoImpl(connection);
+    }
+
+    public RequestDtoDao createRequestDtoDao() {
+        return new RequestDtoDaoImpl(connection);
     }
 
     @Override

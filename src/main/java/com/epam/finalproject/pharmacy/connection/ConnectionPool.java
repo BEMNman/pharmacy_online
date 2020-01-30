@@ -37,7 +37,6 @@ public class ConnectionPool {
                 if (instance.get() == null) {
                     instanceTemp = new ConnectionPool();
                     instance.set(instanceTemp);
-                    logger.debug("ConnectionPool was created");
                 }
             } finally {
                 instanceLock.unlock();

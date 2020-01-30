@@ -13,6 +13,7 @@
   <servlet>
     <servlet-name>Pharmacy</servlet-name>
     <servlet-class>com.epam.finalproject.pharmacy.controller.ActionController</servlet-class>
+    <load-on-startup>5</load-on-startup>
   </servlet>
 
   <servlet-mapping>

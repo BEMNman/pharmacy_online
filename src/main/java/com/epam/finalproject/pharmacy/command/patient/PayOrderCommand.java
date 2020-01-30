@@ -13,11 +13,12 @@ import com.epam.finalproject.pharmacy.command.util.CreditCartValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PayOrderCommand implements Command {
 
+    public static final String THE_ORDER_PLACED = "The order placed";
+    public static final String INVALID_CREDIT_CART_DATA = "credit card's information entered is not correct";
     private OrderService service;
 
     public PayOrderCommand(OrderService service) {
@@ -40,11 +41,11 @@ public class PayOrderCommand implements Command {
             Long orderId = service.saveNewOrderForUser(user,medicinesOrder);
             service.saveOrderDetails(orderId, medicinesOrder);
             session.removeAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
-            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, "The order placed");
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, THE_ORDER_PLACED);
             return CommandResult.forward(Page.PATIENT_BASKET);
         }
         request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP,
-                "credit card information entered is not correct");
+                INVALID_CREDIT_CART_DATA);
         return CommandResult.forward(Page.PATIENT_BASKET);
     }
 }

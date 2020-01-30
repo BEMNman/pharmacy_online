@@ -14,16 +14,18 @@ public class RecipeDto implements Identifable, Serializable {
     private final LocalDate createdDate;
     private final LocalDate expDate;
     private final String medicamentName;
+    private final String medicamentDosage;
     private final Integer amount;
     private final String patientName;
     private final String doctorName;
 
-    public RecipeDto(Long id, LocalDate createdDate, LocalDate expDate,
-                     String medicamentName, Integer amount, String patientName, String doctorName) {
+    public RecipeDto(Long id, LocalDate createdDate, LocalDate expDate, String medicamentName,
+                     String medicamentDosage, Integer amount, String patientName, String doctorName) {
         this.id = id;
         this.createdDate = createdDate;
         this.expDate = expDate;
         this.medicamentName = medicamentName;
+        this.medicamentDosage = medicamentDosage;
         this.amount = amount;
         this.patientName = patientName;
         this.doctorName = doctorName;
@@ -55,5 +57,9 @@ public class RecipeDto implements Identifable, Serializable {
 
     public String getDoctorName() {
         return doctorName;
+    }
+
+    public String getMedicamentDosage() {
+        return medicamentDosage;
     }
 }

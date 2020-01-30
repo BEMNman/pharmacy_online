@@ -7,6 +7,7 @@ import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
 import com.epam.finalproject.pharmacy.command.constant.SessionAttributeConst;
 import com.epam.finalproject.pharmacy.dto.RecipeDto;
 import com.epam.finalproject.pharmacy.entity.User;
+import com.epam.finalproject.pharmacy.entity.UserRole;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.RecipeDtoService;
 
@@ -32,6 +33,10 @@ public class ShowRecipesCommand implements Command {
         request.setAttribute(RequestParameterConst.RECIPES, recipes);
         LocalDate currentDate = LocalDate.now();
         request.setAttribute(RequestParameterConst.CURRENT_DATE, currentDate);
-        return CommandResult.forward(Page.PATIENT_RECIPES);
+        if(user.getRole() == UserRole.PATIENT) {
+            return CommandResult.forward(Page.PATIENT_RECIPES);
+        } else {
+            return CommandResult.forward(Page.DOCTOR_RECIPES);
+        }
     }
 }

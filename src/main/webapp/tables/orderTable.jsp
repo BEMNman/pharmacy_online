@@ -10,41 +10,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <body>
-
-<%--<div style="border: 1px black">--%>
-<%--    <h2>Order</h2>--%>
-<%--</div>--%>
-<%--<table>--%>
-<%--    <tr>--%>
-<%--        <th>Name</th>--%>
-<%--        <th>Form</th>--%>
-<%--        <th>Dosage</th>--%>
-<%--        <th>Recipe</th>--%>
-<%--        <th>Price</th>--%>
-<%--        <th>Amount</th>--%>
-<%--        <th></th>--%>
-<%--    </tr>--%>
-<%--    <tbody>--%>
-
-<%--    <tbody>--%>
-<%--    <c:forEach items="${sessionScope.medicinesInBasket.keySet()}" var="medicament">--%>
-<%--        <tr>--%>
-<%--            <td><c:out value="${medicament.name}"/></td>--%>
-<%--            <td><c:out value="${medicament.form}"/></td>--%>
-<%--            <td><c:out value="${medicament.dosage}"/></td>--%>
-<%--            <td><c:out value="${medicament.recipe == true ? 'yes' : 'no'}"/></td>--%>
-<%--            <td><c:out value="${medicament.price}"/></td>--%>
-<%--            <td><c:out value="${sessionScope.medicinesInBasket.get(medicament)}"/></td>--%>
-<%--        </tr>--%>
-<%--    </c:forEach>--%>
-
-<%--    </tbody>--%>
-<%--</table>--%>
-<%--<h3>Total price: ${requestScope.totalPrice}</h3>--%>
-<%--<a href="controller?command=pay">Pay</a>--%>
-<%--<a href="controller?command=####">Cancel order</a>--%>
-
-
 <style>
     .row {
         display: -ms-flexbox; /* IE10 */
@@ -145,10 +110,10 @@
         }
     }
 </style>
-<c:if test="${requestScope.orderSuccessful != null}">
+<c:if test="${requestScope.messageToPage != null}">
     <jsp:include page="../message.jsp"/>
 </c:if>
-<c:if test="${requestScope.orderSuccessful == null}">
+<c:if test="${requestScope.messageToPage == null}">
     <div class="row">
         <div class="col-75">
             <div class="col-25">

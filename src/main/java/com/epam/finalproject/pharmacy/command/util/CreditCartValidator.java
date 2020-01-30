@@ -7,10 +7,6 @@ public class CreditCartValidator {
     public static final String REG_EXP_FORMAT_CVV_CODE = "\\d{3}";
 
     public boolean isValid(String cardName, String cardNumber, String expDate, String cvv) {
-        System.err.println(cardName.matches(REG_EXP_FORMAT_OWNERS_NAME));
-        System.err.println(cardNumber.matches(REG_EXP_FORMAT_NUMBER));
-        System.err.println(expDate.matches(REG_EXP_FORMAT_EXP_DATE));
-        System.err.println(cvv.matches(REG_EXP_FORMAT_CVV_CODE));
         return cardName.matches(REG_EXP_FORMAT_OWNERS_NAME)
                 && cardNumber.matches(REG_EXP_FORMAT_NUMBER)
                 && expDate.matches(REG_EXP_FORMAT_EXP_DATE)

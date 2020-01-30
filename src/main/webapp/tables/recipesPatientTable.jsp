@@ -20,6 +20,7 @@
         <th>Creation date</th>
         <th>Exp Date</th>
         <th>Medicament</th>
+        <th>Dosage</th>
         <th>Amount</th>
         <th>Doctor's name</th>
         <th></th>
@@ -31,6 +32,7 @@
             <td><c:out value="${recipe.createdDate}"/></td>
             <td><c:out value="${recipe.expDate}"/></td>
             <td><c:out value="${recipe.medicamentName}"/></td>
+            <td><c:out value="${recipe.medicamentDosage}"/></td>
             <td><c:out value="${recipe.amount}"/></td>
             <td><c:out value="${recipe.doctorName}"/></td>
 
@@ -40,7 +42,12 @@
                           style="display: inline-block; margin: 0;">
                         <input type="hidden" name="command" value="sendRecipeRequest"/>
                         <input type="hidden" name="recipeId" value="${recipe.id}">
-                        <input type="number" name="requestedPeriod">
+                        <select name="requestedPeriod">
+                            <option value="1">1 month</option>
+                            <option value="2">2 months</option>
+                            <option value="3">3 months</option>
+                        </select>
+<%--                        <input type="number" min="1" max="3" name="requestedPeriod">--%>
                         <input type="submit" value="request"/>
                     </form>
                 </c:if>

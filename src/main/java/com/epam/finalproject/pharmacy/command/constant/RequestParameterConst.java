@@ -11,7 +11,7 @@ public class RequestParameterConst {
     public static final String CARD_NUMBER = "cardnumber";
     public static final String CARD_EXP_DATE = "expdate";
     public static final String CARD_CVV = "cvv";
-    public static final String MESSAGE_TO_JSP = "orderSuccessful";
+    public static final String MESSAGE_TO_JSP = "messageToPage";
     public static final String MEDICINES_IN_ORDER = "medicinesInOrder";
     public static final String ORDER_ID = "orderId";
     public static final String ORDERS = "orders";
@@ -23,4 +23,16 @@ public class RequestParameterConst {
     public static final String REQUESTED_PERIOD = "requestedPeriod";
     public static final String MEDICAMENT = "medicament";
     public static final String COMMAND = "command";
+    public static final String MEDICAMENT_NAME = "name";
+    public static final String MEDICAMENT_FORM = "form";
+    public static final String MEDICAMENT_DOSAGE = "dosage";
+    public static final String MEDICAMENT_RECIPE = "recipe";
+    public static final String MEDICAMENT_AMOUNT_IN_PACK = "amountInPack";
+    public static final String MEDICAMENT_PRICE = "price";
+    public static final String MEDICAMENT_QUANTITY = "quantity";
+    public static final String LIST_PATIENT = "patients";
+    public static final String PATIENT_ID = "patientId";
+    public static final String EXP_DATE = "expDate";
+    public static final String REQUESTS_FOR_DOCTOR = "requestsDto";
+    public static final String REQUEST_ID = "requestId";
 }

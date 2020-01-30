@@ -1,8 +1,8 @@
 package com.epam.finalproject.pharmacy.command.pharmacist;
 
 import com.epam.finalproject.pharmacy.command.Command;
+import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
-import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.MedicamentService;
@@ -22,6 +22,6 @@ public class DeleteMedicamentCommand implements Command {
         String medicamentId = request.getParameter(RequestParameterConst.MEDICAMENT_ID);
         Long id = Long.parseLong(medicamentId);
         service.deleteMedicamentById(id);
-        return CommandResult.redirectToCommand("patientMain");
+        return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
     }
 }

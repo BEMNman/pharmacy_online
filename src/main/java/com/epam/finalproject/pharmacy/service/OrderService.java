@@ -52,16 +52,6 @@ public class OrderService {
         }
     }
 
-    public List<Order> showAll() throws ServerException {
-        try {
-            return orderDao.findAll();
-        } catch (DaoException e) {
-            logger.warn("Can't get all orders from DB: " + e);
-
-            throw new ServerException(e);
-        }
-    }
-
     public List<Order> showAllForUser(User user) throws ServerException {
         long userId = user.getId();
 

@@ -16,6 +16,7 @@ import java.util.Optional;
 public class LoginCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger(LoginCommand.class.getName());
+    public static final String INCORRECT_LOGIN = "Login or password is incorrect";
 
     private UserService service;
 
@@ -29,8 +30,8 @@ public class LoginCommand implements Command {
         String password = request.getParameter(RequestParameterConst.USER_PASSWORD);
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
             logger.debug("Login or password haven't been entered");
-
-            return CommandResult.redirect(Page.ERROR);
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, INCORRECT_LOGIN);
+            return CommandResult.forward(Page.LOGIN);
         }
         Optional<User> user = service.login(login, password);
         if (user.isPresent()) {
@@ -38,12 +39,12 @@ public class LoginCommand implements Command {
             session.setAttribute(SessionAttributeConst.USER, user.get());
         } else {
             logger.warn("Can't login");
-
-            throw new ServerException();
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, "Login or password is incorrect");
+            return CommandResult.forward(Page.LOGIN);
         }
         logger.debug("Command 'LoginCommand' was redirected to '/controller?command=mainPage'");
 
-        return CommandResult.redirectToCommand("patientMain");
+        return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
 
     }
 }

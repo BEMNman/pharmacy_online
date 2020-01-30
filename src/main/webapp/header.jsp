@@ -64,7 +64,7 @@
 <body>
 <div id="header">
     <div id="logo-left">
-        <a href="controller?command=authorization" class="logo">
+        <a href="controller?command=mainPage" class="logo">
             <h1>Pharmacy Online</h1>
         </a>
     </div>

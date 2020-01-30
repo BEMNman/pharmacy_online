@@ -12,7 +12,6 @@ import com.epam.finalproject.pharmacy.exception.ServerException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class OpenOrderCommand implements Command {

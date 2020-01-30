@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 public class UserRowMapper implements RowMapper<User> {
 
+    public static final String LOCK_TRUE = "1";
+
     @Override
     public User map(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(User.COLUMN_ID);
@@ -19,29 +21,7 @@ public class UserRowMapper implements RowMapper<User> {
         UserRole role = UserRole.valueOf(roleTypeByString.toUpperCase());
 
         String lockedString = resultSet.getString(User.COLUMN_LOCKED);
-        boolean locked = lockedString.equals("1");
+        boolean locked = lockedString.equals(LOCK_TRUE);
         return new User(id, name, login, password, role, locked);
     }
-
-    @Override
-    public String getFieldsMapperByStringForQuery() {
-        StringBuilder fieldsString = new StringBuilder();
-        fieldsString.append(User.COLUMN_NAME).append(", ")
-                .append(User.COLUMN_LOGIN).append(", ")
-                .append(User.COLUMN_PASSWORD).append(", ")
-                .append(User.COLUMN_ROLE).append(", ")
-                .append(User.COLUMN_LOCKED);
-        return fieldsString.toString();
-    }
-
-//    @Override
-//    public Map<String, Object> getFieldsValues(User user) {
-//        Map<String, Object> mapFieldsValues = new LinkedHashMap<>();
-//        mapFieldsValues.put(User.COLUMN_NAME, user.getName());
-//        mapFieldsValues.put(User.COLUMN_LOGIN, user.getLogin());
-//        mapFieldsValues.put(User.COLUMN_PASSWORD, user.getName());
-//        mapFieldsValues.put(User.COLUMN_ROLE, user.getRole().name());
-//        mapFieldsValues.put(User.COLUMN_LOCKED, user.isLocked());
-//        return mapFieldsValues;
-//    }
 }

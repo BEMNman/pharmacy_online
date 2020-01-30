@@ -109,11 +109,10 @@
 <div id="content">
 
     <div style="border: 1px black">
-        <c:if test="${requestScope.medicament != null
-                   && requestScope.orderSuccessful == null}">
+        <c:if test="${requestScope.messageToPage == null}">
             <jsp:include page="editCreateMedicament.jsp"/>
         </c:if>
-        <c:if test="${requestScope.orderSuccessful != null}">
+        <c:if test="${requestScope.messageToPage != null}">
             <jsp:include page="message.jsp"/>
         </c:if>
     </div>

@@ -2,7 +2,6 @@ package com.epam.finalproject.pharmacy.service;
 
 import com.epam.finalproject.pharmacy.dao.DaoHelper;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
-import com.epam.finalproject.pharmacy.dao.recipe.RecipeDao;
 import com.epam.finalproject.pharmacy.dao.recipe.RecipeDtoDao;
 import com.epam.finalproject.pharmacy.dto.RecipeDto;
 import com.epam.finalproject.pharmacy.entity.User;
@@ -30,9 +29,8 @@ public class RecipeDtoService {
     }
 
     public List<RecipeDto> findAllRecipesDtoForUser(User user) throws ServerException {
-        Long userId = user.getId();
         try {
-            return recipeDao.getAllRecipesDtoForUser(userId);
+            return recipeDao.getAllRecipesDtoForUser(user);
         } catch (DaoException e) {
             throw new ServerException(e);
         }

@@ -1,6 +1,7 @@
 package com.epam.finalproject.pharmacy.command.patient;
 
 import com.epam.finalproject.pharmacy.command.Command;
+import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
@@ -24,6 +25,7 @@ public class SendRecipeRequestCommand implements Command {
         String requestedPeriod = request.getParameter(RequestParameterConst.REQUESTED_PERIOD);
         service.sendRequest(recipeId, requestedPeriod);
         request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, REQUEST_WAS_SENT);
-        return CommandResult.forward(Page.PATIENT_RECIPES);
+        return CommandResult.redirectToCommand(CommandFactory.OPEN_RECIPES);
+//        return CommandResult.forward(Page.PATIENT_RECIPES);
     }
 }

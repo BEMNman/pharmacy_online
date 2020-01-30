@@ -6,7 +6,6 @@ import com.epam.finalproject.pharmacy.entity.OrderStatus;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class OrderRowMapper implements RowMapper<Order> {
@@ -19,15 +18,5 @@ public class OrderRowMapper implements RowMapper<Order> {
         String statusString = resultSet.getString(Order.COLUMN_STATUS);
         OrderStatus status = OrderStatus.valueOf(statusString);
         return new Order(id, creationDate, userId, totalPrice, status);
-    }
-
-    @Override
-    public String getFieldsMapperByStringForQuery() {
-        StringBuilder fieldsString = new StringBuilder();
-        fieldsString.append(Order.COLUMN_CREATION_DATE).append(", ")
-                .append(Order.COLUMN_USER_ID).append(", ")
-                .append(Order.COLUMN_PRICE).append(", ")
-                .append(Order.COLUMN_STATUS);
-        return fieldsString.toString();
     }
 }

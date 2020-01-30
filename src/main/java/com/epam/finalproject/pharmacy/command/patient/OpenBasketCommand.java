@@ -12,6 +12,5 @@ public class OpenBasketCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
         return CommandResult.forward(Page.PATIENT_BASKET);
-//        return CommandResult.forward("/patientMain.jsp");
     }
 }

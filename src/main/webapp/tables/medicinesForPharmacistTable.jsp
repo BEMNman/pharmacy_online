@@ -9,12 +9,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
-
 <body>
-
 <div style="border: 1px black">
     <h2>Medicines</h2>
 </div>
+<form name="create" action="openCreationFormMedicament">
+    <input type="hidden" name="command" value="openCreationFormMedicament">
+    <button>create</button>
+</form>
 <table style=" border: 2px solid; width: auto; text-align:center">
     <tr>
         <th>Name</th>
@@ -44,17 +46,14 @@
                     <input type="hidden" name="medicamentId" value="${medicament.id}">
                     <input type="submit" value="edit"/>
                 </form>
-
             </td>
             <td>
-                <c:if test="${!medicament.archive}">
-                    <form action="deleteMedicament" method="post"
-                          style="display: inline-block; margin: 0;">
-                        <input type="hidden" name="command" value="deleteMedicament"/>
-                        <input type="hidden" name="medicamentId" value="${medicament.id}">
-                        <input type="submit" value="delete"/>
-                    </form>
-                </c:if>
+                <form action="deleteMedicament" method="post"
+                      style="display: inline-block; margin: 0;">
+                    <input type="hidden" name="command" value="deleteMedicament"/>
+                    <input type="hidden" name="medicamentId" value="${medicament.id}">
+                    <input type="submit" value="delete"/>
+                </form>
             </td>
         </tr>
     </c:forEach>

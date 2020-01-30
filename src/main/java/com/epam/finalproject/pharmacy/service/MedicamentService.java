@@ -4,11 +4,13 @@ import com.epam.finalproject.pharmacy.dao.DaoHelper;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
 import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDao;
 import com.epam.finalproject.pharmacy.entity.Medicament;
+import com.epam.finalproject.pharmacy.entity.MedicamentForm;
 import com.epam.finalproject.pharmacy.entity.Recipe;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public class MedicamentService {
@@ -16,6 +18,8 @@ public class MedicamentService {
     public static final String MESSAGE_NOT_AVAILABLE_RECIPE = "You don't have recipe for this medicament";
     public static final String MESSAGE_NOT_ENOUGH_IN_STOCK = "Entered quantity is more than in stock";
     public static final String MESSAGE_EMPTY = "";
+    public static final String ENTERED_DATA_ARE_INCORRECT = "Entered data are incorrect";
+    private static final String MEDICAMENT_WAS_UPDATED = "Medicament was saved";
 
     private MedicamentDao medicamentDao;
 
@@ -29,7 +33,7 @@ public class MedicamentService {
 
     public List<Medicament> showAll() throws ServerException {
         try {
-            return medicamentDao.findAll();
+            return medicamentDao.findAllAvailableMedicament();
         } catch (DaoException e) {
             throw new ServerException(e);
         }
@@ -68,14 +72,7 @@ public class MedicamentService {
         }
         return true;
     }
-//    public boolean checkRecipesAvailable(User user, Medicament medicament) throws ServerException {
-//        if (medicament.isRecipe()) {
-//            List<Recipe> recipes = getActualRecipesForUserMedicament(user.getId(), medicament);
-//            return recipes.size() > 0;
-//        } else {
-//            return true;
-//        }
-//    }
+
     private List<Recipe> getActualRecipesForUserMedicament(Long userId, Medicament medicament) throws ServerException {
         RecipeService recipeService = new RecipeService(new DaoHelperFactory());
         return recipeService.findAllRecipesUserForMedicamentCurrentDate(userId, medicament.getId());
@@ -86,7 +83,7 @@ public class MedicamentService {
             throws ServerException {
         List<Recipe> actualRecipes = getActualRecipesForUserMedicament(userId, medicament);
         for (Recipe recipe : actualRecipes) {
-            if (realQuantity <= recipe.getAmount()) {
+            if (realQuantity <= recipe.getQuantity()) {
                 return true;
             }
         }
@@ -114,7 +111,7 @@ public class MedicamentService {
                 }
             }
         }
-        return new String();
+        return MESSAGE_EMPTY;
     }
 
     public String checkQuantityInStock(User user, String stringMedicamentId, String stringCount,
@@ -148,5 +145,19 @@ public class MedicamentService {
         } catch (DaoException e) {
             throw new ServerException(e);
         }
+    }
+
+    public String updateMedicament(Long id, String name, MedicamentForm form, String dosage, boolean recipe,
+                                   Integer amountInPack, BigDecimal price, Integer quantity) throws ServerException {
+        if (price.compareTo(BigDecimal.valueOf(0)) <= 0 || quantity < 0) {
+            return ENTERED_DATA_ARE_INCORRECT;
+        }
+        Medicament medicament = Medicament.newMedicament(id, name, form, dosage, recipe, amountInPack, price, quantity);
+        try {
+            medicamentDao.save(medicament);
+        } catch (DaoException e) {
+            throw new ServerException(e);
+        }
+        return MEDICAMENT_WAS_UPDATED;
     }
 }

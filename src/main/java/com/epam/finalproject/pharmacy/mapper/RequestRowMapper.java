@@ -17,14 +17,4 @@ public class RequestRowMapper implements RowMapper<Request> {
         RequestStatus status = RequestStatus.valueOf(resultSet.getString(Request.COLUMN_STATUS));
         return new Request(id, creationDate, recipeId, requestedPeriod,status);
     }
-
-    @Override
-    public String getFieldsMapperByStringForQuery() {
-        StringBuilder fieldsString = new StringBuilder();
-        fieldsString.append(Request.COLUMN_CREATION_DATE).append(", ")
-                .append(Request.COLUMN_RECIPE_ID).append(", ")
-                .append(Request.COLUMN_REQUESTED_PERIOD).append(", ")
-                .append(Request.COLUMN_STATUS);
-        return fieldsString.toString();
-    }
 }

@@ -1,8 +1,11 @@
 package com.epam.finalproject.pharmacy.command;
 
+import com.epam.finalproject.pharmacy.command.constant.Page;
+import com.epam.finalproject.pharmacy.command.doctor.*;
 import com.epam.finalproject.pharmacy.command.patient.*;
 import com.epam.finalproject.pharmacy.command.pharmacist.DeleteMedicamentCommand;
 import com.epam.finalproject.pharmacy.command.pharmacist.EditMedicamentCommand;
+import com.epam.finalproject.pharmacy.command.pharmacist.SaveMedicamentCommand;
 import com.epam.finalproject.pharmacy.command.util.Calculator;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
 import com.epam.finalproject.pharmacy.exception.ServerException;
@@ -13,85 +16,87 @@ import org.apache.logging.log4j.Logger;
 public class CommandFactory {
 
     private static final Logger logger = LogManager.getLogger(CommandFactory.class.getName());
+    public static final String LOGIN = "login";
+    public static final String LOGOUT = "logout";
+    public static final String REGISTER_NEW_PATIENT = "registerNewPatient";
+    public static final String SAVE_NEW_PATIENT = "saveNewPatient";
+    public static final String OPEN_BASKET = "openBasket";
+    public static final String MAIN_PAGE = "mainPage";
+    public static final String ADD_MEDICAMENT_IN_BASKET = "addMedicamentInBasket";
+    public static final String SAVE_ORDER = "saveOrder";
+    public static final String OPEN_ORDERS = "openOrders";
+    public static final String VIEW_ORDER_DETAILS = "viewOrderDetails";
+    public static final String OPEN_RECIPES = "openRecipes";
+    public static final String CONTINUE_ORDER = "continueOrder";
+    public static final String OPEN_ORDER = "openOrder";
+    public static final String CLEAR_BASKET = "clearBasket";
+    public static final String PAY = "pay";
+    public static final String SEND_RECIPE_REQUEST = "sendRecipeRequest";
+    public static final String DELETE_MEDICAMENT = "deleteMedicament";
+    public static final String EDIT_MEDICAMENT = "editMedicament";
+    public static final String SAVE_MEDICAMENT = "saveMedicament";
+    public static final String OPEN_CREATION_FORM_MEDICAMENT = "openCreationFormMedicament";
+    public static final String OPEN_CREATION_FORM_RECIPE = "openCreationFormRecipe";
+    public static final String SAVE_RECIPE = "saveRecipe";
+    public static final String OPEN_REQUESTS = "openRequests";
+    public static final String REJECT_REQUEST = "rejectRequest";
+    public static final String APPROVE_REQUEST = "approveRequest";
 
     public static Command create(String command) throws ServerException {
+
+        logger.debug("Command " + command + " was created");
+
         switch (command) {
-            case "login":
-                logger.debug("Command 'login' was created");
+            case LOGIN:
                 return new LoginCommand(new UserService(new DaoHelperFactory()));
-
-            case "authorization":
-                logger.debug("Command 'mainPage' was created");
-                return new Authorization();
-
-            case "logout":
-                logger.debug("Command 'logout' was created");
+            case LOGOUT:
                 return new LogoutCommand();
-
-            case "registerNewPatient":
-                logger.debug("Command 'registerNewPatient' was created");
-                return new ShowPageCommand("registerNewPatient.jsp");
-
-            case "saveNewPatient":
-                logger.debug("Command 'saveNewPatient' was created");
+            case REGISTER_NEW_PATIENT:
+                return new ShowPageCommand(Page.REGISTRATION_NEW_PATIENT);
+            case SAVE_NEW_PATIENT:
                 return new RegisterNewPatientCommand(new UserService(new DaoHelperFactory()));
-
-            case "openBasket":
-                logger.debug("Command 'openBasket' was created");
+            case OPEN_BASKET:
                 return new OpenBasketCommand();
-
-            case "patientMain":
-                logger.debug("Command 'patientMain' was created");
-                return new PatientMainCommand(new MedicamentService(new DaoHelperFactory()));
-
-            case "addMedicamentInBasket":
-                logger.debug("Command 'addMedicamentInBasket' was created");
+            case MAIN_PAGE:
+                return new ShowMainPageCommand(new MedicamentService(new DaoHelperFactory()));
+            case ADD_MEDICAMENT_IN_BASKET:
                 return new AddMedicamentInBasketCommand(new MedicamentService(new DaoHelperFactory()));
-
-            case "saveOrder":
-                logger.debug("Command 'saveOrder' was created");
+            case SAVE_ORDER:
                 return new SaveOrderCommand(new OrderService(new DaoHelperFactory()));
-
-            case "openOrders":
-                logger.debug("Command 'openOrders' was created");
+            case OPEN_ORDERS:
                 return new ShowOrderDetailsCommand(new OrderService(new DaoHelperFactory()));
-
-            case "viewOrderDetails":
-                logger.debug("Command 'viewOrderDetails' was created");
+            case VIEW_ORDER_DETAILS:
                 return new ViewOrderDetailsCommand(new MedicamentService(new DaoHelperFactory()));
-
-            case "openRecipes":
-                logger.debug("Command 'openRecipes' was created");
+            case OPEN_RECIPES:
                 return new ShowRecipesCommand(new RecipeDtoService(new DaoHelperFactory()));
-
-            case "continueOrder":
-                logger.debug("Command 'continueOrder' was created");
+            case CONTINUE_ORDER:
                 return new CheckOrderCommand(new MedicamentService(new DaoHelperFactory()));
-
-            case "openOrder":
-                logger.debug("Command 'openOrder' was created");
+            case OPEN_ORDER:
                 return new OpenOrderCommand(new Calculator());
-
-            case "clearBasket":
-                logger.debug("Command 'openOrder' was created");
+            case CLEAR_BASKET:
                 return new ClearBasketCommand();
-
-            case "pay":
-                logger.debug("Command 'payOrder' was created");
+            case PAY:
                 return new PayOrderCommand(new OrderService(new DaoHelperFactory()));
-
-            case "sendRecipeRequest":
-                logger.debug("Command 'sendRequestRecipe' was created");
+            case SEND_RECIPE_REQUEST:
                 return new SendRecipeRequestCommand(new RequestService(new DaoHelperFactory()));
-
-            case "deleteMedicament":
-                logger.debug("Command 'deleteMedicament' was created");
+            case DELETE_MEDICAMENT:
                 return new DeleteMedicamentCommand(new MedicamentService(new DaoHelperFactory()));
-
-            case "editMedicament":
-                logger.debug("Command 'editMedicament' was created");
+            case EDIT_MEDICAMENT:
                 return new EditMedicamentCommand(new MedicamentService(new DaoHelperFactory()));
-
+            case SAVE_MEDICAMENT:
+                return new SaveMedicamentCommand(new MedicamentService(new DaoHelperFactory()));
+            case OPEN_CREATION_FORM_MEDICAMENT:
+                return new ShowPageCommand(Page.PHARMACIST_EDIT_CREATE_MEDICAMENT);
+            case OPEN_CREATION_FORM_RECIPE:
+                return new OpenCreationRecipeFormCommand(new CreationRecipeService(new DaoHelperFactory()));
+            case SAVE_RECIPE:
+                return new SaveRecipeCommand(new RecipeService(new DaoHelperFactory()));
+            case OPEN_REQUESTS:
+                return new OpenRequestsCommand(new RequestDtoService(new DaoHelperFactory()));
+            case REJECT_REQUEST:
+                return new RejectRequestCommand(new RequestService(new DaoHelperFactory()));
+            case APPROVE_REQUEST:
+                return new ApproveRequestCommand(new ExtensionRecipeService(new DaoHelperFactory()));
             default:
                 logger.error("Unknown command: " + command);
                 throw new IllegalArgumentException("Unknown command " + command);

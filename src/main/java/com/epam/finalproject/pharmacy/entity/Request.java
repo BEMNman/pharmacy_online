@@ -1,6 +1,5 @@
 package com.epam.finalproject.pharmacy.entity;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class Request implements Identifable {
@@ -11,13 +10,14 @@ public class Request implements Identifable {
     public static final String COLUMN_REQUESTED_PERIOD = "requestedPeriod";
     public static final String COLUMN_STATUS = "status";
 
-    private Long id;
+    private final Long id;
     private final LocalDate creationDate;
     private final Long recipeId;
     private final Integer requestedPeriod;
-    private final RequestStatus status;
+    private RequestStatus status;
 
     private Request(LocalDate creationDate, Long recipeId, Integer requestedPeriod, RequestStatus status) {
+        this.id = null;
         this.creationDate = creationDate;
         this.recipeId = recipeId;
         this.requestedPeriod = requestedPeriod;
@@ -55,5 +55,9 @@ public class Request implements Identifable {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public void setStatus(RequestStatus status) {
+        this.status = status;
     }
 }

@@ -1,7 +1,5 @@
-package com.epam.finalproject.pharmacy.command.patient;
+package com.epam.finalproject.pharmacy.command;
 
-import com.epam.finalproject.pharmacy.command.Command;
-import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +14,6 @@ public class ShowPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
-        return CommandResult.redirect(page);
+        return CommandResult.forward(page);
     }
 }

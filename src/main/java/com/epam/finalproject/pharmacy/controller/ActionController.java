@@ -20,8 +20,7 @@ public class ActionController extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(ActionController.class.getName());
 
-    public void init(ServletConfig config) throws
-            ServletException {
+    public void init(ServletConfig config) throws ServletException {
         super.init(config);
     }
 
@@ -40,6 +39,7 @@ public class ActionController extends HttpServlet {
                 forward(request, response, page);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.warn(e);
             page = Page.ERROR;
             redirect(response, page);

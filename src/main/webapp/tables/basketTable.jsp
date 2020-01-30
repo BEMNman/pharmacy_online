@@ -17,7 +17,7 @@
 <c:if test="${sessionScope.medicinesInBasket.size() == null}">
     <span>
         Basket is empty!
-        Please click <a href="controller?command=patientMain">  here  </a> to return and continue
+        Please click <a href="controller?command=mainPage">  here  </a> to return and continue
     </span>
 </c:if>
 <c:if test="${sessionScope.medicinesInBasket.size() >= 1}">
@@ -69,7 +69,7 @@
     </form>
 
     <c:if test="${requestScope.totalPrice == null}">
-        <a href="controller?command=patientMain">Return</a>
+        <a href="controller?command=mainPage">Return</a>
         <a href="controller?command=clearBasket">Clear basket</a>
     </c:if>
 </c:if>

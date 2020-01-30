@@ -1,6 +1,5 @@
 package com.epam.finalproject.pharmacy.entity;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class Recipe implements Identifable {
@@ -15,22 +14,37 @@ public class Recipe implements Identifable {
 
     private final Long id;
     private final LocalDate createdDate;
-    private final LocalDate expDate;
+    private LocalDate expDate;
     private final Long medicamentId;
-    private final Integer amount;
+    private final Integer quantity;
     private final Long patientId;
     private final Long doctorId;
 
 
-    public Recipe(Long id, LocalDate createdDate, LocalDate expDate, Long medicamentId, Integer amount,
+    public Recipe(Long id, LocalDate createdDate, LocalDate expDate, Long medicamentId, Integer quantity,
                   Long patientId, Long doctorId) {
         this.id = id;
         this.createdDate = createdDate;
         this.expDate = expDate;
         this.medicamentId = medicamentId;
-        this.amount = amount;
+        this.quantity = quantity;
         this.patientId = patientId;
         this.doctorId = doctorId;
+    }
+
+    public Recipe(LocalDate expDate, Long medicamentId, Integer quantity, Long patientId, Long doctorId) {
+        this.id = null;
+        this.createdDate = LocalDate.now();
+        this.expDate = expDate;
+        this.medicamentId = medicamentId;
+        this.quantity = quantity;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+    }
+
+    public static Recipe newRecipe(LocalDate expDate, Long medicamentId,
+                                   Integer quantity, Long patientId, Long doctorId) {
+        return new Recipe(expDate, medicamentId, quantity, patientId, doctorId);
     }
 
     public LocalDate getCreatedDate() {
@@ -41,12 +55,16 @@ public class Recipe implements Identifable {
         return expDate;
     }
 
+    public void setExpDate(LocalDate expDate) {
+        this.expDate = expDate;
+    }
+
     public Long getMedicamentId() {
         return medicamentId;
     }
 
-    public Integer getAmount() {
-        return amount;
+    public Integer getQuantity() {
+        return quantity;
     }
 
     public Long getPatientId() {

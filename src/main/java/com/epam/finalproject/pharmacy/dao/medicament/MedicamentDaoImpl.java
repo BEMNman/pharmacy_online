@@ -6,40 +6,53 @@ import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 
 import java.sql.Connection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MedicamentDaoImpl extends AbstractDao<Medicament> implements MedicamentDao {
 
     public static final String JOIN_ORDER_DETAILS_AND_ORDER =
-            "SELECT m.id, m.name, m.form, m.dosage, m.recipe, m.amountInPack, od.price, od.quantity " +
+                    "SELECT m.id, m.name, m.form, m.dosage, m.recipe, m.amountInPack, od.price, od.quantity, m.archive " +
                     "FROM orderdetails AS od " +
                     "JOIN medicines AS m ON od.medicamentId=m.id " +
                     "WHERE od.orderId=?";
+
     public static final String QUERY_TO_CHECK_QUANTITY =
             "SELECT COUNT(m.id) FROM medicines m WHERE m.id = ? AND m.quantity >= ?";
+
     public static final String QUERY_TO_CHECK_RECIPE =
-            "SELECT COUNT(r.id) FROM recipes r " +
+                    "SELECT COUNT(r.id) FROM recipes r " +
                     "WHERE r.medicamentId = ? " +
                     "AND r.patientId = ? AND TO_DAYS(r.expDate) > TO_DAYS(NOW()) AND r.amount >= ? ";
+
     private static final String SEND_MEDICAMENT_TO_ARCHIVE = "UPDATE medicines  SET archive = '1' WHERE id = ?";
 
+    private static final String SELECT_ALL_AVAILABLE_MEDICINES =
+                    "SELECT * FROM medicines WHERE archive = 0 " +
+                    "ORDER BY name, dosage";
+
+    private static final String ALL_MEDICINES_WITH_RECIPE =
+                    "SELECT * FROM medicines WHERE recipe = 1 AND archive = 0 " +
+                    "ORDER BY name, dosage";
 
     public MedicamentDaoImpl(Connection connection) {
         super(connection);
     }
 
     @Override
-    protected String getValuesItemByStringForQuery(Medicament medicament) {
-        StringBuilder fieldsValuesForQuery = new StringBuilder();
-        fieldsValuesForQuery.append("'")
-                .append(medicament.getName()).append("', '")
-                .append(medicament.getForm().name()).append("', '")
-                .append(medicament.getDosage()).append("', '")
-                .append(medicament.isRecipe() ? 1 : 0).append("', '")
-                .append(medicament.getAmountInPack()).append("', '")
-                .append(medicament.getPrice()).append("', '")
-                .append(medicament.getQuantity()).append("'");
-        return fieldsValuesForQuery.toString();
+    protected Map<String, Object> getFieldsValues(Medicament medicament) {
+        Map<String, Object> mapFieldsValues = new LinkedHashMap<>();
+        mapFieldsValues.put(Medicament.COLUMN_NAME, medicament.getName());
+        mapFieldsValues.put(Medicament.COLUMN_FORM, medicament.getForm().name());
+        mapFieldsValues.put(Medicament.COLUMN_DOSAGE, medicament.getDosage());
+        mapFieldsValues.put(Medicament.COLUMN_RECIPE, medicament.isRecipe() ? 1 : 0);
+        mapFieldsValues.put(Medicament.COLUMN_AMOUNT_IN_PACK, medicament.getAmountInPack());
+        mapFieldsValues.put(Medicament.COLUMN_PRICE, medicament.getPrice());
+        mapFieldsValues.put(Medicament.COLUMN_QUANTITY_IN_STOCK, medicament.getQuantity());
+        mapFieldsValues.put(Medicament.COLUMN_ARCHIVE, medicament.isArchive() ? 1 : 0);
+
+        return mapFieldsValues;
     }
 
     @Override
@@ -53,17 +66,27 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
     }
 
     @Override
+    public List<Medicament> findAllMedicinesWithRecipe() throws DaoException {
+        return executeQuery(ALL_MEDICINES_WITH_RECIPE, new MedicamentRowMapper());
+    }
+
+    @Override
     public boolean checkQuantityInStock(Long medicamentId, Integer quantity) throws DaoException {
         return checkExistingRow(QUERY_TO_CHECK_QUANTITY, medicamentId, quantity);
     }
 
     @Override
     public boolean checkAvailableRecipe(Long userId, Long medicamentId, Integer tempTotalQuantity) throws DaoException {
-        return checkExistingRow(QUERY_TO_CHECK_RECIPE,medicamentId, userId, tempTotalQuantity);
+        return checkExistingRow(QUERY_TO_CHECK_RECIPE, medicamentId, userId, tempTotalQuantity);
     }
 
     @Override
     public void sendMedicamentToArchive(Long id) throws DaoException {
-       update(SEND_MEDICAMENT_TO_ARCHIVE, id);
+        update(SEND_MEDICAMENT_TO_ARCHIVE, id);
+    }
+
+    @Override
+    public List<Medicament> findAllAvailableMedicament() throws DaoException {
+        return executeQuery(SELECT_ALL_AVAILABLE_MEDICINES, new MedicamentRowMapper());
     }
 }

@@ -7,9 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
 
@@ -17,10 +15,13 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
 
     private static final String SELECT_ALL_FROM = "SELECT * FROM ";
     private static final String WHERE_VALUE_ID = " WHERE id = ?";
-    private static final String FIND_ALL = "SELECT * FROM ";
     private static final String SAVE_NEW_ITEM_IN_DB = "INSERT INTO ";
     private static final String VALUES = " VALUE(";
     private static final String DELETE_ALL_FROM = "DELETE FROM ";
+    private static final String QUERY_UPDATE = "UPDATE medicines " +
+            "SET name = ?, form = ?, dosage = ?, recipe = ?, amountInPack = ?, price = ?, quantity = ?, archive = ? " +
+            "WHERE id = ?";
+    public static final String MD5_FOR_PASSWORD_USER = "MD5(";
 
     private Connection connection;
 
@@ -67,7 +68,7 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
     public List<T> findAll() throws DaoException {
         String table = getTableName();
         RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);
-        return executeQuery(FIND_ALL + table, mapper);
+        return executeQuery(SELECT_ALL_FROM + table, mapper);
     }
 
     @Override
@@ -82,35 +83,53 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
 
     @Override
     public void save(T item) throws DaoException {
-        String table = getTableName();
-        RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);
-        String stringByItemFields = mapper.getFieldsMapperByStringForQuery();
-        String stringByItemValues = getValuesItemByStringForQuery(item);
-        String query = SAVE_NEW_ITEM_IN_DB + table + "(" + stringByItemFields + ")" + VALUES + stringByItemValues + ")";
-        try (PreparedStatement statement = createStatement(query)) {
+        String query = null;
+        Object[] params = null;
+        if (item.getId() == null) {
+            query = buildQueryForSave(item);
+        } else {
+            query = buildQueryForUpdate(item);
+            params = getFieldsValues(item).values().toArray();
+        }
+        try (PreparedStatement statement = createStatement(query, params)) {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
-    public void update(String query, Object...params)  throws DaoException {
+    private String buildQueryForUpdate(T item) {
+        String query;
+        String table = getTableName();
+        query = "UPDATE " + table
+                + " SET " + String.join(" = ?, ", getFieldsValues(item).keySet()) + " = ?"
+                + " WHERE id = " + item.getId();
+        return query;
+    }
+
+    protected String buildQueryForSave(T item) {
+        String query;
+        String table = getTableName();
+        StringBuilder values = new StringBuilder();
+        for(Object object : getFieldsValues(item).values()) {
+            if(!object.toString().startsWith(MD5_FOR_PASSWORD_USER)) {
+                values.append("'").append(object.toString()).append("', ");
+            } else {
+                values.append(object.toString()).append(", ");
+            }
+        }
+        values.deleteCharAt(values.lastIndexOf(","));
+        query = SAVE_NEW_ITEM_IN_DB + table + "(" + String.join(", ", getFieldsValues(item).keySet()) + ")"
+                + VALUES + values + ")";
+        return query;
+    }
+
+    public void update(String query, Object... params) throws DaoException {
         try (PreparedStatement statement = createStatement(query, params)) {
             statement.executeUpdate();
         } catch (SQLException | DaoException e) {
             throw new DaoException(e);
         }
-    }
-
-    @Override
-    public void removeById(Long id) throws DaoException {
-        String query = DELETE_ALL_FROM + getTableName() + WHERE_VALUE_ID;
-        try (PreparedStatement statement = createStatement(query, id)) {
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-
     }
 
     protected Optional<T> executeForSingleResult(String query, RowMapper<T> builder, Object... params) throws DaoException {
@@ -124,7 +143,7 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
         }
     }
 
-    protected boolean checkExistingRow(String query, Object...params) throws DaoException {
+    protected boolean checkExistingRow(String query, Object... params) throws DaoException {
         try (PreparedStatement statement = createStatement(query, params)) {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
@@ -135,10 +154,6 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
         }
     }
 
-    protected abstract String getValuesItemByStringForQuery(T item);
-
-    protected abstract String getTableName();
-
     protected PreparedStatement prepareStatementFoReturnGeneratedId(String query) throws DaoException {
         try {
             return connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -146,4 +161,9 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
             throw new DaoException(e);
         }
     }
+
+    protected abstract Map<String, Object> getFieldsValues(T item);
+
+    protected abstract String getTableName();
+
 }

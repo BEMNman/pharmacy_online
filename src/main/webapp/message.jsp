@@ -42,7 +42,7 @@
 <div class="row">
 
 <span class="message">
-    ${requestScope.orderSuccessful}
+    ${requestScope.messageToPage}
 <%--    The order placed successfully.--%>
 <%--    Thanks for choosing us!--%>
 </span>

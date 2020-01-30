@@ -37,6 +37,24 @@ public class Medicament implements Identifable {
         this.archive = archive;
     }
 
+    private Medicament(Long id, String name, MedicamentForm form, String dosage,
+                       boolean recipe, Integer amountInPack, BigDecimal price, Integer quantity) {
+        this.id = id;
+        this.name = name;
+        this.form = form;
+        this.dosage = dosage;
+        this.recipe = recipe;
+        this.price = price;
+        this.amountInPack = amountInPack;
+        this.quantity = quantity;
+        this.archive = false;
+    }
+
+    public static Medicament newMedicament(Long id, String name, MedicamentForm form, String dosage,
+                                boolean recipe, Integer amountInPack, BigDecimal price, Integer quantity){
+        return new Medicament(id, name, form, dosage, recipe, amountInPack, price, quantity);
+    }
+
     public String getName() {
         return name;
     }

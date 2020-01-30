@@ -2,28 +2,30 @@ package com.epam.finalproject.pharmacy.dao.order;
 
 import com.epam.finalproject.pharmacy.dao.AbstractDao;
 import com.epam.finalproject.pharmacy.mapper.OrderRowMapper;
-import com.epam.finalproject.pharmacy.mapper.RowMapper;
 import com.epam.finalproject.pharmacy.entity.Order;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
+
+    private static final String FIND_ALL_ORDER_FOR_USER_BY_ID = "SELECT * FROM orders WHERE userId = ?";
 
     public OrderDaoImpl(Connection connection) {
         super(connection);
     }
 
     @Override
-    protected String getValuesItemByStringForQuery(Order item) {
-        StringBuilder fieldsValuesForQuery = new StringBuilder();
-        fieldsValuesForQuery.append("'")
-                .append(item.getCreationDate()).append("', '")
-                .append(item.getUserId()).append("', '")
-                .append(item.getPrice()).append("', '")
-                .append(item.getStatus().name()).append("'");
-        return fieldsValuesForQuery.toString();
+    protected Map<String, Object> getFieldsValues(Order item) {
+        Map<String, Object> mapFieldsValues = new LinkedHashMap<>();
+        mapFieldsValues.put(Order.COLUMN_CREATION_DATE, item.getCreationDate());
+        mapFieldsValues.put(Order.COLUMN_USER_ID, item.getUserId());
+        mapFieldsValues.put(Order.COLUMN_PRICE, item.getPrice());
+        mapFieldsValues.put(Order.COLUMN_STATUS, item.getStatus().name());
+        return mapFieldsValues;
     }
 
     @Override
@@ -33,10 +35,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     public long saveAndGetIdLastSavedOrder(Order order) throws DaoException {
-        String query = "INSERT INTO "
-                + getTableName() + "(" + RowMapper.create(getTableName()).getFieldsMapperByStringForQuery() + ")"
-                + " VALUES(" + getValuesItemByStringForQuery(order) + ")";
-
+        String query = buildQueryForSave(order);
         try (PreparedStatement ps = prepareStatementFoReturnGeneratedId(query)) {
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
@@ -49,8 +48,6 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     public List<Order> getAllOrdersForUser(long userId) throws DaoException {
-        String query = "SELECT * FROM " + getTableName() + " WHERE userId = ?";
-
-        return executeQuery(query, new OrderRowMapper(), userId);
+        return executeQuery(FIND_ALL_ORDER_FOR_USER_BY_ID, new OrderRowMapper(), userId);
     }
 }

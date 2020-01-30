@@ -22,18 +22,4 @@ public class MedicamentRowMapper implements RowMapper<Medicament> {
         boolean archive = resultSet.getBoolean(Medicament.COLUMN_ARCHIVE);
         return new Medicament(id, name, medicamentForm, dosage, needRecipe, amount, price, quantityInStock ,archive);
     }
-
-    @Override
-    public String getFieldsMapperByStringForQuery() {
-        StringBuilder fieldsValues = new StringBuilder();
-        fieldsValues.append(Medicament.COLUMN_NAME).append(", ")
-                .append(Medicament.COLUMN_FORM).append(", ")
-                .append(Medicament.COLUMN_DOSAGE).append(", ")
-                .append(Medicament.COLUMN_RECIPE).append(", ")
-                .append(Medicament.COLUMN_AMOUNT_IN_PACK).append(", ")
-                .append(Medicament.COLUMN_PRICE).append(", ")
-                .append(Medicament.COLUMN_QUANTITY_IN_STOCK).append(", ")
-                .append(Medicament.COLUMN_ARCHIVE);
-        return fieldsValues.toString();
-    }
 }

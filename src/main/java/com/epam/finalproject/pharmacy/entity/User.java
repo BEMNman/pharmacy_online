@@ -10,7 +10,7 @@ public class User implements Identifable{
     public static final String COLUMN_ROLE = "role";
     public static final String COLUMN_LOCKED = "locked";
 
-    private Long id;
+    private final Long id;
     private final String name;
     private final String login;
     private final String password;
@@ -18,6 +18,7 @@ public class User implements Identifable{
     private final boolean locked;
 
     public User(String name, String login, String password, UserRole role, boolean locked) {
+        this.id = null;
         this.name = name;
         this.login = login;
         this.password = password;

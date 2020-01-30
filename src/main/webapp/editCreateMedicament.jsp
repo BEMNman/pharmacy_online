@@ -17,24 +17,55 @@
 </div>
 <form action="saveMedicament" method="post"
       style="display: inline-block; margin: 0;">
-    <tr>
-        <ul>
-            <td><input type="text" placeholder="name" name="name" value="${requestScope.medicament.name}"/></td>
-            <td><input type="radio" placeholder="form" name="form" value="${requestScope.medicament.form.name().toLowerCase()}"/>
-            </td>
-            <td><input type="text" placeholder="dosage" value="${requestScope.medicament.dosage}"/></td>
-            <td><input type="checkbox" placeholder="recipe" name="recipe"
-                       value="${requestScope.medicament.recipe == true ? 'yes' : 'no'}"/></td>
-            <td><input type="text" placeholder="amount in pack" name="amountInPack" value="${requestScope.medicament.amountInPack}"/></td>
-            <td><input type="number" step="0.01" placeholder="price" name="price" value="${requestScope.medicament.price}"/></td>
-            <td><input type="number" step="1" placeholder="quantity" name="quantity" value="${requestScope.medicament.quantity}"/></td>
 
-            <input type="hidden" name="command" value="editMedicament"/>
-            <input type="hidden" name="medicamentId" value="${medicament.id}">
+    <div style="display: inline">
+        <div>
+            <input type="text" placeholder="name" name="name" value="${requestScope.medicament.name}"/>
+        </div>
+        <div>
+            <select id="form" name="form">
+                <option value="pill">pill</option>
+                <option value="solution">solution</option>
+                <option value="powder">powder</option>
+                <option value="cream">cream</option>
+                <option value="gel">gel</option>
+            </select>
+            <script>
+                form.value = '${requestScope.medicament.form.name().toLowerCase()}';
+            </script>
+        </div>
+
+        <div>
+            <input type="text" placeholder="dosage" name="dosage" value="${requestScope.medicament.dosage}"/>
+        </div>
+        <div>
+            <select id="recipe" name="recipe">
+                <option value="true">yes</option>
+                <option value="false">no</option>
+            </select>
+            <script>
+                recipe.value = '${requestScope.medicament.recipe}';
+            </script>
+        </div>
+
+        <div>
+            <input type="text" placeholder="amount in pack" name="amountInPack"
+                   value="${requestScope.medicament.amountInPack}"/>
+        </div>
+        <div>
+            <input type="number" step="0.01" placeholder="price" name="price"
+                   value="${requestScope.medicament.price}"/>
+        </div>
+        <div>
+            <input type="number" step="1" placeholder="quantity" name="quantity"
+                   value="${requestScope.medicament.quantity}"/>
+        </div>
+        <div>
+            <input type="hidden" name="command" value="saveMedicament"/>
+            <input type="hidden" name="medicamentId" value="${requestScope.medicament.id}">
             <input type="submit" value="save"/>
-
-        </ul>
-    </tr>
+        </div>
+    </div>
 </form>
 </tbody>
 </table>

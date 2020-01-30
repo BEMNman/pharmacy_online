@@ -1,6 +1,7 @@
 package com.epam.finalproject.pharmacy.command.patient;
 
         import com.epam.finalproject.pharmacy.command.Command;
+        import com.epam.finalproject.pharmacy.command.CommandFactory;
         import com.epam.finalproject.pharmacy.command.CommandResult;
         import com.epam.finalproject.pharmacy.command.constant.Page;
         import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
@@ -31,7 +32,7 @@ public class CheckOrderCommand implements Command {
                 (Map) session.getAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
         String message = service.checkOrder(user, medicinesAndCountInBasket, count);
         if(message.isEmpty()) {
-            return CommandResult.redirectToCommand("openOrder");
+            return CommandResult.redirectToCommand(CommandFactory.OPEN_ORDER);
         }
         request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, message);
         return CommandResult.forward(Page.PATIENT_ORDER_DETAILS);

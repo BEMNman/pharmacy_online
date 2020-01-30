@@ -116,6 +116,7 @@
                 <input type="hidden" name="command" value="login"/>
                 <button type="submit" value="sign in">Login</button>
                 <p class="message">Not registered? <a href="controller?command=registerNewPatient">Create an account</a>
+                    <h4>${requestScope.messageToPage}</h4>
                 </p>
             </form>
         </c:if>
