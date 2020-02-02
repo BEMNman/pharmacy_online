@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class SaveMedicamentCommand implements Command {
 
     public static final String TRUE = "true";
+
     private MedicamentService service;
 
     public SaveMedicamentCommand(MedicamentService service) {
@@ -25,16 +26,15 @@ public class SaveMedicamentCommand implements Command {
         String medicamentId = request.getParameter(RequestParameterConst.MEDICAMENT_ID);
         Long id = medicamentId.isEmpty() ? null : new Long(medicamentId) ;
         String name = request.getParameter(RequestParameterConst.MEDICAMENT_NAME);
-        MedicamentForm form = MedicamentForm.valueOf(request.getParameter(RequestParameterConst.MEDICAMENT_FORM).toUpperCase());
+        String stringForm = request.getParameter(RequestParameterConst.MEDICAMENT_FORM);
         String dosage = request.getParameter(RequestParameterConst.MEDICAMENT_DOSAGE);
-        boolean recipe = request.getParameter(RequestParameterConst.MEDICAMENT_RECIPE).equals(TRUE);
+        String stringRecipe = request.getParameter(RequestParameterConst.MEDICAMENT_RECIPE);
+        boolean recipe = stringRecipe != null && stringRecipe.equals(TRUE);
         String stringAmountInPack = request.getParameter(RequestParameterConst.MEDICAMENT_AMOUNT_IN_PACK);
-        Integer amountInPack = new Integer(stringAmountInPack);
         String medicamentPrice = request.getParameter(RequestParameterConst.MEDICAMENT_PRICE);
-        BigDecimal price = new BigDecimal(medicamentPrice);
         String medicamentQuantity = request.getParameter(RequestParameterConst.MEDICAMENT_QUANTITY);
-        Integer quantity = new Integer(medicamentQuantity);
-        String resultCommand = service.updateMedicament(id, name, form, dosage, recipe, amountInPack, price, quantity);
+        String resultCommand =
+                service.updateMedicament(id, name, stringForm, dosage, recipe, stringAmountInPack, medicamentPrice, medicamentQuantity);
         request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, resultCommand);
         return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
     }

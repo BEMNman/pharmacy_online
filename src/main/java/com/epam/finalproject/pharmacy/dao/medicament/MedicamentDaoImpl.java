@@ -13,27 +13,28 @@ import java.util.Map;
 public class MedicamentDaoImpl extends AbstractDao<Medicament> implements MedicamentDao {
 
     public static final String JOIN_ORDER_DETAILS_AND_ORDER =
-                    "SELECT m.id, m.name, m.form, m.dosage, m.recipe, m.amountInPack, od.price, od.quantity, m.archive " +
+            "SELECT m.id, m.name, m.form, m.dosage, m.recipe, m.amountInPack, od.price, od.quantity, m.archive " +
                     "FROM orderdetails AS od " +
                     "JOIN medicines AS m ON od.medicamentId=m.id " +
-                    "WHERE od.orderId=?";
+                    "JOIN orders AS o ON o.id = od.orderId " +
+                    "WHERE o.userId=? AND od.orderId=?";
 
     public static final String QUERY_TO_CHECK_QUANTITY =
             "SELECT COUNT(m.id) FROM medicines m WHERE m.id = ? AND m.quantity >= ?";
 
     public static final String QUERY_TO_CHECK_RECIPE =
-                    "SELECT COUNT(r.id) FROM recipes r " +
+            "SELECT COUNT(r.id) FROM recipes r " +
                     "WHERE r.medicamentId = ? " +
                     "AND r.patientId = ? AND TO_DAYS(r.expDate) > TO_DAYS(NOW()) AND r.amount >= ? ";
 
     private static final String SEND_MEDICAMENT_TO_ARCHIVE = "UPDATE medicines  SET archive = '1' WHERE id = ?";
 
     private static final String SELECT_ALL_AVAILABLE_MEDICINES =
-                    "SELECT * FROM medicines WHERE archive = 0 " +
+            "SELECT * FROM medicines WHERE archive = 0 " +
                     "ORDER BY name, dosage";
 
     private static final String ALL_MEDICINES_WITH_RECIPE =
-                    "SELECT * FROM medicines WHERE recipe = 1 AND archive = 0 " +
+            "SELECT * FROM medicines WHERE recipe = 1 AND archive = 0 " +
                     "ORDER BY name, dosage";
 
     public MedicamentDaoImpl(Connection connection) {
@@ -61,8 +62,8 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
     }
 
     @Override
-    public List<Medicament> findAllMedicamentForOrder(long orderId) throws DaoException {
-        return executeQuery(JOIN_ORDER_DETAILS_AND_ORDER, new MedicamentRowMapper(), orderId);
+    public List<Medicament> findAllMedicamentForUsersOrder(Long userId, Long orderId) throws DaoException {
+        return executeQuery(JOIN_ORDER_DETAILS_AND_ORDER, new MedicamentRowMapper(), userId, orderId);
     }
 
     @Override

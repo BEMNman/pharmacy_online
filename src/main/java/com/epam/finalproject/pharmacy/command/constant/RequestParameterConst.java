@@ -35,4 +35,5 @@ public class RequestParameterConst {
     public static final String EXP_DATE = "expDate";
     public static final String REQUESTS_FOR_DOCTOR = "requestsDto";
     public static final String REQUEST_ID = "requestId";
+    public static final String LANGUAGE = "language";
 }

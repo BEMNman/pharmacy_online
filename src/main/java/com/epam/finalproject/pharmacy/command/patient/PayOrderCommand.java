@@ -9,7 +9,7 @@ import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.OrderService;
-import com.epam.finalproject.pharmacy.command.util.CreditCartValidator;
+import com.epam.finalproject.pharmacy.util.CreditCartValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,8 +35,7 @@ public class PayOrderCommand implements Command {
         String cardNumber = request.getParameter(RequestParameterConst.CARD_NUMBER);
         String expDate  = request.getParameter(RequestParameterConst.CARD_EXP_DATE);
         String cvv  = request.getParameter(RequestParameterConst.CARD_CVV);
-        CreditCartValidator creditCartValidator = new CreditCartValidator();
-        boolean valid = creditCartValidator.isValid(cardName, cardNumber, expDate, cvv);
+        boolean valid = CreditCartValidator.isValid(cardName, cardNumber, expDate, cvv);
         if (valid) {
             Long orderId = service.saveNewOrderForUser(user,medicinesOrder);
             service.saveOrderDetails(orderId, medicinesOrder);

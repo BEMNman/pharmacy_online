@@ -59,7 +59,6 @@ public class ActionController extends HttpServlet {
     protected void forward(HttpServletRequest request, HttpServletResponse response, String page)
             throws javax.servlet.ServletException, java.io.IOException {
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-
         logger.debug("Forward to page: " + page);
 
         dispatcher.forward(request, response);

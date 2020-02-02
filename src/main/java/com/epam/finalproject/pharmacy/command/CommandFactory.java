@@ -6,7 +6,6 @@ import com.epam.finalproject.pharmacy.command.patient.*;
 import com.epam.finalproject.pharmacy.command.pharmacist.DeleteMedicamentCommand;
 import com.epam.finalproject.pharmacy.command.pharmacist.EditMedicamentCommand;
 import com.epam.finalproject.pharmacy.command.pharmacist.SaveMedicamentCommand;
-import com.epam.finalproject.pharmacy.command.util.Calculator;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.*;
@@ -16,10 +15,14 @@ import org.apache.logging.log4j.Logger;
 public class CommandFactory {
 
     private static final Logger logger = LogManager.getLogger(CommandFactory.class.getName());
+
+    public static final String CHANGE_LANG = "changeLang";
+    public static final String SHOW_ERROR_PAGE = "errorPage";
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";
     public static final String REGISTER_NEW_PATIENT = "registerNewPatient";
     public static final String SAVE_NEW_PATIENT = "saveNewPatient";
+
     public static final String OPEN_BASKET = "openBasket";
     public static final String MAIN_PAGE = "mainPage";
     public static final String ADD_MEDICAMENT_IN_BASKET = "addMedicamentInBasket";
@@ -32,10 +35,12 @@ public class CommandFactory {
     public static final String CLEAR_BASKET = "clearBasket";
     public static final String PAY = "pay";
     public static final String SEND_RECIPE_REQUEST = "sendRecipeRequest";
+
     public static final String DELETE_MEDICAMENT = "deleteMedicament";
     public static final String EDIT_MEDICAMENT = "editMedicament";
     public static final String SAVE_MEDICAMENT = "saveMedicament";
     public static final String OPEN_CREATION_FORM_MEDICAMENT = "openCreationFormMedicament";
+
     public static final String OPEN_CREATION_FORM_RECIPE = "openCreationFormRecipe";
     public static final String SAVE_RECIPE = "saveRecipe";
     public static final String OPEN_REQUESTS = "openRequests";
@@ -47,6 +52,10 @@ public class CommandFactory {
         logger.debug("Command " + command + " was created");
 
         switch (command) {
+//            case CHANGE_LANG:
+//                return new ChangeLanguageCommand();
+            case SHOW_ERROR_PAGE:
+                return new ShowPageCommand(Page.ERROR);
             case LOGIN:
                 return new LoginCommand(new UserService(new DaoHelperFactory()));
             case LOGOUT:
@@ -72,7 +81,7 @@ public class CommandFactory {
             case CONTINUE_ORDER:
                 return new CheckOrderCommand(new MedicamentService(new DaoHelperFactory()));
             case OPEN_ORDER:
-                return new OpenOrderCommand(new Calculator());
+                return new OpenOrderCommand();
             case CLEAR_BASKET:
                 return new ClearBasketCommand();
             case PAY:

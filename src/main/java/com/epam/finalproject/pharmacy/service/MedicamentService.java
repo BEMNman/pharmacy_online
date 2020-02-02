@@ -9,6 +9,7 @@ import com.epam.finalproject.pharmacy.entity.Recipe;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
+import com.epam.finalproject.pharmacy.util.InputDataValidator;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -55,9 +56,9 @@ public class MedicamentService {
         }
     }
 
-    public List<Medicament> findMedicamentForOrder(Long orderId) throws ServerException {
+    public List<Medicament> findMedicamentForUsersOrder(User user, Long orderId) throws ServerException {
         try {
-            return medicamentDao.findAllMedicamentForOrder(orderId);
+            return medicamentDao.findAllMedicamentForUsersOrder(user.getId(), orderId);
         } catch (DaoException e) {
             throw new ServerException(e);
         }
@@ -133,7 +134,7 @@ public class MedicamentService {
             }
             medicamentCount.put(medicament, tempTotalQuantity);
             return MESSAGE_EMPTY;
-        } catch (DaoException e) {
+        } catch (NumberFormatException | DaoException e) {
             throw new ServerException(e);
         }
 
@@ -147,16 +148,27 @@ public class MedicamentService {
         }
     }
 
-    public String updateMedicament(Long id, String name, MedicamentForm form, String dosage, boolean recipe,
-                                   Integer amountInPack, BigDecimal price, Integer quantity) throws ServerException {
-        if (price.compareTo(BigDecimal.valueOf(0)) <= 0 || quantity < 0) {
+    public String updateMedicament(Long id, String stringName, String stringForm, String stringDosage, boolean recipe,
+                                   String stringAmountInPack, String stringPrice, String stringQuantity) throws ServerException {
+        if (InputDataValidator.notNullOrEmpty(stringName, stringForm, stringDosage,
+                stringAmountInPack, stringPrice, stringQuantity)) {
+            try {
+                MedicamentForm form = MedicamentForm.valueOf(stringForm.toUpperCase());
+                Integer amountInPack = Integer.parseInt(stringAmountInPack);
+                BigDecimal price = new BigDecimal(stringPrice);
+                Integer quantity = Integer.parseInt(stringQuantity);
+
+                if (price.compareTo(BigDecimal.valueOf(0)) <= 0 || quantity < 0 || amountInPack <= 0) {
+                    return ENTERED_DATA_ARE_INCORRECT;
+                }
+                Medicament medicament =
+                        Medicament.newMedicament(id, stringName, form, stringDosage, recipe, amountInPack, price, quantity);
+                medicamentDao.save(medicament);
+            } catch (IllegalArgumentException | DaoException e) {
+                throw new ServerException(e);
+            }
+        } else {
             return ENTERED_DATA_ARE_INCORRECT;
-        }
-        Medicament medicament = Medicament.newMedicament(id, name, form, dosage, recipe, amountInPack, price, quantity);
-        try {
-            medicamentDao.save(medicament);
-        } catch (DaoException e) {
-            throw new ServerException(e);
         }
         return MEDICAMENT_WAS_UPDATED;
     }

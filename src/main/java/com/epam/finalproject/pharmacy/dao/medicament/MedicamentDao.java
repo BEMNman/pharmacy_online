@@ -7,7 +7,7 @@ import com.epam.finalproject.pharmacy.exception.DaoException;
 import java.util.List;
 
 public interface MedicamentDao extends Dao<Medicament> {
-    List<Medicament> findAllMedicamentForOrder(long orderId) throws DaoException;
+    List<Medicament> findAllMedicamentForUsersOrder(Long userId, Long orderId) throws DaoException;
 
     List<Medicament> findAllAvailableMedicament() throws DaoException;
 

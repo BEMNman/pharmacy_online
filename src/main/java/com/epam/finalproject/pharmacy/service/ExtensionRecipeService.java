@@ -28,6 +28,9 @@ public class ExtensionRecipeService {
     }
 
     public void approveRequest(Long requestId) throws ServerException {
+        if(requestId < 0) {
+            throw new ServerException("This request isn't exist");
+        }
         try {
             Optional<Request> optionalRequest = requestDao.findById(requestId);
             if(optionalRequest.isPresent()) {

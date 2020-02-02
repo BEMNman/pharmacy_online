@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Gogolinsky
-  Date: 27.01.2020
-  Time: 15:33
+  Date: 17.01.2020
+  Time: 22:10
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -99,11 +99,11 @@
 <body>
 
 <div id="header">
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="../header.jsp"/>
 </div>
 
 <div id="sidebar">
-    <jsp:include page="menu.jsp"/>
+    <jsp:include page="../menu.jsp"/>
 </div>
 
 <div id="content">
@@ -111,10 +111,10 @@
     <div style="border: 1px black">
         <c:if test="${requestScope.medicines != null
                    && requestScope.messageToPage == null}">
-            <jsp:include page="createNewRecipe.jsp"/>
+            <jsp:include page="/WEB-INF/pages/tables/medicinesTable.jsp"/>
         </c:if>
         <c:if test="${requestScope.messageToPage != null}">
-            <jsp:include page="message.jsp"/>
+            <jsp:include page="/WEB-INF/pages/message.jsp"/>
         </c:if>
     </div>
 

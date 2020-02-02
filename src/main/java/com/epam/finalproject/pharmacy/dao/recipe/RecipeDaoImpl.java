@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class RecipeDaoImpl extends AbstractDao<Recipe> implements RecipeDao {
 
-    public static final String GET_ALL_RECIPES_FOR_USER = "SELECT * FROM recipes WHERE patientId = ?";
     public static final String GET_ALL_USERS_RECIPES_FOR_MEDICAMENT_CURRENT_DATE =
             "SELECT * FROM recipes WHERE patientId = ? AND medicamentId = ? AND TO_DAYS(expDate) > TO_DAYS(NOW())";
 

@@ -26,9 +26,8 @@ public class RegisterNewPatientCommand implements Command {
         boolean registrationSuccessful =
                 service.registerNewUserByPatient(patientName, login, password, passwordForCheck);
         if(registrationSuccessful) {
-            return CommandResult.redirect(Page.LOGIN);
+            return CommandResult.redirect(Page.INDEX);
         }
         return CommandResult.redirect(Page.ERROR);
-
     }
 }

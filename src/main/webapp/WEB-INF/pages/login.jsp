@@ -1,6 +1,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session" />
+<fmt:setBundle basename="locale" var="rb" />
+
+<c:set var="urlLocale">
+    <c:url value="controller?language"/>
+</c:set>
+<script>
+    function switchLocale(url) {
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, false);
+        xhr.send();
+
+        if (xhr.status != 200)
+            alert( url + ', ' + xhr.status + ', ' + xhr.statusText );
+        else
+            location.reload(true);
+    }
+</script>
+
+
+<html>
 <style>
     .login-page {
         width: 360px;
@@ -104,18 +127,27 @@
 <html>
 <body>
 <div class="locale">
-    <a href="#">EN</a> | <a href="#">RU</a> | <a href="#">BLR</a>
+    <a class="tool-button" href="javascript:switchLocale('${urlLocale}=en')">EN</a>
+    |
+    <a class="tool-button" href="javascript:switchLocale('${urlLocale}=ru')">RU</a>
+    |
+    <a class="tool-button" href="javascript:switchLocale('${urlLocale}=be')">BE</a>
 </div>
-
 <div class="login-page">
     <div class="form">
         <c:if test="${sessionScope.user == null}">
             <form class="login-form" action="login" method="post">
-                <input type="text" name="login" placeholder="login"/>
-                <input type="password" name="password" placeholder="password"/>
+                <input type="text" name="login" placeholder="<fmt:message key="login.name" bundle="${rb}"/>"/>
+                <input type="password" name="password" placeholder="<fmt:message key="login.password" bundle="${rb}"/>"/>
                 <input type="hidden" name="command" value="login"/>
-                <button type="submit" value="sign in">Login</button>
-                <p class="message">Not registered? <a href="controller?command=registerNewPatient">Create an account</a>
+                <button type="submit" value="sign in">
+                    <fmt:message key="login.button" bundle="${rb}"/>
+                </button>
+                <p class="message">
+                        <fmt:message key="login.register" bundle="${rb}"/>
+                    <a href="controller?command=registerNewPatient">
+                        <fmt:message key="login.create" bundle="${rb}"/>
+                    </a>
                     <h4>${requestScope.messageToPage}</h4>
                 </p>
             </form>

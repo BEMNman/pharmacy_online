@@ -152,7 +152,8 @@
                                    pattern="[A-Z]+ [A-Z]+">
                             <label for="ccnum">Credit card number</label>
                             <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" required
-                                   pattern="[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}">
+                                   pattern="[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}"
+                            maxlength="16">
                             <label for="expdate">Exp Date</label>
                             <input type="text" id="expdate" name="expdate" placeholder="06/20" required
                                    pattern="[0-9]{2}/[0-9]{2}">
@@ -160,7 +161,7 @@
                                 <div class="col-50">
                                     <label for="cvv">CVV</label>
                                     <input type="text" id="cvv" required="required" name="cvv" placeholder="543"
-                                           pattern="[0-9]{3}">
+                                           pattern="[0-9]{3}" maxlength="3">
                                 </div>
                             </div>
                         </div>

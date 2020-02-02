@@ -30,11 +30,7 @@ public class SaveRecipeCommand implements Command {
         String stringQuantity = request.getParameter(RequestParameterConst.MEDICAMENT_QUANTITY);
         String stringExpDate = request.getParameter(RequestParameterConst.EXP_DATE);
 
-        Long medicamentId = Long.parseLong(stringMedicamentId);
-        Long patientId = Long.parseLong(stringPatientId);
-        Integer quantity = Integer.parseInt(stringQuantity);
-        LocalDate expDate = LocalDate.parse(stringExpDate);
-        service.saveNewRecipe(user, medicamentId, patientId, quantity, expDate);
+        service.saveNewRecipe(user, stringMedicamentId, stringPatientId, stringQuantity, stringExpDate );
         return CommandResult.redirectToCommand(CommandFactory.OPEN_RECIPES);
     }
 }

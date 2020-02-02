@@ -2,7 +2,7 @@ package com.epam.finalproject.pharmacy.command;
 
 public class CommandResult {
 
-    private static final String PATH_REDIRECT_COMMAND = "{request.contextPath}controller?command=";
+    private static final String PATH_REDIRECT_COMMAND = "controller?command=";
 
     private final String page;
     private final boolean isRedirect;

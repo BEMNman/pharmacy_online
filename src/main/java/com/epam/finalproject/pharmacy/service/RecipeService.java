@@ -7,6 +7,7 @@ import com.epam.finalproject.pharmacy.entity.Recipe;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
+import com.epam.finalproject.pharmacy.util.InputDataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +31,7 @@ public class RecipeService {
     }
 
     public List<Recipe> findAllRecipesUserForMedicamentCurrentDate(Long userId, Long medicamentId)
-                                                                                                throws ServerException {
+            throws ServerException {
         try {
             return recipeDao.getAllUsersRecipesForMedicamentForCurrentDate(userId, medicamentId);
         } catch (DaoException e) {
@@ -38,12 +39,20 @@ public class RecipeService {
         }
     }
 
-    public void saveNewRecipe(User user, Long medicamentId, Long patientId, Integer quantity, LocalDate expDate)
-                                                                                                throws ServerException {
-        Recipe recipe =Recipe.newRecipe(expDate, medicamentId, quantity, patientId, user.getId());
+    public void saveNewRecipe(User user, String stringMedicamentId, String stringPatientId, String stringQuantity,
+                              String stringExpDate) throws ServerException {
         try {
-            recipeDao.save(recipe);
-        } catch (DaoException e) {
+            if (InputDataValidator.notNullOrEmpty(stringMedicamentId, stringPatientId, stringQuantity, stringExpDate)) {
+                Long medicamentId = Long.parseLong(stringMedicamentId);
+                Long patientId = Long.parseLong(stringPatientId);
+                Integer quantity = Integer.parseInt(stringQuantity);
+                LocalDate expDate = LocalDate.parse(stringExpDate);
+                if (medicamentId > 0 && patientId > 0 && quantity >= 0 && expDate.isAfter(LocalDate.now())) {
+                    Recipe recipe = Recipe.newRecipe(expDate, medicamentId, quantity, patientId, user.getId());
+                    recipeDao.save(recipe);
+                }
+            }
+        } catch (IllegalArgumentException | DaoException e) {
             throw new ServerException(e);
         }
     }

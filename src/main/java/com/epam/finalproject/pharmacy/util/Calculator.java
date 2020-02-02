@@ -1,4 +1,4 @@
-package com.epam.finalproject.pharmacy.command.util;
+package com.epam.finalproject.pharmacy.util;
 
 import com.epam.finalproject.pharmacy.entity.Medicament;
 
@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class Calculator {
-    public BigDecimal getTotalPrice(Map<Medicament, Integer> medicinesCountInBasket) {
+    public static BigDecimal getTotalPrice(Map<Medicament, Integer> medicinesCountInBasket) {
         BigDecimal totalPrice = new BigDecimal(0);
         for(Medicament medicament : medicinesCountInBasket.keySet()) {
             Integer amountItem = medicinesCountInBasket.get(medicament);

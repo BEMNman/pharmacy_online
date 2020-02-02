@@ -13,7 +13,7 @@ import java.util.Optional;
 public class RequestService {
     private RequestDao requestDao;
 
-    public RequestService (DaoHelperFactory daoHelperFactory) throws ServerException {
+    public RequestService(DaoHelperFactory daoHelperFactory) throws ServerException {
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             requestDao = daoHelper.createRequestDao();
         } catch (DaoException e) {
@@ -22,12 +22,12 @@ public class RequestService {
     }
 
     public void sendRequest(String recipeId, String requestedPeriod) throws ServerException {
-        Long id = Long.parseLong(recipeId);
-        Integer period = Integer.parseInt(requestedPeriod);
-        Request request = Request.newRequest(id, period);
         try {
+            Long id = Long.parseLong(recipeId);
+            Integer period = Integer.parseInt(requestedPeriod);
+            Request request = Request.newRequest(id, period);
             requestDao.save(request);
-        } catch (DaoException e) {
+        } catch (NumberFormatException | DaoException e) {
             throw new ServerException(e);
         }
     }
@@ -35,7 +35,7 @@ public class RequestService {
     public void rejectRequest(Long requestId) throws ServerException {
         try {
             Optional<Request> optionalRequest = requestDao.findById(requestId);
-            if(optionalRequest.isPresent()) {
+            if (optionalRequest.isPresent()) {
                 Request request = optionalRequest.get();
                 request.setStatus(RequestStatus.CLOSED);
                 requestDao.save(request);
