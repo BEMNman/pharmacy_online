@@ -8,6 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session" />
+<fmt:setBundle basename="locale" var="rb" />
+
 <!DOCTYPE html>
 
 <style>
@@ -55,6 +59,22 @@
     }
 </style>
 
+<c:set var="urlLocale">
+    <c:url value="controller?language"/>
+</c:set>
+<script>
+    function switchLocale(url) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, false);
+        xhr.send();
+
+        if (xhr.status != 200)
+            alert( url + ', ' + xhr.status + ', ' + xhr.statusText );
+        else
+            location.reload(true);
+    }
+</script>
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -69,9 +89,15 @@
         </a>
     </div>
     <div id="logo-right">
-        <div id="locale"><a href="#">EN</a> | <a href="#">RU</a> | <a href="#">BLR</a></div>
+        <div id="locale">
+            <a class="tool-button" href="javascript:switchLocale('${urlLocale}=en')">EN</a>
+            |
+            <a class="tool-button" href="javascript:switchLocale('${urlLocale}=ru')">RU</a>
+            |
+            <a class="tool-button" href="javascript:switchLocale('${urlLocale}=be')">BE</a>
+        </div>
         <div id="username">
-            <b style="font-size:20px; padding-right: 1em"> Hello, ${sessionScope.user.name}! </b>
+            <b style="font-size:20px; padding-right: 1em"> <fmt:message key="header.hello" bundle="${rb}"/> ${sessionScope.user.name}! </b>
             <c:if test="${sessionScope.user != null}">
                 <form action="signOut" method="get"
                       style="display: inline-block; margin: 0;">
