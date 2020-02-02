@@ -102,7 +102,7 @@
                 <form action="signOut" method="get"
                       style="display: inline-block; margin: 0;">
                     <input type="hidden" name="command" value="logout"/>
-                    <a href="controller?command=logout">Sign Out</a>
+                    <a href="controller?command=logout"><fmt:message key="header.singout" bundle="${rb}"/></a>
                 </form>
             </c:if>
         </div>
@@ -113,7 +113,7 @@
         <form action="openBasket" method="get"
               style="display: inline-block; margin: 0;">
             <a href="controller?command=openBasket">
-                Basket:
+                <fmt:message key="header.basket" bundle="${rb}"/>:
                 <c:if test="${sessionScope.medicinesInBasket == null}">
                     0
                 </c:if>

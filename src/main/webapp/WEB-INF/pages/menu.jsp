@@ -8,17 +8,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="locale" var="rb"/>
+
 <html>
 <head>
-    <p><a href="controller?command=mainPage">Medicines</a></p>
+    <p>
+        <a href="controller?command=mainPage">
+            <fmt:message key="medicines" bundle="${rb}"/>
+        </a>
+    </p>
     <c:if test="${sessionScope.user.role.name() =='PATIENT'}">
-        <p><a href="controller?command=openOrders">Orders</a></p>
+        <p>
+            <a href="controller?command=openOrders">
+                <fmt:message key="orders" bundle="${rb}"/>
+            </a>
+        </p>
     </c:if>
     <c:if test="${sessionScope.user.role.name() =='PATIENT' || sessionScope.user.role.name() == 'DOCTOR'}">
-        <p><a href="controller?command=openRecipes">Recipes</a></p>
+        <p>
+            <a href="controller?command=openRecipes">
+                <fmt:message key="recipes" bundle="${rb}"/>
+
+            </a>
+        </p>
     </c:if>
     <c:if test="${sessionScope.user.role.name() =='DOCTOR'}">
-        <p><a href="controller?command=openRequests">Requests</a></p>
+        <p>
+            <a href="controller?command=openRequests">
+                <fmt:message key="requests" bundle="${rb}"/>
+            </a>
+        </p>
     </c:if>
 </head>
 <body>

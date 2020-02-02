@@ -8,21 +8,39 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="locale" var="rb"/>
+
 <html>
 <body>
 
 <div style="border: 1px black">
-    <h2>Reсipes</h2>
+    <h2>
+        <fmt:message key="recipes" bundle="${rb}"/>
+    </h2>
 </div>
 
 <table>
     <tr>
-        <th>Creation date</th>
-        <th>Exp Date</th>
-        <th>Medicament</th>
-        <th>Dosage</th>
-        <th>Amount</th>
-        <th>Doctor's name</th>
+        <th>
+            <fmt:message key="creation_date" bundle="${rb}"/>
+        </th>
+        <th>
+            <fmt:message key="exp_date" bundle="${rb}"/>
+        </th>
+        <th>
+            <fmt:message key="medicines.medicament" bundle="${rb}"/>
+        </th>
+        <th>
+            <fmt:message key="medicines.dosage" bundle="${rb}"/>
+        </th>
+        <th>
+            <fmt:message key="medicines.quantity" bundle="${rb}"/>
+        </th>
+        <th>
+            <fmt:message key="recipe.doctor" bundle="${rb}"/>
+        </th>
         <th></th>
     </tr>
 
@@ -43,12 +61,17 @@
                         <input type="hidden" name="command" value="sendRecipeRequest"/>
                         <input type="hidden" name="recipeId" value="${recipe.id}">
                         <select name="requestedPeriod">
-                            <option value="1">1 month</option>
-                            <option value="2">2 months</option>
-                            <option value="3">3 months</option>
+                            <option value="1">
+                                1 <fmt:message key="recipe.month" bundle="${rb}"/>
+                            </option>
+                            <option value="2">
+                                2 <fmt:message key="recipe.months" bundle="${rb}"/>
+                            </option>
+                            <option value="3">
+                                3 <fmt:message key="recipe.months" bundle="${rb}"/>
+                            </option>
                         </select>
-<%--                        <input type="number" min="1" max="3" name="requestedPeriod">--%>
-                        <input type="submit" value="request"/>
+                        <input type="submit" value="<fmt:message key="recipe.request" bundle="${rb}"/>"/>
                     </form>
                 </c:if>
             </td>

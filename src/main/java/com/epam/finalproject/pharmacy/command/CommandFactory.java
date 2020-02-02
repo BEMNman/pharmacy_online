@@ -52,8 +52,6 @@ public class CommandFactory {
         logger.debug("Command " + command + " was created");
 
         switch (command) {
-//            case CHANGE_LANG:
-//                return new ChangeLanguageCommand();
             case SHOW_ERROR_PAGE:
                 return new ShowPageCommand(Page.ERROR);
             case LOGIN:

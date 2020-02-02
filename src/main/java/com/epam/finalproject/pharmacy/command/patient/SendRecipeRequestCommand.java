@@ -24,7 +24,7 @@ public class SendRecipeRequestCommand implements Command {
         String recipeId = request.getParameter(RequestParameterConst.RECIPE_ID);
         String requestedPeriod = request.getParameter(RequestParameterConst.REQUESTED_PERIOD);
         service.sendRequest(recipeId, requestedPeriod);
-        request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, REQUEST_WAS_SENT);
+//        request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, REQUEST_WAS_SENT);
         return CommandResult.redirectToCommand(CommandFactory.OPEN_RECIPES);
 //        return CommandResult.forward(Page.PATIENT_RECIPES);
     }

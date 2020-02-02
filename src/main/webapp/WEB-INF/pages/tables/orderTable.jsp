@@ -8,6 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="locale" var="rb"/>
+
 <html>
 <body>
 <style>
@@ -118,7 +122,8 @@
         <div class="col-75">
             <div class="col-25">
                 <div class="container">
-                    <h4>Cart
+                    <h4>
+                        <fmt:message key="order.basket" bundle="${rb}"/>
                         <span class="price" style="color:black">
           <i class="fa fa-shopping-cart"></i>
         </span>
@@ -138,24 +143,42 @@
                         </p>
                     </c:forEach>
                     <hr>
-                    <p>Total <span class="price" style="color:black"><b>$${requestScope.totalPrice}</b></span></p>
+                    <p>
+                        <fmt:message key="basket.total_price" bundle="${rb}"/>
+                        <span class="price" style="color:black">
+                            <b>$${requestScope.totalPrice}</b>
+                        </span>
+                    </p>
                 </div>
             </div>
             <div class="container">
                 <form action="pay" method="get">
                     <div class="row">
                         <div class="col-50">
-                            <h3>Payment</h3>
-                            <label>Accepted Cards</label>
-                            <label for="cname">Name on Card</label>
-                            <input type="text" id="cname" name="cardname" placeholder="NAME SURNAME" required
+                            <h3>
+                                <fmt:message key="order.payment" bundle="${rb}"/>
+                            </h3>
+                            <label>
+                                <fmt:message key="order.card" bundle="${rb}"/>
+                            </label>
+                            <label for="cname">
+                                <fmt:message key="order.name_on_card" bundle="${rb}"/>
+                            </label>
+                            <input type="text" id="cname" name="cardname"
+                                   placeholder="<fmt:message key="order.placeholder.name_surname" bundle="${rb}"/>"
+                                   required
                                    pattern="[A-Z]+ [A-Z]+">
-                            <label for="ccnum">Credit card number</label>
-                            <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" required
+                            <label for="ccnum">
+                                <fmt:message key="order.credit_card_number" bundle="${rb}"/>
+                            </label>
+                            <input type="text" id="ccnum" name="cardnumber"
+                                   placeholder="<fmt:message key="order.placeholder.cart_number" bundle="${rb}"/>"
+                                   required
                                    pattern="[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}"
-                            maxlength="16">
-                            <label for="expdate">Exp Date</label>
-                            <input type="text" id="expdate" name="expdate" placeholder="06/20" required
+                                   maxlength="16">
+                            <label for="expdate"><fmt:message key="exp_date" bundle="${rb}"/></label>
+                            <input type="text" id="expdate" name="expdate"
+                                   placeholder="<fmt:message key="order.placeholder.exp_date" bundle="${rb}"/>" required
                                    pattern="[0-9]{2}/[0-9]{2}">
                             <div class="row">
                                 <div class="col-50">
@@ -168,7 +191,8 @@
                     </div>
 
                     <input type="hidden" name="command" value="pay">
-                    <input type="submit" value="Continue to checkout" class="btn">
+                    <input type="submit"
+                           value="<fmt:message key="order.continue_to_checkout" bundle="${rb}"/>" class="btn">
                 </form>
             </div>
         </div>

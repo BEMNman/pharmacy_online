@@ -8,29 +8,51 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="locale" var="rb"/>
+
 <html>
 <body>
 
 <div style="border: 1px black">
-    <h2>Basket</h2>
+    <h2><fmt:message key="header.basket" bundle="${rb}"/></h2>
 </div>
 <c:if test="${sessionScope.medicinesInBasket.size() == null}">
     <span>
-        Basket is empty!
-        Please click <a href="controller?command=mainPage">  here  </a> to return and continue
+        <fmt:message key="basket.empty" bundle="${rb}"/>
+        <fmt:message key="basket.click" bundle="${rb}"/>
+        <a href="controller?command=mainPage">
+                    <fmt:message key="basket.here" bundle="${rb}"/>
+        </a>
+                <fmt:message key="basket.continue" bundle="${rb}"/>
     </span>
 </c:if>
 <c:if test="${sessionScope.medicinesInBasket.size() >= 1}">
     <form id="checkBasket" method="get">
         <table>
             <tr>
-                <th>Name</th>
-                <th>Form</th>
-                <th>Dosage</th>
-                <th>Recipe</th>
-                <th>In stock</th>
-                <th>Price</th>
-                <th>Amount</th>
+                <th>
+                    <fmt:message key="medicines.name" bundle="${rb}"/>
+                </th>
+                <th>
+                    <fmt:message key="medicines.form" bundle="${rb}"/>
+                </th>
+                <th>
+                    <fmt:message key="medicines.dosage" bundle="${rb}"/>
+                </th>
+                <th>
+                    <fmt:message key="medicines.recipe" bundle="${rb}"/>
+                </th>
+                <th>
+                    <fmt:message key="medicines.in_stock" bundle="${rb}"/>
+                </th>
+                <th>
+                    <fmt:message key="medicines.price" bundle="${rb}"/>
+                </th>
+                <th>
+                    <fmt:message key="medicines.quantity" bundle="${rb}"/>
+                </th>
                 <th></th>
             </tr>
             <tbody>
@@ -41,7 +63,14 @@
                     <td><c:out value="${medicament.name}"/></td>
                     <td><c:out value="${medicament.form}"/></td>
                     <td><c:out value="${medicament.dosage}"/></td>
-                    <td><c:out value="${medicament.recipe == true ? 'yes' : 'no'}"/></td>
+                    <td>
+                        <c:if test="${medicament.recipe}">
+                            <fmt:message key="yes" bundle="${rb}"/>
+                        </c:if>
+                        <c:if test="${!medicament.recipe}">
+                            <fmt:message key="no" bundle="${rb}"/>
+                        </c:if>
+                    </td>
                     <td><c:out value="${medicament.quantity}"/></td>
                     <td><c:out value="${medicament.price}"/></td>
                     <td>
@@ -60,17 +89,26 @@
             </tbody>
         </table>
         <c:if test="${requestScope.totalPrice != null}">
-            <h3>Total price: ${requestScope.totalPrice}</h3>
-            <a href="controller?command=pay">Pay</a>
+            <h3>
+                <fmt:message key="basket.total_price" bundle="${rb}"/>
+                    ${requestScope.totalPrice}
+            </h3>
+            <a href="controller?command=pay">
+                <fmt:message key="basket.pay" bundle="${rb}"/>
+            </a>
         </c:if>
 
         <input type="hidden" name="command" value="continueOrder"/>
-        <input type="submit" value="Check order"/>
+        <input type="submit" value=" <fmt:message key="order.check_order" bundle="${rb}"/>"/>
     </form>
 
     <c:if test="${requestScope.totalPrice == null}">
-        <a href="controller?command=mainPage">Return</a>
-        <a href="controller?command=clearBasket">Clear basket</a>
+        <a href="controller?command=mainPage">
+            <fmt:message key="basket.return" bundle="${rb}"/>
+        </a>
+        <a href="controller?command=clearBasket">
+            <fmt:message key="basket.clear_basket" bundle="${rb}"/>
+        </a>
     </c:if>
 </c:if>
 </body>
