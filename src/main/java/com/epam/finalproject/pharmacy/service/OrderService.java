@@ -10,16 +10,12 @@ import com.epam.finalproject.pharmacy.entity.OrderDetails;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 public class OrderService {
-
-    private static final Logger logger = LogManager.getLogger(OrderService.class.getName());
 
     private DaoHelperFactory daoHelperFactory;
 
@@ -44,7 +40,6 @@ public class OrderService {
             Long newOrderId = orderDao.saveAndGetIdLastSavedOrder(order);
             saveOrderDetails(newOrderId, medicinesInOrder);
         } catch (DaoException e) {
-            logger.warn("Can't save order in DB: " + e);
             throw new ServerException(e);
         }
     }
@@ -70,7 +65,6 @@ public class OrderService {
                 orderDetailsDao.save(orderDetails);
             }
         } catch (DaoException e) {
-            logger.warn("Can't save orderDetails in DB: " + e);
             throw new ServerException(e);
         }
     }

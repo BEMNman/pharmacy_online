@@ -14,20 +14,15 @@ import java.util.List;
 
 public class CreationRecipeService {
 
-    private MedicamentDao medicamentDao;
-    private UserDao userDao;
+    private DaoHelperFactory daoHelperFactory;
 
-    public CreationRecipeService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try(DaoHelper daoHelper = daoHelperFactory.create()) {
-            medicamentDao = daoHelper.createMedicamentDao();
-            userDao = daoHelper.createUserDao();
-        } catch (DaoException e) {
-            throw new ServerException(e);
-        }
+    public CreationRecipeService(DaoHelperFactory daoHelperFactory){
+        this.daoHelperFactory = daoHelperFactory;
     }
 
     public List<User> findAllUserByRole(UserRole role) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            UserDao userDao = daoHelper.createUserDao();
             return userDao.findAllUserByRole(role);
         } catch (DaoException e) {
             throw new ServerException(e);
@@ -35,7 +30,8 @@ public class CreationRecipeService {
     }
 
     public List<Medicament> findAllMedicinesWithRecipe() throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             return medicamentDao.findAllMedicinesWithRecipe();
         } catch (DaoException e) {
             throw new ServerException(e);

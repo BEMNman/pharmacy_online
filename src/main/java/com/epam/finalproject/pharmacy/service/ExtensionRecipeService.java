@@ -15,23 +15,19 @@ import java.util.Optional;
 
 public class ExtensionRecipeService {
 
-    private RecipeDao recipeDao;
-    private RequestDao requestDao;
+    private DaoHelperFactory daoHelperFactory;
 
-    public ExtensionRecipeService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            recipeDao = daoHelper.createRecipeDao();
-            requestDao = daoHelper.createRequestDao();
-        } catch (DaoException e) {
-            throw new ServerException(e);
-        }
+    public ExtensionRecipeService(DaoHelperFactory daoHelperFactory) {
+       this.daoHelperFactory = daoHelperFactory;
     }
 
     public void approveRequest(Long requestId) throws ServerException {
         if(requestId < 0) {
             throw new ServerException("This request isn't exist");
         }
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            RecipeDao recipeDao = daoHelper.createRecipeDao();
+            RequestDao requestDao = daoHelper.createRequestDao();
             Optional<Request> optionalRequest = requestDao.findById(requestId);
             if(optionalRequest.isPresent()) {
                 Request request = optionalRequest.get();

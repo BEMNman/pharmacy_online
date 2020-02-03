@@ -7,29 +7,20 @@ import com.epam.finalproject.pharmacy.dto.RecipeDto;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class RecipeDtoService {
 
-    private static final Logger logger = LogManager.getLogger(RecipeDtoService.class.getName());
+    private DaoHelperFactory daoHelperFactory;
 
-    private RecipeDtoDao recipeDao;
-
-    public RecipeDtoService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            recipeDao = daoHelper.createRecipeDtoDao();
-        } catch (DaoException e) {
-            logger.warn("RecipeDao wasn't created " + e);
-
-            throw new ServerException(e);
-        }
+    public RecipeDtoService(DaoHelperFactory daoHelperFactory) {
+       this.daoHelperFactory = daoHelperFactory;
     }
 
     public List<RecipeDto> findAllRecipesDtoForUser(User user) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            RecipeDtoDao recipeDao = daoHelper.createRecipeDtoDao();
             return recipeDao.getAllRecipesDtoForUser(user);
         } catch (DaoException e) {
             throw new ServerException(e);

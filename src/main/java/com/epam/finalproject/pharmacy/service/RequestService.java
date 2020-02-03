@@ -11,18 +11,16 @@ import com.epam.finalproject.pharmacy.exception.ServerException;
 import java.util.Optional;
 
 public class RequestService {
-    private RequestDao requestDao;
 
-    public RequestService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            requestDao = daoHelper.createRequestDao();
-        } catch (DaoException e) {
-            throw new ServerException(e);
-        }
+    private DaoHelperFactory daoHelperFactory;
+
+    public RequestService(DaoHelperFactory daoHelperFactory) {
+        this.daoHelperFactory = daoHelperFactory;
     }
 
     public void sendRequest(String recipeId, String requestedPeriod) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            RequestDao requestDao = daoHelper.createRequestDao();
             Long id = Long.parseLong(recipeId);
             Integer period = Integer.parseInt(requestedPeriod);
             Request request = Request.newRequest(id, period);
@@ -33,7 +31,8 @@ public class RequestService {
     }
 
     public void rejectRequest(Long requestId) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            RequestDao requestDao = daoHelper.createRequestDao();
             Optional<Request> optionalRequest = requestDao.findById(requestId);
             if (optionalRequest.isPresent()) {
                 Request request = optionalRequest.get();

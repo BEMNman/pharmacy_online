@@ -22,18 +22,15 @@ public class MedicamentService {
     public static final String ENTERED_DATA_ARE_INCORRECT = "Entered data are incorrect";
     private static final String MEDICAMENT_WAS_UPDATED = "Medicament was saved";
 
-    private MedicamentDao medicamentDao;
+    private DaoHelperFactory daoHelperFactory;
 
-    public MedicamentService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            medicamentDao = daoHelper.createMedicamentDao();
-        } catch (DaoException e) {
-            throw new ServerException(e);
-        }
+    public MedicamentService(DaoHelperFactory daoHelperFactory) {
+        this.daoHelperFactory = daoHelperFactory;
     }
 
     public List<Medicament> showAll() throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             return medicamentDao.findAllAvailableMedicament();
         } catch (DaoException e) {
             throw new ServerException(e);
@@ -41,7 +38,8 @@ public class MedicamentService {
     }
 
     public Optional<Medicament> findMedicamentById(Long id) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             return medicamentDao.findById(id);
         } catch (DaoException e) {
             throw new ServerException(e);
@@ -49,15 +47,15 @@ public class MedicamentService {
     }
 
     public List<Medicament> findMedicamentForUsersOrder(User user, Long orderId) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             return medicamentDao.findAllMedicamentForUsersOrder(user.getId(), orderId);
         } catch (DaoException e) {
             throw new ServerException(e);
         }
     }
 
-    private boolean checkQuantityMedicinesInUsersOrder(Map<Medicament, Integer> mapMedicinesCount)
-            throws ServerException {
+    private boolean checkQuantityMedicinesInUsersOrder(Map<Medicament, Integer> mapMedicinesCount) {
         for (Medicament medicament : mapMedicinesCount.keySet()) {
             if (medicament.getQuantity() < mapMedicinesCount.get(medicament)) {
                 return false;
@@ -110,7 +108,8 @@ public class MedicamentService {
     public String checkQuantityInStock(User user, String stringMedicamentId, String stringCount,
                                        Map<Medicament, Integer> medicamentCount) throws ServerException {
         Long medicamentId = Long.parseLong(stringMedicamentId);
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             Medicament medicament = findMedicamentById(medicamentId).get();
             Integer quantityMedicamentBasket = medicamentCount.getOrDefault(medicament, 0);
             Integer countMedicament = Integer.parseInt(stringCount);
@@ -133,7 +132,8 @@ public class MedicamentService {
     }
 
     public void deleteMedicamentById(Long id) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             medicamentDao.sendMedicamentToArchive(id);
         } catch (DaoException e) {
             throw new ServerException(e);
@@ -144,7 +144,8 @@ public class MedicamentService {
                                    String stringAmountInPack, String stringPrice, String stringQuantity) throws ServerException {
         if (InputDataValidator.notNullOrEmpty(stringName, stringForm, stringDosage,
                 stringAmountInPack, stringPrice, stringQuantity)) {
-            try {
+            try (DaoHelper daoHelper = daoHelperFactory.create()) {
+                MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
                 MedicamentForm form = MedicamentForm.valueOf(stringForm.toUpperCase());
                 Integer amountInPack = Integer.parseInt(stringAmountInPack);
                 BigDecimal price = new BigDecimal(stringPrice);

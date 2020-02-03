@@ -12,18 +12,15 @@ import java.util.List;
 
 public class RequestDtoService {
 
-    private RequestDtoDao requestDtoDao;
+    private DaoHelperFactory daoHelperFactory;
 
-    public RequestDtoService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            requestDtoDao = daoHelper.createRequestDtoDao();
-        } catch (DaoException e) {
-            throw new ServerException(e);
-        }
+    public RequestDtoService(DaoHelperFactory daoHelperFactory) {
+        this.daoHelperFactory = daoHelperFactory;
     }
 
     public List<RequestDto> findAllRequestsDtoForDoctor(User user) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            RequestDtoDao requestDtoDao = daoHelper.createRequestDtoDao();
             return requestDtoDao.findAllRequestsDtoForDoctor(user);
         } catch (DaoException e) {
             throw new ServerException(e);

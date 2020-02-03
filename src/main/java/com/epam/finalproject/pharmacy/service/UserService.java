@@ -15,24 +15,18 @@ public class UserService {
 
     private static final Logger logger = LogManager.getLogger(UserService.class.getName());
 
-    private UserDao userDao;
+    private DaoHelperFactory daoHelperFactory;
 
-    public UserService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            userDao = daoHelper.createUserDao();
-        } catch (DaoException e) {
-            logger.warn("UserDao wasn't created " + e);
-
-            throw new ServerException(e);
-        }
+    public UserService(DaoHelperFactory daoHelperFactory) {
+        this.daoHelperFactory = daoHelperFactory;
     }
 
     public Optional<User> login(String login, String password) throws ServerException {
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            UserDao userDao = daoHelper.createUserDao();
             return userDao.findUserByLoginAndPassword(login, password);
         } catch (DaoException e) {
             logger.warn("Can't find user with correct login and password" + e);
-
             throw new ServerException(e);
         }
     }
@@ -41,9 +35,10 @@ public class UserService {
             throws ServerException {
         if (validRegistrationData(login, password, passwordForCheck)) {
             User patient = User.newPatient(patientName, login, password);
-            try {
+            try (DaoHelper daoHelper = daoHelperFactory.create()) {
+                UserDao userDao = daoHelper.createUserDao();
                 userDao.save(patient);
-                return  true;
+                return true;
             } catch (DaoException e) {
                 logger.warn("Can't save user in DB: " + e);
                 throw new ServerException(e);
