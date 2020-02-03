@@ -48,14 +48,6 @@ public class MedicamentService {
         }
     }
 
-    public void save(Medicament medicament) throws ServerException {
-        try {
-            medicamentDao.save(medicament);
-        } catch (DaoException e) {
-            throw new ServerException(e);
-        }
-    }
-
     public List<Medicament> findMedicamentForUsersOrder(User user, Long orderId) throws ServerException {
         try {
             return medicamentDao.findAllMedicamentForUsersOrder(user.getId(), orderId);

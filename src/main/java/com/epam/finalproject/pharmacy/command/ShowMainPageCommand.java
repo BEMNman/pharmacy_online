@@ -1,7 +1,5 @@
 package com.epam.finalproject.pharmacy.command;
 
-import com.epam.finalproject.pharmacy.command.Command;
-import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
 import com.epam.finalproject.pharmacy.command.constant.SessionAttributeConst;

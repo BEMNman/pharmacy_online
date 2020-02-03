@@ -27,8 +27,7 @@ public class SaveOrderCommand implements Command {
         User user = (User) session.getAttribute(SessionAttributeConst.USER);
         Map<Medicament, Integer> medicinesInOrder =
                 (Map) session.getAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
-        long idNewOrder = service.saveNewOrderForUser(user, medicinesInOrder);
-        service.saveOrderDetails(idNewOrder, medicinesInOrder);
+        service.saveNewOrderWithDetailsForUser(user, medicinesInOrder);
         session.removeAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
         return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
     }

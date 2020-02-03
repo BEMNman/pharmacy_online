@@ -56,7 +56,11 @@ public class ProxyConnection implements Connection {
     }
 
     @Override
-    public void close() {
+    public void close() throws SQLException {
+        if(!connection.getAutoCommit()) {
+            commit();
+            setAutoCommit(true);
+        }
         pool.returnConnection(this);
     }
 

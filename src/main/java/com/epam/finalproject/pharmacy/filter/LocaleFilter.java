@@ -24,11 +24,7 @@ public class LocaleFilter implements Filter {
         if (session.getAttribute(SessionAttributeConst.LOCALE_LANG) == null) {
             session.setAttribute(SessionAttributeConst.LOCALE_LANG, DEFAULT_LOCALE_LANG);
         }
-        System.out.println("DEFAULT_LOCALE_LANG = " + DEFAULT_LOCALE_LANG.getLanguage());
         String localeName = req.getParameter(RequestParameterConst.LANGUAGE);
-        System.out.println("localeName = " + localeName);
-        String lastPage = httpServletRequest.getServletPath() + "?" + httpServletRequest.getQueryString();
-        System.out.println("lastPage = " + lastPage);
         if(localeName != null) {
             Locale locale;
             switch (localeName) {

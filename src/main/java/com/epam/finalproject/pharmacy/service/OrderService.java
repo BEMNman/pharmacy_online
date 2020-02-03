@@ -21,31 +21,28 @@ public class OrderService {
 
     private static final Logger logger = LogManager.getLogger(OrderService.class.getName());
 
-    private OrderDao orderDao;
-    private OrderDetailsDao orderDetailsDao;
+    private DaoHelperFactory daoHelperFactory;
 
-    public OrderService(DaoHelperFactory daoHelperFactory) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            orderDao = daoHelper.createOrderDao();
-            orderDetailsDao = daoHelper.createOrderDetailsDao();
-        } catch (DaoException e) {
-            logger.warn("UserDao wasn't created " + e);
-
-            throw new ServerException(e);
-        }
+    public OrderService(DaoHelperFactory daoHelperFactory) {
+        this.daoHelperFactory = daoHelperFactory;
     }
 
-    public Long saveNewOrderForUser(User user, Map<Medicament, Integer> medicinesInOrder) throws ServerException {
-        BigDecimal totalPriceOrder = new BigDecimal(0);
-        for (Medicament medicament : medicinesInOrder.keySet()) {
-            BigDecimal quantity = new BigDecimal(medicinesInOrder.get(medicament));
-            BigDecimal tempPrice = medicament.getPrice().multiply(quantity);
-            totalPriceOrder = tempPrice.add(totalPriceOrder);
-        }
-        long userId = user.getId();
-        Order order = Order.newOrder(userId, totalPriceOrder);
-        try {
-            return orderDao.saveAndGetIdLastSavedOrder(order);
+    public void saveNewOrderWithDetailsForUser(User user, Map<Medicament, Integer> medicinesInOrder) throws ServerException {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            daoHelper.startTransaction();
+            OrderDao orderDao = daoHelper.createOrderDao();
+
+            BigDecimal totalPriceOrder = new BigDecimal(0);
+            for (Medicament medicament : medicinesInOrder.keySet()) {
+                BigDecimal quantity = new BigDecimal(medicinesInOrder.get(medicament));
+                BigDecimal tempPrice = medicament.getPrice().multiply(quantity);
+                totalPriceOrder = tempPrice.add(totalPriceOrder);
+            }
+            Long userId = user.getId();
+            Order order = Order.newOrder(userId, totalPriceOrder);
+
+            Long newOrderId = orderDao.saveAndGetIdLastSavedOrder(order);
+            saveOrderDetails(newOrderId, medicinesInOrder);
         } catch (DaoException e) {
             logger.warn("Can't save order in DB: " + e);
             throw new ServerException(e);
@@ -53,17 +50,18 @@ public class OrderService {
     }
 
     public List<Order> showAllForUser(User user) throws ServerException {
-        long userId = user.getId();
-
-        try {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            OrderDao orderDao = daoHelper.createOrderDao();
+            long userId = user.getId();
             return orderDao.getAllOrdersForUser(userId);
         } catch (DaoException e) {
             throw new ServerException(e);
         }
     }
 
-    public void saveOrderDetails(long orderId, Map<Medicament, Integer> medicinesInOrder) throws ServerException {
-        try {
+    private void saveOrderDetails(long orderId, Map<Medicament, Integer> medicinesInOrder) throws ServerException {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            OrderDetailsDao orderDetailsDao = daoHelper.createOrderDetailsDao();
             for (Medicament medicament : medicinesInOrder.keySet()) {
                 Long medicamentId = medicament.getId();
                 BigDecimal quantity = new BigDecimal(medicinesInOrder.get(medicament));

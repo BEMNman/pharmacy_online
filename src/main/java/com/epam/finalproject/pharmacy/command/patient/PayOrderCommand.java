@@ -1,6 +1,7 @@
 package com.epam.finalproject.pharmacy.command.patient;
 
 import com.epam.finalproject.pharmacy.command.Command;
+import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
@@ -17,7 +18,6 @@ import java.util.Map;
 
 public class PayOrderCommand implements Command {
 
-    public static final String THE_ORDER_PLACED = "The order placed";
     public static final String INVALID_CREDIT_CART_DATA = "credit card's information entered is not correct";
     private OrderService service;
 
@@ -37,14 +37,11 @@ public class PayOrderCommand implements Command {
         String cvv  = request.getParameter(RequestParameterConst.CARD_CVV);
         boolean valid = CreditCartValidator.isValid(cardName, cardNumber, expDate, cvv);
         if (valid) {
-            Long orderId = service.saveNewOrderForUser(user,medicinesOrder);
-            service.saveOrderDetails(orderId, medicinesOrder);
+            service.saveNewOrderWithDetailsForUser(user,medicinesOrder);
             session.removeAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
-            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, THE_ORDER_PLACED);
-            return CommandResult.forward(Page.PATIENT_BASKET);
+            return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
         }
-        request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP,
-                INVALID_CREDIT_CART_DATA);
+        request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, INVALID_CREDIT_CART_DATA);
         return CommandResult.forward(Page.PATIENT_BASKET);
     }
 }
