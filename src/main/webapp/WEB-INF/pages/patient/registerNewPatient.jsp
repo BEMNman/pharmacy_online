@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<style>
-    @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
+<fmt:setLocale value="${sessionScope.locale}" scope="session" />
+<fmt:setBundle basename="locale" var="rb" />
+
+<style>
     .login-page {
         width: 360px;
         padding: 8% 0 0;
@@ -93,15 +95,26 @@
 
 <html>
 <body>
+<jsp:include page="/WEB-INF/pages/header.jsp"/>
 <div class="login-page">
     <div class="form">
         <form class="register-form" action="logIn" method="post">
-            <input type="text" required name="name" placeholder="full name"/>
-            <input type="text" required name="login" placeholder="login"/>
-            <input type="password" required name="password" placeholder="password"/>
-            <input type="password" required name="passwordForCheck" placeholder="repeat password"/>
+            <input type="text" required name="name"
+                   placeholder="<fmt:message key="login.full_name" bundle="${rb}"/>"
+            />
+            <input type="text" required name="login"
+                   placeholder="<fmt:message key="login.name" bundle="${rb}"/>"
+            />
+            <input type="password" required name="password"
+                   placeholder="<fmt:message key="login.password" bundle="${rb}"/>"
+            />
+            <input type="password" required name="passwordForCheck"
+                   placeholder="placeholder="<fmt:message key="login.repeat_password" bundle="${rb}"/>"
+            />
             <input type="hidden" name="command" value="saveNewPatient"/>
-            <button>register</button>
+            <button>
+                <fmt:message key="button.register" bundle="${rb}"/>
+            </button>
         </form>
     </div>
 </div>

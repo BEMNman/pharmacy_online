@@ -8,12 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="locale" var="rb"/>
+
 <html>
-
 <body>
-
 <div style="border: 1px black">
-    <h2>Edit/create medicament</h2>
+    <h2>
+        <fmt:message key="edit_table.name" bundle="${rb}"/>
+    </h2>
 </div>
 <form action="saveMedicament" method="post"
       style="display: inline-block; margin: 0;">
@@ -24,11 +28,21 @@
         </div>
         <div>
             <select id="form" name="form">
-                <option value="pill">pill</option>
-                <option value="solution">solution</option>
-                <option value="powder">powder</option>
-                <option value="cream">cream</option>
-                <option value="gel">gel</option>
+                <option value="pill">
+                    <fmt:message key="medicines.pill" bundle="${rb}"/>
+                </option>
+                <option value="solution">
+                    <fmt:message key="medicines.solution" bundle="${rb}"/>
+                </option>
+                <option value="powder">
+                    <fmt:message key="medicines.powder" bundle="${rb}"/>
+                </option>
+                <option value="cream">
+                    <fmt:message key="medicines.cream" bundle="${rb}"/>
+                </option>
+                <option value="gel">
+                    <fmt:message key="medicines.gel" bundle="${rb}"/>
+                </option>
             </select>
             <script>
                 form.value = '${requestScope.medicament.form.name().toLowerCase()}';
@@ -36,12 +50,18 @@
         </div>
 
         <div>
-            <input type="text" placeholder="dosage" name="dosage" value="${requestScope.medicament.dosage}"/>
+            <input type="text"
+                   placeholder="<fmt:message key="medicines.dosage_l" bundle="${rb}"/>"
+                   name="dosage" value="${requestScope.medicament.dosage}"/>
         </div>
         <div>
             <select id="recipe" name="recipe">
-                <option value="true">yes</option>
-                <option value="false">no</option>
+                <option value="true">
+                    <fmt:message key="yes" bundle="${rb}"/>
+                </option>
+                <option value="false">
+                    <fmt:message key="no" bundle="${rb}"/>
+                </option>
             </select>
             <script>
                 recipe.value = '${requestScope.medicament.recipe}';
@@ -49,21 +69,27 @@
         </div>
 
         <div>
-            <input type="text" placeholder="amount in pack" name="amountInPack"
+            <input type="text"
+                   placeholder="<fmt:message key="medicines.amount_in_pack_l" bundle="${rb}"/>"
+                   name="amountInPack"
                    value="${requestScope.medicament.amountInPack}"/>
         </div>
         <div>
-            <input type="number" step="0.01" placeholder="price" name="price"
+            <input type="number" step="0.01"
+                   placeholder="<fmt:message key="medicines.price_l" bundle="${rb}"/>"
+                   name="price"
                    value="${requestScope.medicament.price}"/>
         </div>
         <div>
-            <input type="number" step="1" placeholder="quantity" name="quantity"
+            <input type="number" step="1"
+                   placeholder="<fmt:message key="medicines.quantity_l" bundle="${rb}"/>"
+                   name="quantity"
                    value="${requestScope.medicament.quantity}"/>
         </div>
         <div>
             <input type="hidden" name="command" value="saveMedicament"/>
             <input type="hidden" name="medicamentId" value="${requestScope.medicament.id}">
-            <input type="submit" value="save"/>
+            <input type="submit" value="<fmt:message key="button.save" bundle="${rb}"/>"/>
         </div>
     </div>
 </form>

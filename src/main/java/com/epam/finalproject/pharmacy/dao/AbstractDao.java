@@ -17,10 +17,6 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
     private static final String WHERE_VALUE_ID = " WHERE id = ?";
     private static final String SAVE_NEW_ITEM_IN_DB = "INSERT INTO ";
     private static final String VALUES = " VALUE(";
-    private static final String DELETE_ALL_FROM = "DELETE FROM ";
-    private static final String QUERY_UPDATE = "UPDATE medicines " +
-            "SET name = ?, form = ?, dosage = ?, recipe = ?, amountInPack = ?, price = ?, quantity = ?, archive = ? " +
-            "WHERE id = ?";
     public static final String MD5_FOR_PASSWORD_USER = "MD5(";
 
     private Connection connection;

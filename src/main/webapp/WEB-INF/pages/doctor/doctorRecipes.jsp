@@ -111,7 +111,7 @@
     <div style="border: 1px black">
         <c:if test="${requestScope.recipes != null
                    && requestScope.messageToPage == null}">
-            <jsp:include page="/WEB-INF/pages/tables/recipesDoctorTable.jsp"/>
+            <jsp:include page="/WEB-INF/pages/tables/recipesTable.jsp"/>
         </c:if>
         <c:if test="${requestScope.messageToPage != null}">
             <jsp:include page="../message.jsp"/>

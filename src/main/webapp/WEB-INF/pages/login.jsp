@@ -5,24 +5,6 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session" />
 <fmt:setBundle basename="locale" var="rb" />
 
-<c:set var="urlLocale">
-    <c:url value="controller?language"/>
-</c:set>
-<script>
-    function switchLocale(url) {
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, false);
-        xhr.send();
-
-        if (xhr.status != 200)
-            alert( url + ', ' + xhr.status + ', ' + xhr.statusText );
-        else
-            location.reload(true);
-    }
-</script>
-
-
 <html>
 <style>
     .login-page {
@@ -126,19 +108,17 @@
 
 <html>
 <body>
-<div class="locale">
-    <a class="tool-button" href="javascript:switchLocale('${urlLocale}=en')">EN</a>
-    |
-    <a class="tool-button" href="javascript:switchLocale('${urlLocale}=ru')">RU</a>
-    |
-    <a class="tool-button" href="javascript:switchLocale('${urlLocale}=be')">BE</a>
-</div>
+<jsp:include page="header.jsp"/>
 <div class="login-page">
     <div class="form">
         <c:if test="${sessionScope.user == null}">
             <form class="login-form" action="login" method="post">
-                <input type="text" name="login" placeholder="<fmt:message key="login.name" bundle="${rb}"/>"/>
-                <input type="password" name="password" placeholder="<fmt:message key="login.password" bundle="${rb}"/>"/>
+                <input type="text" name="login"
+                       placeholder="<fmt:message key="login.name" bundle="${rb}"/>"
+                />
+                <input type="password" name="password"
+                       placeholder="<fmt:message key="login.password" bundle="${rb}"/>"
+                />
                 <input type="hidden" name="command" value="login"/>
                 <button type="submit" value="sign in">
                     <fmt:message key="login.button" bundle="${rb}"/>

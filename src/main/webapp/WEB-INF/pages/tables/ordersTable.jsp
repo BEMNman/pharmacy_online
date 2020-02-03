@@ -37,9 +37,22 @@
     <tbody>
     <c:forEach items="${requestScope.orders}" var="order">
         <tr>
-            <td><c:out value="${order.creationDate}"/></td>
+            <td>
+                <fmt:parseDate value="${ order.creationDate }" pattern="yyyy-MM-dd'T'HH:mm:ss" var="creationDate" type="both" />
+                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${creationDate}" />
+            </td>
             <td><c:out value="${order.price}"/></td>
-            <td><c:out value="${order.status}"/></td>
+            <td>
+                <c:if test="${order.status == 'PAID'}">
+                    <fmt:message key="status.paid" bundle="${rb}"/>
+                </c:if>
+                <c:if test="${order.status == 'CANCELED'}">
+                    <fmt:message key="status.canceled" bundle="${rb}"/>
+                </c:if>
+                <c:if test="${order.status == 'PROCESS'}">
+                    <fmt:message key="status.process" bundle="${rb}"/>
+                </c:if>
+            </td>
 
             <td align="centre">
                 <p>

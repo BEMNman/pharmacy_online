@@ -19,11 +19,11 @@ public class RequestService {
     }
 
     public void sendRequest(String recipeId, String requestedPeriod) throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            RequestDao requestDao = daoHelper.createRequestDao();
             Long id = Long.parseLong(recipeId);
             Integer period = Integer.parseInt(requestedPeriod);
             Request request = Request.newRequest(id, period);
+            try (DaoHelper daoHelper = daoHelperFactory.create()) {
+                RequestDao requestDao = daoHelper.createRequestDao();
             requestDao.save(request);
         } catch (NumberFormatException | DaoException e) {
             throw new ServerException(e);

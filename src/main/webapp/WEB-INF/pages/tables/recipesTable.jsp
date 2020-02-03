@@ -20,7 +20,14 @@
         <fmt:message key="recipes" bundle="${rb}"/>
     </h2>
 </div>
-
+<c:if test="${sessionScope.user.role == 'DOCTOR'}">
+    <form name="create" action="openCreationFormRecipe">
+        <input type="hidden" name="command" value="openCreationFormRecipe">
+        <button>
+            <fmt:message key="button.create" bundle="${rb}"/>
+        </button>
+    </form>
+</c:if>
 <table>
     <tr>
         <th>
@@ -39,21 +46,33 @@
             <fmt:message key="medicines.quantity" bundle="${rb}"/>
         </th>
         <th>
-            <fmt:message key="recipe.doctor" bundle="${rb}"/>
+            <c:if test="${sessionScope.user.role == 'PATIENT'}">
+                <fmt:message key="recipe.doctor" bundle="${rb}"/>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 'DOCTOR'}">
+                <fmt:message key="recipe.patient" bundle="${rb}"/>
+            </c:if>
         </th>
         <th></th>
     </tr>
 
     <tbody>
     <c:forEach items="${requestScope.recipes}" var="recipe">
-        <tr>
-            <td><c:out value="${recipe.createdDate}"/></td>
-            <td><c:out value="${recipe.expDate}"/></td>
-            <td><c:out value="${recipe.medicamentName}"/></td>
-            <td><c:out value="${recipe.medicamentDosage}"/></td>
-            <td><c:out value="${recipe.amount}"/></td>
-            <td><c:out value="${recipe.doctorName}"/></td>
+        <td><c:out value="${recipe.createdDate}"/></td>
+        <td><c:out value="${recipe.expDate}"/></td>
+        <td><c:out value="${recipe.medicamentName}"/></td>
+        <td><c:out value="${recipe.medicamentDosage}"/></td>
+        <td><c:out value="${recipe.amount}"/></td>
+        <td>
+            <c:if test="${sessionScope.user.role == 'DOCTOR'}">
+                <c:out value="${recipe.patientName}"/>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 'PATIENT'}">
+                <c:out value="${recipe.doctorName}"/>
+            </c:if>
+        </td>
 
+        <c:if test="${sessionScope.user.role == 'PATIENT'}">
             <td height="30px" align="centre">
                 <c:if test="${recipe.expDate >= requestScope.currentDate}">
                     <form action="sendRecipeRequest" method="post"
@@ -75,6 +94,7 @@
                     </form>
                 </c:if>
             </td>
+        </c:if>
         </tr>
     </c:forEach>
     </tbody>

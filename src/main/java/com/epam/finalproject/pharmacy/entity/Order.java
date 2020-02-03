@@ -2,6 +2,7 @@ package com.epam.finalproject.pharmacy.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class Order implements Identifable {
 

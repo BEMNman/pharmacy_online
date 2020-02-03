@@ -13,7 +13,7 @@ public class Page {
 
     public static final String PHARMACIST_MAIN = "/WEB-INF/pages/pharmacist/pharmacistMain.jsp";
     public static final String PHARMACIST_EDIT_CREATE_MEDICAMENT =
-            "/WEB-INF/pages/pharmacist/pharmacistEditCreateMedicament.jsp";
+                                                 "/WEB-INF/pages/pharmacist/pharmacistEditCreateMedicament.jsp";
 
     public static final String DOCTOR_MAIN = "/WEB-INF/pages/doctor/doctorMain.jsp";
     public static final String DOCTOR_RECIPES = "/WEB-INF/pages/doctor/doctorRecipes.jsp";

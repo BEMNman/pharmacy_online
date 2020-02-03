@@ -11,9 +11,19 @@
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
+<style>
+    a {text-decoration: none;}
+    a:hover {text-decoration: underline;}
+</style>
 
 <html>
 <head>
+    <form class="menu-button" action="mainPage" method="get">
+    <button type="submit" value="mainPage">
+        <input type="hidden" name="command" value="mainPage"/>
+        <fmt:message key="medicines" bundle="${rb}"/>
+    </button>
+    </form>
     <p>
         <a href="controller?command=mainPage">
             <fmt:message key="medicines" bundle="${rb}"/>

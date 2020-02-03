@@ -12,8 +12,6 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session" />
 <fmt:setBundle basename="locale" var="rb" />
 
-<!DOCTYPE html>
-
 <style>
     body {
         font: 11pt Arial, Helvetica, sans-serif; /* Рубленый шрифт текста */
@@ -23,7 +21,7 @@
     h1 {
         font-size: 36px; /* Размер шрифта */
         margin: 0; /* Убираем отступы */
-        color: #fc6; /* Цвет текста */
+        color: #ffff09; /* Цвет текста */
     }
 
     h2 {
@@ -31,19 +29,20 @@
     }
 
     #header { /* Верхний блок */
-        background: #0080c0; /* Цвет фона */
+        background: #4dc015; /* Цвет фона */
         padding: 10px; /* Поля вокруг текста */
     }
 
     #basket {
-        background: #1080c1; /* Цвет фона */
+        background: #4dc015; /* Цвет фона */
         text-align: right;
         padding: 0 30px 5px 0; /* Поля вокруг текста */
     }
 
     #logo-left { /* Левая колонка */
         float: left; /* Обтекание справа */
-        width: 600px; /* Ширина колонки */
+        width: 25%; /* Ширина колонки */
+        text-align: center ;
         /*border: 1px solid #333; !* Параметры рамки вокруг *!*/
     }
 
@@ -85,7 +84,8 @@
 <div id="header">
     <div id="logo-left">
         <a href="controller?command=mainPage" class="logo">
-            <h1>Pharmacy Online</h1>
+            <h1>Pharmacy</h1>
+            <h1>Online</h1>
         </a>
     </div>
     <div id="logo-right">
@@ -96,16 +96,18 @@
             |
             <a class="tool-button" href="javascript:switchLocale('${urlLocale}=be')">BE</a>
         </div>
-        <div id="username">
-            <b style="font-size:20px; padding-right: 1em"> <fmt:message key="header.hello" bundle="${rb}"/> ${sessionScope.user.name}! </b>
-            <c:if test="${sessionScope.user != null}">
-                <form action="signOut" method="get"
-                      style="display: inline-block; margin: 0;">
-                    <input type="hidden" name="command" value="logout"/>
-                    <a href="controller?command=logout"><fmt:message key="header.singout" bundle="${rb}"/></a>
-                </form>
-            </c:if>
-        </div>
+        <c:if test="${sessionScope.user != null}">
+            <div id="username">
+                <b style="font-size:20px; padding-right: 1em"> <fmt:message key="header.hello" bundle="${rb}"/> ${sessionScope.user.name}! </b>
+                <c:if test="${sessionScope.user != null}">
+                    <form action="signOut" method="get"
+                          style="display: inline-block; margin: 0;">
+                        <input type="hidden" name="command" value="logout"/>
+                        <a href="controller?command=logout"><fmt:message key="header.singout" bundle="${rb}"/></a>
+                    </form>
+                </c:if>
+            </div>
+        </c:if>
     </div>
 </div>
 <c:if test="${sessionScope.user.role == 'PATIENT'}">
