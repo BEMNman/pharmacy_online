@@ -11,46 +11,42 @@
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
-<style>
-    a {text-decoration: none;}
-    a:hover {text-decoration: underline;}
+
+<style type="text/css">
+    <%@include file="/resources/css/menu.css" %>
 </style>
 
 <html>
 <head>
-    <form class="menu-button" action="mainPage" method="get">
-    <button type="submit" value="mainPage">
-        <input type="hidden" name="command" value="mainPage"/>
-        <fmt:message key="medicines" bundle="${rb}"/>
-    </button>
-    </form>
-    <p>
-        <a href="controller?command=mainPage">
-            <fmt:message key="medicines" bundle="${rb}"/>
-        </a>
-    </p>
-    <c:if test="${sessionScope.user.role.name() =='PATIENT'}">
+    <div class="link-menu">
         <p>
-            <a href="controller?command=openOrders">
-                <fmt:message key="orders" bundle="${rb}"/>
+            <a href="controller?command=mainPage">
+                <fmt:message key="medicines" bundle="${rb}"/>
             </a>
         </p>
-    </c:if>
-    <c:if test="${sessionScope.user.role.name() =='PATIENT' || sessionScope.user.role.name() == 'DOCTOR'}">
-        <p>
-            <a href="controller?command=openRecipes">
-                <fmt:message key="recipes" bundle="${rb}"/>
+        <c:if test="${sessionScope.user.role.name() =='PATIENT'}">
+            <p>
+                <a href="controller?command=openOrders">
+                    <fmt:message key="orders" bundle="${rb}"/>
+                </a>
+            </p>
+        </c:if>
+        <c:if test="${sessionScope.user.role.name() =='PATIENT' || sessionScope.user.role.name() == 'DOCTOR'}">
+            <p>
+                <a href="controller?command=openRecipes">
+                    <fmt:message key="recipes" bundle="${rb}"/>
 
-            </a>
-        </p>
-    </c:if>
-    <c:if test="${sessionScope.user.role.name() =='DOCTOR'}">
-        <p>
-            <a href="controller?command=openRequests">
-                <fmt:message key="requests" bundle="${rb}"/>
-            </a>
-        </p>
-    </c:if>
+                </a>
+            </p>
+        </c:if>
+        <c:if test="${sessionScope.user.role.name() =='DOCTOR'}">
+            <p>
+                <a href="controller?command=openRequests">
+                    <fmt:message key="requests" bundle="${rb}"/>
+                </a>
+            </p>
+        </c:if>
+    </div>
 </head>
 <body>
 

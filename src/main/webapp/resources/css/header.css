@@ -1,0 +1,46 @@
+h1 {
+    font-size: 36px;
+    margin: 0;
+    color: #ffff09;
+}
+#header {
+    top: 0;
+    position: fixed;
+    background: #1693b8;
+    width: 100%;
+    height: 110px;
+    overflow:hidden;
+    font: 11pt Arial, Helvetica, sans-serif;
+    display: inline-block;
+    left: 0;
+    border-top: #1a1a1a;
+}
+#basket {
+    text-align: right;
+    margin-top: 25px;
+    margin-right: 50px;
+}
+#logo-left {
+    float: left;
+    width: 25%;
+    text-align: center;
+    margin: 10px 0 10px 0;
+}
+#logo-right {
+    float: right;
+    text-align: right;
+    padding: 0 20px 5px 0;
+    display: inline-grid;
+}
+#username-signout {
+    margin-right: 50px;
+    display: inline-block;
+}
+#locale {
+    padding-bottom: 20px;
+    margin-top: 7px;
+}
+#signout{
+    font-size: 16px;
+    caret-color: #ffff09;
+}

@@ -8,16 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<style>
+    <%@include file="/resources/css/table_style.css" %>
+</style>
+
 <html>
 <body>
-
 <div style="border: 1px black">
     <h2>Requests</h2>
 </div>
-<%--<form name="create" action="openCreationFormRecipe">--%>
-<%--    <input type="hidden" name="command" value="openCreationFormRecipe">--%>
-<%--    <button>new recipe</button>--%>
-<%--</form>--%>
 <table>
     <tr>
         <th>Creation date</th>

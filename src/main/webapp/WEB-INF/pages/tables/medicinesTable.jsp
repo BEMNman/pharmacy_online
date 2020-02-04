@@ -5,10 +5,12 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
+<style>
+    <%@include file="/resources/css/table_style.css" %>
+</style>
+
 <html>
-
 <body>
-
 <div style="border: 1px black">
     <h2>
         <fmt:message key="medicines" bundle="${rb}"/>
@@ -22,7 +24,7 @@
         </button>
     </form>
 </c:if>
-<table style=" border: 2px solid; width: auto; text-align:center">
+<table>
     <tr>
         <th>
             <fmt:message key="medicines.name" bundle="${rb}"/>
@@ -48,7 +50,7 @@
         <th></th>
     </tr>
 
-    <tbody class="w3-centered" bgcolor="white">
+    <tbody>
     <c:forEach items="${requestScope.medicines}" var="medicament">
         <tr>
             <td><c:out value="${medicament.name}"/></td>

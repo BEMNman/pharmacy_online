@@ -12,6 +12,10 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
+<style>
+    <%@include file="/resources/css/table_style.css" %>
+</style>
+
 <html>
 <body>
 
