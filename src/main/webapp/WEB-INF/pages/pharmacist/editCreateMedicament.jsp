@@ -14,7 +14,7 @@
 
 <html>
 <body>
-<div style="border: 1px black">
+<div>
     <h2>
         <fmt:message key="edit_table.name" bundle="${rb}"/>
     </h2>
@@ -22,7 +22,7 @@
 <form action="saveMedicament" method="post"
       style="display: inline-block; margin: 0;">
 
-    <div style="display: inline">
+    <div>
         <div>
             <input type="text" placeholder="name" name="name" value="${requestScope.medicament.name}"/>
         </div>

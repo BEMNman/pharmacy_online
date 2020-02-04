@@ -6,7 +6,7 @@
 <fmt:setBundle basename="locale" var="rb"/>
 
 <style type="text/css">
-    <%@include file="/resources/css/login_register.css"%>
+    <%@include file="/resources/css/styles.css"%>
 </style>
 
 <html>

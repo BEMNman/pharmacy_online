@@ -10,12 +10,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <style>
-    <%@include file="/resources/css/table_style.css" %>
+    <%@include file="/resources/css/styles.css"%>
 </style>
 
 <html>
 <body>
-<div style="border: 1px black">
+<div>
     <h2>Requests</h2>
 </div>
 <table>

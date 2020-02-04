@@ -8,10 +8,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<style type="text/css">
-    <%@include file="/resources/css/footer.css"%>
-</style>
-
 <html>
 <head>
     <title>Pharmacy</title>

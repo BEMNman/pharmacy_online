@@ -15,10 +15,6 @@
     <%@include file="/resources/js/switchLocale.js"%>
 </script>
 
-<style type="text/css">
-    <%@include file="/resources/css/header.css"%>
-</style>
-
 <c:set var="urlLocale">
     <c:url value="?language"/>
 </c:set>

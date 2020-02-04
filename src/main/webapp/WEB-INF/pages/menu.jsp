@@ -12,9 +12,9 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
-<style type="text/css">
-    <%@include file="/resources/css/menu.css" %>
-</style>
+<%--<style type="text/css">--%>
+<%--    <%@include file="/resources/css/menu.css" %>--%>
+<%--</style>--%>
 
 <html>
 <head>

@@ -13,7 +13,7 @@
 <fmt:setBundle basename="locale" var="rb"/>
 
 <style>
-    <%@include file="/resources/css/table_style.css" %>
+    <%@include file="/resources/css/styles.css"%>
 </style>
 
 <html>

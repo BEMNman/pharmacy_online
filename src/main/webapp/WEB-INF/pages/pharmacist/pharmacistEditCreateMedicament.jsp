@@ -10,7 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <style type="text/css">
-    <%@include file="/resources/css/page_style.css"%>
+    <%@include file="/resources/css/styles.css"%>
 </style>
 
 <html>
@@ -29,7 +29,7 @@
 
 <div id="content">
 
-    <div style="border: 1px black">
+    <div>
         <c:if test="${requestScope.messageToPage == null}">
             <jsp:include page="editCreateMedicament.jsp"/>
         </c:if>

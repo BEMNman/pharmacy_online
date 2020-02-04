@@ -13,13 +13,13 @@
 <fmt:setBundle basename="locale" var="rb"/>
 
 <style>
-    <%@include file="/resources/css/table_style.css" %>
+    <%@include file="/resources/css/styles.css"%>
 </style>
 
 <html>
 <body>
 
-<div style="border: 1px black">
+<div>
     <h2>
         <fmt:message key="recipes" bundle="${rb}"/>
     </h2>

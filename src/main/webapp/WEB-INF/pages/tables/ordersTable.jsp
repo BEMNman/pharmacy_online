@@ -13,7 +13,7 @@
 <fmt:setBundle basename="locale" var="rb"/>
 
 <style>
-    <%@include file="/resources/css/table_style.css" %>
+    <%@include file="/resources/css/styles.css"%>
 </style>
 
 <html>
@@ -42,8 +42,9 @@
     <c:forEach items="${requestScope.orders}" var="order">
         <tr>
             <td>
-                <fmt:parseDate value="${ order.creationDate }" pattern="yyyy-MM-dd'T'HH:mm:ss" var="creationDate" type="both" />
-                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${creationDate}" />
+                <fmt:parseDate value="${ order.creationDate }" pattern="yyyy-MM-dd'T'HH:mm:ss" var="creationDate"
+                               type="both"/>
+                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${creationDate}"/>
             </td>
             <td><c:out value="${order.price}"/></td>
             <td>

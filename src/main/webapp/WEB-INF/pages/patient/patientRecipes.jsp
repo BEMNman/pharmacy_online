@@ -10,8 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <style type="text/css">
-    <%@include file="/resources/css/page_style.css"%>
-</style>
+    <%@include file="/resources/css/styles.css"%></style>
 
 <html>
 <head>
