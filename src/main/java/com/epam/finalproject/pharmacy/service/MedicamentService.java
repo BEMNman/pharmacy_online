@@ -16,11 +16,11 @@ import java.util.*;
 
 public class MedicamentService {
 
-    public static final String MESSAGE_NOT_AVAILABLE_RECIPE = "You don't have recipe for this medicament";
-    public static final String MESSAGE_NOT_ENOUGH_IN_STOCK = "Entered quantity is more than in stock";
+    public static final String MESSAGE_NOT_AVAILABLE_RECIPE = "You don't have recipe for this medicament!";
+    public static final String MESSAGE_NOT_ENOUGH_IN_STOCK = "Entered quantity is more than in stock!";
     public static final String MESSAGE_EMPTY = "";
-    public static final String ENTERED_DATA_ARE_INCORRECT = "Entered data are incorrect";
-    private static final String MEDICAMENT_WAS_UPDATED = "Medicament was saved";
+    public static final String ENTERED_DATA_ARE_INCORRECT = "Entered data are incorrect!";
+    public static final String EMPTY = "";
 
     private DaoHelperFactory daoHelperFactory;
 
@@ -163,6 +163,6 @@ public class MedicamentService {
         } else {
             return ENTERED_DATA_ARE_INCORRECT;
         }
-        return MEDICAMENT_WAS_UPDATED;
+        return EMPTY;
     }
 }

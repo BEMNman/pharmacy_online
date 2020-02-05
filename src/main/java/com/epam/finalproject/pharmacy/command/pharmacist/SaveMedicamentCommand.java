@@ -3,6 +3,7 @@ package com.epam.finalproject.pharmacy.command.pharmacist;
 import com.epam.finalproject.pharmacy.command.Command;
 import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
+import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
 import com.epam.finalproject.pharmacy.entity.MedicamentForm;
 import com.epam.finalproject.pharmacy.exception.ServerException;
@@ -35,7 +36,11 @@ public class SaveMedicamentCommand implements Command {
         String medicamentQuantity = request.getParameter(RequestParameterConst.MEDICAMENT_QUANTITY);
         String resultCommand =
                 service.updateMedicament(id, name, stringForm, dosage, recipe, stringAmountInPack, medicamentPrice, medicamentQuantity);
-        request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, resultCommand);
+        if(!resultCommand.isEmpty()){
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, resultCommand);
+            return CommandResult.forward(Page.PHARMACIST_EDIT_CREATE_MEDICAMENT);
+        }
+
         return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
     }
 }
