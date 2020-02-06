@@ -24,12 +24,12 @@ public class ConnectionPool {
     private static final int POOL_SIZE = 10;
     private static final Semaphore SEMAPHORE = new Semaphore(POOL_SIZE);
 
-    private ConnectionPool(){
+    private ConnectionPool() {
         availableConnection = new ArrayDeque<>();
         connectionsInUse = new ArrayDeque<>();
     }
 
-    public static ConnectionPool getInstance(){
+    public static ConnectionPool getInstance() {
         ConnectionPool instanceTemp = null;
         if (instance.get() == null) {
             instanceLock.lock();
@@ -45,23 +45,8 @@ public class ConnectionPool {
         return instance.get();
     }
 
-    public void returnConnection(ProxyConnection proxyConnection) {
-        connectionLock.lock();
-        try {
-            if (connectionsInUse.contains(proxyConnection)) {
-                availableConnection.offer(proxyConnection);
-                connectionsInUse.remove(proxyConnection);
-
-                logger.debug("Connection was returned in PoolConnection: " + proxyConnection);
-            }
-        } finally {
-            connectionLock.unlock();
-            SEMAPHORE.release();
-        }
-    }
-
     public ProxyConnection getConnection() throws SQLException {
-        if(availableConnection.size() == 0) {
+        if (availableConnection.size() == 0) {
             availableConnection = ConnectionFactory.createPoolConnections();
         }
         ProxyConnection proxyConnection = null;
@@ -78,5 +63,20 @@ public class ConnectionPool {
         logger.debug("Connection in using: " + proxyConnection);
 
         return proxyConnection;
+    }
+
+    public void returnConnection(ProxyConnection proxyConnection) {
+        connectionLock.lock();
+        try {
+            if (connectionsInUse.contains(proxyConnection)) {
+                availableConnection.offer(proxyConnection);
+                connectionsInUse.remove(proxyConnection);
+
+                logger.debug("Connection was returned in PoolConnection: " + proxyConnection);
+            }
+        } finally {
+            connectionLock.unlock();
+            SEMAPHORE.release();
+        }
     }
 }

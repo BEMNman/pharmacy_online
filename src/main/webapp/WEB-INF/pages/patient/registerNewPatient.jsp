@@ -13,22 +13,26 @@
 <body>
 <div class="wrapper">
     <jsp:include page="/WEB-INF/pages/header.jsp"/>
-    <div class="login-page">
-        <div class="form">
-            <form class="register-form" action="logIn" method="post">
-                <input type="text" required name="name"
-                       placeholder="<fmt:message key="login.full_name" bundle="${rb}"/>"/>
-                <input type="text" required name="login"
-                       placeholder="<fmt:message key="login.name" bundle="${rb}"/>"/>
-                <input type="password" required name="password"
-                       placeholder="<fmt:message key="login.password" bundle="${rb}"/>"/>
-                <input type="password" required name="passwordForCheck"
-                       placeholder="<fmt:message key="login.repeat_password" bundle="${rb}"/>"/>
-                <input type="hidden" name="command" value="saveNewPatient"/>
-                <button>
-                    <fmt:message key="button.register" bundle="${rb}"/>
-                </button>
-            </form>
+    <div class="content">
+        <div class="main">
+            <div class="mobile">
+                <div class="form">
+                    <form class="register-form" action="logIn" method="post">
+                        <input type="text" required name="name"
+                               placeholder="<fmt:message key="login.full_name" bundle="${rb}"/>"/>
+                        <input type="text" required name="login"
+                               placeholder="<fmt:message key="login.name" bundle="${rb}"/>"/>
+                        <input type="password" required name="password"
+                               placeholder="<fmt:message key="login.password" bundle="${rb}"/>"/>
+                        <input type="password" required name="passwordForCheck"
+                               placeholder="<fmt:message key="login.repeat_password" bundle="${rb}"/>"/>
+                        <input type="hidden" name="command" value="saveNewPatient"/>
+                        <button>
+                            <fmt:message key="button.register" bundle="${rb}"/>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <jsp:include page="/WEB-INF/pages/footer.jsp"/>

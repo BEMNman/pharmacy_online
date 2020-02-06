@@ -11,12 +11,7 @@ import java.util.Locale;
 
 public class LocaleFilter implements Filter {
 
-    private static Locale DEFAULT_LOCALE_LANG;
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        DEFAULT_LOCALE_LANG = Locale.getDefault();
-    }
+    private static Locale DEFAULT_LOCALE_LANG= Locale.getDefault();
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) req;
@@ -25,6 +20,9 @@ public class LocaleFilter implements Filter {
             session.setAttribute(SessionAttributeConst.LOCALE_LANG, DEFAULT_LOCALE_LANG);
         }
         String localeName = req.getParameter(RequestParameterConst.LANGUAGE);
+
+        System.out.println("localeName = " + localeName);
+
         if(localeName != null) {
             Locale locale;
             switch (localeName) {

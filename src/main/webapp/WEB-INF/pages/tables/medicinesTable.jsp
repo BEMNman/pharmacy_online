@@ -109,7 +109,7 @@
                                   style="display: inline-block; margin: 0;">
                                 <input type="hidden" name="command" value="editMedicament"/>
                                 <input type="hidden" name="medicamentId" value="${medicament.id}">
-                                <input type="submit" value="<fmt:message key="edit" bundle="${rb}"/>"/>
+                                <input id="submit" type="submit" value="<fmt:message key="edit" bundle="${rb}"/>"/>
                             </form>
                         </td>
                         <td>

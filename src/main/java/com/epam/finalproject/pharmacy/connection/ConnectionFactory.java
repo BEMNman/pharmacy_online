@@ -40,7 +40,6 @@ public class ConnectionFactory {
             Queue<ProxyConnection> proxyConnections = new ArrayDeque<>();
             String poolSizeString = properties.getProperty(POOL_SIZE);
             int poolSize = Integer.parseInt(poolSizeString);
-
             Connection connection = DriverManager.getConnection(url, user, pass);
             ProxyConnection proxyConnection = new ProxyConnection(connection, ConnectionPool.getInstance());
             for (int i = 0; i < poolSize; i++) {

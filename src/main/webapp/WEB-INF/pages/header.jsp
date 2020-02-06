@@ -9,7 +9,8 @@
 </script>
 
 <c:set var="urlLocale">
-    <c:url value="?language"/>
+<%--    <c:url value="?language"/>--%>
+    <c:url value="controller?language"/>
 </c:set>
 
 <div class="header">
@@ -18,19 +19,17 @@
         <div class="logo"><a href="?command=mainPage">Pharmacy<span class="pink">Online</span></a></div>
 
         <div class="headerContentRight">
-            <div class="locale">
-                <a class="tool-button" href="javascript:switchLocale('${urlLocale}=en')">EN</a>
-                |
-                <a class="tool-button" href="javascript:switchLocale('${urlLocale}=ru')">RU</a>
-                |
-                <a class="tool-button" href="javascript:switchLocale('${urlLocale}=be')">BE</a>
+
+
+            <div class="hello">
+                <c:if test="${sessionScope.user != null}">
+                    <fmt:message key="header.hello" bundle="${rb}"/> ${sessionScope.user.name}!
+                    <a class="signout" href="?command=logout"><fmt:message key="header.singout" bundle="${rb}"/></a>
+                </c:if>
+                    <a href="javascript:switchLocale('${urlLocale}=en')">EN</a> |
+                    <a  href="javascript:switchLocale('${urlLocale}=ru')">RU</a> |
+                    <a href="javascript:switchLocale('${urlLocale}=be')">BE</a>
             </div>
-            <c:if test="${sessionScope.user != null}">
-                <ul class="nav">
-                    <li><b id="a"><fmt:message key="header.hello" bundle="${rb}"/> ${sessionScope.user.name}!</b id="a"></li>
-                    <li><a href="?command=logout"><fmt:message key="header.singout" bundle="${rb}"/></a></li>
-                </ul>
-            </c:if>
             <c:if test="${sessionScope.user.role == 'PATIENT'}">
                 <div class="basket">
                     <form action="openBasket" method="get"

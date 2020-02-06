@@ -39,7 +39,8 @@ public class ActionController extends HttpServlet {
                 forward(request, response, page);
             }
         } catch (Exception e) {
-            logger.warn(e);
+            logger.warn(e.getMessage());
+            e.printStackTrace();
             page = Page.ERROR;
             redirect(response, page);
         }

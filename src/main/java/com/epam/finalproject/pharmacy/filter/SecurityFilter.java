@@ -20,59 +20,56 @@ import java.util.Map;
 
 public class SecurityFilter implements Filter {
 
-    private Map<UserRole, List<String>> roleAvailableCommand;
-    private List<String> listCommandUnknownUser;
+    private final static List<String> listCommandUnknownUser = Arrays.asList(
+            CommandFactory.LOGIN,
+            CommandFactory.REGISTER_NEW_PATIENT,
+            CommandFactory.SAVE_NEW_PATIENT,
+            CommandFactory.SHOW_ERROR_PAGE);
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        final List<String> LIST_COMMAND_PATIENT = Arrays.asList(
-                CommandFactory.MAIN_PAGE,
-                CommandFactory.OPEN_RECIPES,
-                CommandFactory.OPEN_ORDER,
-                CommandFactory.OPEN_ORDERS,
-                CommandFactory.ADD_MEDICAMENT_IN_BASKET,
-                CommandFactory.OPEN_BASKET,
-                CommandFactory.SAVE_ORDER,
-                CommandFactory.VIEW_ORDER_DETAILS,
-                CommandFactory.CONTINUE_ORDER,
-                CommandFactory.CLEAR_BASKET,
-                CommandFactory.PAY,
-                CommandFactory.SEND_RECIPE_REQUEST,
-                CommandFactory.LOGOUT,
-                CommandFactory.SHOW_ERROR_PAGE);
-        final List<String> LIST_COMMAND_PHARMACIST = Arrays.asList(
-                CommandFactory.MAIN_PAGE,
-                CommandFactory.DELETE_MEDICAMENT,
-                CommandFactory.EDIT_MEDICAMENT,
-                CommandFactory.SAVE_MEDICAMENT,
-                CommandFactory.OPEN_CREATION_FORM_MEDICAMENT,
-                CommandFactory.LOGOUT,
-                CommandFactory.SHOW_ERROR_PAGE);
-        final List<String> LIST_COMMAND_DOCTOR = Arrays.asList(
-                CommandFactory.MAIN_PAGE,
-                CommandFactory.OPEN_CREATION_FORM_RECIPE,
-                CommandFactory.SAVE_RECIPE,
-                CommandFactory.OPEN_REQUESTS,
-                CommandFactory.OPEN_RECIPES,
-                CommandFactory.REJECT_REQUEST,
-                CommandFactory.APPROVE_REQUEST,
-                CommandFactory.LOGOUT,
-                CommandFactory.SHOW_ERROR_PAGE);
+    private final static List<String> LIST_COMMAND_PATIENT = Arrays.asList(
+            CommandFactory.MAIN_PAGE,
+            CommandFactory.OPEN_RECIPES,
+            CommandFactory.OPEN_ORDER,
+            CommandFactory.OPEN_ORDERS,
+            CommandFactory.ADD_MEDICAMENT_IN_BASKET,
+            CommandFactory.OPEN_BASKET,
+            CommandFactory.SAVE_ORDER,
+            CommandFactory.VIEW_ORDER_DETAILS,
+            CommandFactory.CONTINUE_ORDER,
+            CommandFactory.CLEAR_BASKET,
+            CommandFactory.PAY,
+            CommandFactory.SEND_RECIPE_REQUEST,
+            CommandFactory.LOGOUT,
+            CommandFactory.SHOW_ERROR_PAGE);
+    private final static List<String> LIST_COMMAND_PHARMACIST = Arrays.asList(
+            CommandFactory.MAIN_PAGE,
+            CommandFactory.DELETE_MEDICAMENT,
+            CommandFactory.EDIT_MEDICAMENT,
+            CommandFactory.SAVE_MEDICAMENT,
+            CommandFactory.OPEN_CREATION_FORM_MEDICAMENT,
+            CommandFactory.LOGOUT,
+            CommandFactory.SHOW_ERROR_PAGE);
+    private final static List<String> LIST_COMMAND_DOCTOR = Arrays.asList(
+            CommandFactory.MAIN_PAGE,
+            CommandFactory.OPEN_CREATION_FORM_RECIPE,
+            CommandFactory.SAVE_RECIPE,
+            CommandFactory.OPEN_REQUESTS,
+            CommandFactory.OPEN_RECIPES,
+            CommandFactory.REJECT_REQUEST,
+            CommandFactory.APPROVE_REQUEST,
+            CommandFactory.LOGOUT,
+            CommandFactory.SHOW_ERROR_PAGE);
+    private final static Map<UserRole, List<String>> roleAvailableCommand = new HashMap<>();
 
-        roleAvailableCommand = new HashMap<>();
+    static {
         roleAvailableCommand.put(UserRole.PATIENT, LIST_COMMAND_PATIENT);
         roleAvailableCommand.put(UserRole.DOCTOR, LIST_COMMAND_DOCTOR);
         roleAvailableCommand.put(UserRole.PHARMACIST, LIST_COMMAND_PHARMACIST);
-
-        listCommandUnknownUser = Arrays.asList(
-                CommandFactory.LOGIN,
-                CommandFactory.REGISTER_NEW_PATIENT,
-                CommandFactory.SAVE_NEW_PATIENT,
-                CommandFactory.SHOW_ERROR_PAGE);
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws
+            IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
