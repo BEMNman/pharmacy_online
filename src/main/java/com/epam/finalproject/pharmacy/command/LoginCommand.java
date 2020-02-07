@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class LoginCommand implements Command {
 
@@ -39,7 +40,7 @@ public class LoginCommand implements Command {
             session.setAttribute(SessionAttributeConst.USER, user.get());
         } else {
             logger.warn("Can't login");
-            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, "Login or password is incorrect");
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, ResourceBundle.getBundle("resources.locale").getString(INCORRECT_LOGIN));
             return CommandResult.forward(Page.LOGIN);
         }
         logger.debug("Command 'LoginCommand' was redirected to '/controller?command=mainPage'");

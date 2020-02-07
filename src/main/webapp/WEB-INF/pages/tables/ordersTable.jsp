@@ -20,7 +20,9 @@
             <th>
                 <fmt:message key="order.status" bundle="${rb}"/>
             </th>
-            <th></th>
+            <th>
+                <fmt:message key="request.action" bundle="${rb}"/>
+            </th>
         </tr>
 
         <tbody>
@@ -45,11 +47,12 @@
                 </td>
 
                 <td align="centre">
-                    <p>
-                        <a href="controller?command=viewOrderDetails&orderId=${order.id}">
-                            <fmt:message key="order.view" bundle="${rb}"/>
-                        </a>
-                    </p>
+                    <form action="viewOrderDetails" method="get"
+                          style="display: inline-block; margin: 0;">
+                        <input type="hidden" name="command" value="viewOrderDetails"/>
+                        <input type="hidden" name="orderId" value="${order.id}">
+                        <input id="submit" type="submit" value="<fmt:message key="order.view" bundle="${rb}"/>"/>
+                    </form>
                 </td>
             </tr>
         </c:forEach>

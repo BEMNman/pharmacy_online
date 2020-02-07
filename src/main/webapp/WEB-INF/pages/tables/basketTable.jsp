@@ -105,15 +105,21 @@
             </c:if>
 
             <input type="hidden" name="command" value="continueOrder"/>
-            <input type="submit" value=" <fmt:message key="order.check_order" bundle="${rb}"/>"/>
+
+            <button href="controller?command=continueOrder">
+                <fmt:message key="order.check_order" bundle="${rb}"/>
+            </button>
+                <%--            <input type="submit" value=" <fmt:message key="order.check_order" bundle="${rb}"/>"/>--%>
         </form>
-        <c:if test="${requestScope.totalPrice == null}">
-            <a href="controller?command=mainPage">
-                <fmt:message key="basket.return" bundle="${rb}"/>
-            </a>
-            <a href="controller?command=clearBasket">
-                <fmt:message key="basket.clear_basket" bundle="${rb}"/>
-            </a>
-        </c:if>
+        <div class="button-group">
+            <c:if test="${requestScope.totalPrice == null}">
+                <button href="controller?command=mainPage">
+                    <fmt:message key="basket.return" bundle="${rb}"/>
+                </button>
+                <button href="controller?command=clearBasket">
+                    <fmt:message key="basket.clear_basket" bundle="${rb}"/>
+                </button>
+            </c:if>
+        </div>
     </c:if>
 </div>

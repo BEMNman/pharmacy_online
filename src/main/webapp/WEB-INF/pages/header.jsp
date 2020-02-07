@@ -9,7 +9,6 @@
 </script>
 
 <c:set var="urlLocale">
-<%--    <c:url value="?language"/>--%>
     <c:url value="controller?language"/>
 </c:set>
 

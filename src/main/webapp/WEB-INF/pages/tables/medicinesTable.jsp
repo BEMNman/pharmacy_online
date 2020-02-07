@@ -46,14 +46,16 @@
                     <fmt:message key="medicines.quantity" bundle="${rb}"/>
                 </th>
                 <c:if test="${sessionScope.user.role != 'DOCTOR'}">
-                    <th></th>
+                    <th>
+                        <fmt:message key="request.action" bundle="${rb}"/>
+                    </th>
                 </c:if>
             </tr>
 
             <tbody>
             <c:forEach items="${requestScope.medicines}" var="medicament">
                 <tr>
-                    <td><c:out value="${medicament.name}"/></td>
+                    <td id="table-name"><c:out value="${medicament.name}"/></td>
                     <td>
                         <c:choose>
                         <c:when test="${medicament.form.name()=='PILL'}">
@@ -111,8 +113,6 @@
                                 <input type="hidden" name="medicamentId" value="${medicament.id}">
                                 <input id="submit" type="submit" value="<fmt:message key="edit" bundle="${rb}"/>"/>
                             </form>
-                        </td>
-                        <td>
                             <form action="deleteMedicament" method="post"
                                   style="display: inline-block; margin: 0;">
                                 <input type="hidden" name="command" value="deleteMedicament"/>

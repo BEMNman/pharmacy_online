@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class PayOrderCommand implements Command {
 
-    public static final String INVALID_CREDIT_CART_DATA = "credit card's information entered is not correct";
+    public static final String INVALID_CREDIT_CART_DATA = "Credit card's information entered is not correct";
     private OrderService service;
 
     public PayOrderCommand(OrderService service) {

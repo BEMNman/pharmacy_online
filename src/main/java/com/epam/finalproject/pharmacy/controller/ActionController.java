@@ -25,7 +25,7 @@ public class ActionController extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, java.io.IOException {
+            throws java.io.IOException {
 
         String page;
         try {

@@ -5,8 +5,8 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
-    <div class="leftCol">
-        <ul class="leftNav">
+<div class="leftCol">
+    <ul class="leftNav">
         <li>
             <a href="?command=mainPage">
                 <fmt:message key="medicines" bundle="${rb}"/>
@@ -33,6 +33,6 @@
                 </a>
             </li>
         </c:if>
-        </ul>
-    </div>
+    </ul>
+</div>
 
