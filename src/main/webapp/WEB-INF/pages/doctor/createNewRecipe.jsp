@@ -6,41 +6,49 @@
 <fmt:setBundle basename="locale" var="rb"/>
 
 <div class="main">
-    <h1>
+    <h2>
         <fmt:message key="recipe.create_new" bundle="${rb}"/>
-    </h1>
-    <form action="saveRecipe" method="post">
+    </h2>
 
-        <div style="display: inline">
-            <div>
-                <input type="date" placeholder="exp date"
-                       min="${requestScope.currentDate}" name="expDate" required/>
-            </div>
-            <div>
-                <select id="medicament" name="medicamentId" required>
-                    <option selected></option>
-                    <c:forEach items="${requestScope.medicines}" var="medicament">
-                        <option value="${medicament.id}">${medicament.name}, ${medicament.dosage}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div>
-                <input type="number" name="quantity" required
-                       min="1" step="1" value="1" maxlength="2"
-                       placeholder="quantity"/>
-            </div>
-            <div>
-                <select id="patient" name="patientId" required>
-                    <option selected></option>
-                    <c:forEach items="${requestScope.patients}" var="patient">
-                        <option value="${patient.id}">${patient.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div>
-                <input type="hidden" name="command" value="saveRecipe"/>
-                <input type="submit" value="<fmt:message key="button.save" bundle="${rb}"/>"/>
-            </div>
+    <form  action="saveRecipe" method="post">
+        <div class="row-form">
+            <label>
+                <fmt:message key="creation_date" bundle="${rb}"/>
+            </label>
+            <input type="date" placeholder="exp date"
+                   min="${requestScope.currentDate}" name="expDate" required/>
         </div>
+
+        <div class="row-form">
+            <label>
+                <fmt:message key="medicines.medicament" bundle="${rb}"/>
+            </label>
+            <select id="medicament" name="medicamentId" required>
+                <option selected></option>
+                <c:forEach items="${requestScope.medicines}" var="medicament">
+                    <option value="${medicament.id}">${medicament.name}, ${medicament.dosage}</option>
+                </c:forEach>
+            </select>
+        </div>
+
+        <div class="row-form">
+            <label><fmt:message key="medicines.quantity" bundle="${rb}"/></label>
+            <input type="number" name="quantity" required
+                   min="1" step="1" value="1" maxlength="2"
+                   placeholder="quantity"/>
+        </div>
+
+        <div class="row-form">
+            <label><fmt:message key="recipe.patient" bundle="${rb}"/></label>
+            <select id="patient" name="patientId" required>
+                <option selected></option>
+                <c:forEach items="${requestScope.patients}" var="patient">
+                    <option value="${patient.id}">${patient.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+
+        <input type="hidden" name="command" value="saveRecipe"/>
+        <button class="button-create-form" type="submit"><fmt:message key="button.save" bundle="${rb}"/></button>
     </form>
 </div>

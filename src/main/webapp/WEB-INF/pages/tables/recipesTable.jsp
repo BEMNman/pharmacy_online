@@ -9,8 +9,11 @@
     <h1>
         <fmt:message key="recipes" bundle="${rb}"/>
     </h1>
+    <c:if test="${requestScope.messageToPage != null}">
+        <jsp:include page="../../pages/message.jsp"/>
+    </c:if>
     <c:if test="${sessionScope.user.role == 'DOCTOR'}">
-        <form name="create" action="openCreationFormRecipe">
+        <form name="create" method="get">
             <input type="hidden" name="command" value="openCreationFormRecipe">
             <button>
                 <fmt:message key="button.create" bundle="${rb}"/>

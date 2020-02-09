@@ -19,7 +19,7 @@ public class RequestDtoDaoImpl extends AbstractDao<RequestDto> implements Reques
                     "JOIN recipes AS rec ON req.recipeId = rec.id " +
                     "JOIN medicines AS m On rec.medicamentId = m.id " +
                     "JOIN users AS u ON u.id = rec.patientId " +
-                    "WHERE rec.doctorId = ?";
+                    "WHERE rec.doctorId = ? ORDER BY status, creationDate DESC";
 
     public RequestDtoDaoImpl(ProxyConnection connection) {
         super(connection);

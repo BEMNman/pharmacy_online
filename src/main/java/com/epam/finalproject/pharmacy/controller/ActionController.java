@@ -25,7 +25,7 @@ public class ActionController extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, java.io.IOException {
+            throws java.io.IOException, ServletException {
 
         String page;
         try {
@@ -39,10 +39,11 @@ public class ActionController extends HttpServlet {
                 forward(request, response, page);
             }
         } catch (Exception e) {
-            logger.warn(e.getMessage());
-            e.printStackTrace();
+            logger.warn(e);
+            request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute("requestURL", request.getRequestURL());
             page = Page.ERROR;
-            redirect(response, page);
+            forward (request, response, page);
         }
     }
 
@@ -60,7 +61,6 @@ public class ActionController extends HttpServlet {
             throws javax.servlet.ServletException, java.io.IOException {
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
         logger.debug("Forward to page: " + page);
-
         dispatcher.forward(request, response);
     }
 

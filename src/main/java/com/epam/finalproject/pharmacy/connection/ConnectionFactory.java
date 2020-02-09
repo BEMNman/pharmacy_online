@@ -1,5 +1,6 @@
 package com.epam.finalproject.pharmacy.connection;
 
+import com.epam.finalproject.pharmacy.exception.CreateConnectionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +27,7 @@ public class ConnectionFactory {
     private static final String PASSWORD = "db.password";
     private static final String POOL_SIZE = "db.poolsize";
 
-    public static Queue<ProxyConnection> createPoolConnections() throws SQLException {
+    public static Queue<ProxyConnection> createPoolConnections() {
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(PATH_PROPERTY_FILE.getFile())) {
             properties.load(fis);
@@ -46,9 +47,9 @@ public class ConnectionFactory {
                 proxyConnections.add(proxyConnection);
             }
             return proxyConnections;
-        } catch (ClassNotFoundException | IOException e) {
+        } catch (ClassNotFoundException | IOException | SQLException e) {
             logger.warn(e);
-            throw new SQLException(e);
+            throw new CreateConnectionException(e);
         }
     }
 }

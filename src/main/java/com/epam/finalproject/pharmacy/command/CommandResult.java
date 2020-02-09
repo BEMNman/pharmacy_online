@@ -25,6 +25,11 @@ public class CommandResult {
         return new CommandResult(command, true);
     }
 
+    public static CommandResult redirectToCommandWithParam(String page, String param, Object value) {
+        String command = PATH_REDIRECT_COMMAND + page + "&" + param + "=" + value;
+        return new CommandResult(command, true);
+    }
+
     public String getPage() {
         return page;
     }

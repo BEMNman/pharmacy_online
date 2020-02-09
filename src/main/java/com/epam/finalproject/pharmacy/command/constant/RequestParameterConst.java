@@ -36,4 +36,6 @@ public class RequestParameterConst {
     public static final String REQUESTS_FOR_DOCTOR = "requestsDto";
     public static final String REQUEST_ID = "requestId";
     public static final String LANGUAGE = "language";
+    public static final String PAGE = "page";
+    public static final String MAX_PAGE = "maxPage";
 }

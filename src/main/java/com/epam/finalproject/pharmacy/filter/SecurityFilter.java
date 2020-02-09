@@ -1,6 +1,5 @@
 package com.epam.finalproject.pharmacy.filter;
 
-import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
@@ -13,58 +12,46 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.epam.finalproject.pharmacy.command.CommandFactory.*;
+import static com.epam.finalproject.pharmacy.entity.UserRole.*;
 
 public class SecurityFilter implements Filter {
 
-    private final static List<String> listCommandUnknownUser = Arrays.asList(
-            CommandFactory.LOGIN,
-            CommandFactory.REGISTER_NEW_PATIENT,
-            CommandFactory.SAVE_NEW_PATIENT,
-            CommandFactory.SHOW_ERROR_PAGE);
+    private final static List<String> availableCommandForUnknownUser = Arrays.asList(
+            LOGIN,
+            REGISTER_NEW_PATIENT,
+            SAVE_NEW_PATIENT,
+            SWITCH_LOCALE
+    );
 
-    private final static List<String> LIST_COMMAND_PATIENT = Arrays.asList(
-            CommandFactory.MAIN_PAGE,
-            CommandFactory.OPEN_RECIPES,
-            CommandFactory.OPEN_ORDER,
-            CommandFactory.OPEN_ORDERS,
-            CommandFactory.ADD_MEDICAMENT_IN_BASKET,
-            CommandFactory.OPEN_BASKET,
-            CommandFactory.SAVE_ORDER,
-            CommandFactory.VIEW_ORDER_DETAILS,
-            CommandFactory.CONTINUE_ORDER,
-            CommandFactory.CLEAR_BASKET,
-            CommandFactory.PAY,
-            CommandFactory.SEND_RECIPE_REQUEST,
-            CommandFactory.LOGOUT,
-            CommandFactory.SHOW_ERROR_PAGE);
-    private final static List<String> LIST_COMMAND_PHARMACIST = Arrays.asList(
-            CommandFactory.MAIN_PAGE,
-            CommandFactory.DELETE_MEDICAMENT,
-            CommandFactory.EDIT_MEDICAMENT,
-            CommandFactory.SAVE_MEDICAMENT,
-            CommandFactory.OPEN_CREATION_FORM_MEDICAMENT,
-            CommandFactory.LOGOUT,
-            CommandFactory.SHOW_ERROR_PAGE);
-    private final static List<String> LIST_COMMAND_DOCTOR = Arrays.asList(
-            CommandFactory.MAIN_PAGE,
-            CommandFactory.OPEN_CREATION_FORM_RECIPE,
-            CommandFactory.SAVE_RECIPE,
-            CommandFactory.OPEN_REQUESTS,
-            CommandFactory.OPEN_RECIPES,
-            CommandFactory.REJECT_REQUEST,
-            CommandFactory.APPROVE_REQUEST,
-            CommandFactory.LOGOUT,
-            CommandFactory.SHOW_ERROR_PAGE);
-    private final static Map<UserRole, List<String>> roleAvailableCommand = new HashMap<>();
+    private final static Map<String, List<UserRole>> roleAvailableCommand = new HashMap<>();
 
     static {
-        roleAvailableCommand.put(UserRole.PATIENT, LIST_COMMAND_PATIENT);
-        roleAvailableCommand.put(UserRole.DOCTOR, LIST_COMMAND_DOCTOR);
-        roleAvailableCommand.put(UserRole.PHARMACIST, LIST_COMMAND_PHARMACIST);
+        roleAvailableCommand.put(SHOW_ERROR_PAGE, Arrays.asList(PATIENT, DOCTOR, PHARMACIST));
+        roleAvailableCommand.put(MAIN_PAGE, Arrays.asList(PATIENT, DOCTOR, PHARMACIST));
+        roleAvailableCommand.put(OPEN_RECIPES, Arrays.asList(PATIENT, DOCTOR));
+        roleAvailableCommand.put(OPEN_ORDER, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(OPEN_ORDERS, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(ADD_MEDICAMENT_IN_BASKET, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(OPEN_BASKET, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(SAVE_ORDER, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(VIEW_ORDER_DETAILS, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(CONTINUE_ORDER, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(CLEAR_BASKET, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(PAY, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(SEND_RECIPE_REQUEST, Arrays.asList(PATIENT));
+        roleAvailableCommand.put(LOGOUT, Arrays.asList(PATIENT, DOCTOR, PHARMACIST));
+        roleAvailableCommand.put(DELETE_MEDICAMENT, Arrays.asList(PHARMACIST));
+        roleAvailableCommand.put(EDIT_MEDICAMENT, Arrays.asList(PHARMACIST));
+        roleAvailableCommand.put(SAVE_MEDICAMENT, Arrays.asList(PHARMACIST));
+        roleAvailableCommand.put(OPEN_CREATION_FORM_MEDICAMENT, Arrays.asList(PHARMACIST));
+        roleAvailableCommand.put(OPEN_CREATION_FORM_RECIPE, Arrays.asList(DOCTOR));
+        roleAvailableCommand.put(SAVE_RECIPE, Arrays.asList(DOCTOR));
+        roleAvailableCommand.put(OPEN_REQUESTS, Arrays.asList(DOCTOR));
+        roleAvailableCommand.put(REJECT_REQUEST, Arrays.asList(DOCTOR));
+        roleAvailableCommand.put(APPROVE_REQUEST, Arrays.asList(DOCTOR));
     }
 
     @Override
@@ -75,20 +62,21 @@ public class SecurityFilter implements Filter {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttributeConst.USER);
         String command = request.getParameter(RequestParameterConst.COMMAND);
-        if (user == null) {
-            if (listCommandUnknownUser.contains(command)) {
-                filterChain.doFilter(request, response);
+        if(user == null) {
+            if (availableCommandForUnknownUser.contains(command)) {
+                filterChain.doFilter(servletRequest, servletResponse);
             } else {
                 response.sendRedirect(Page.INDEX);
             }
-        } else {
-            UserRole userRole = user.getRole();
-            boolean availableCommand = roleAvailableCommand.get(userRole).contains(command);
-            if (availableCommand) {
-                filterChain.doFilter(request, response);
-            } else {
-                response.sendRedirect(CommandResult.redirectToCommand(CommandFactory.SHOW_ERROR_PAGE).getPage());
+            return;
+        }
+
+        if(roleAvailableCommand.containsKey(command)) {
+            if(!roleAvailableCommand.get(command).contains(user.getRole())) {
+                response.sendRedirect(CommandResult.redirectToCommand(SHOW_ERROR_PAGE).getPage());
+                return;
             }
         }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

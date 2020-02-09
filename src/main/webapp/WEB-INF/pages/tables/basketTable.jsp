@@ -10,14 +10,20 @@
         <fmt:message key="header.basket" bundle="${rb}"/>
     </h1>
     <c:if test="${sessionScope.medicinesInBasket.size() == null}">
-    <span>
-        <fmt:message key="basket.empty" bundle="${rb}"/>
-        <fmt:message key="basket.click" bundle="${rb}"/>
-        <a href="controller?command=mainPage">
-                    <fmt:message key="basket.here" bundle="${rb}"/>
-        </a>
-                <fmt:message key="basket.continue" bundle="${rb}"/>
-    </span>
+        <div class="main">
+            <div class="mobile">
+                <div class="form">
+                    <h2>
+                        <fmt:message key="basket.empty" bundle="${rb}"/>
+                        <fmt:message key="basket.click" bundle="${rb}"/>
+                        <a href="$${pageContext.request.contextPath}controller?command=mainPage">
+                            <fmt:message key="basket.here" bundle="${rb}"/>
+                        </a>
+                        <fmt:message key="basket.continue" bundle="${rb}"/>
+                    </h2>
+                </div>
+            </div>
+        </div>
     </c:if>
     <c:if test="${sessionScope.medicinesInBasket.size() >= 1}">
         <form id="checkBasket" method="get">
@@ -99,21 +105,28 @@
                     <fmt:message key="basket.total_price" bundle="${rb}"/>
                         ${requestScope.totalPrice}
                 </h3>
-                <a href="controller?command=pay">
+                <a href="${pageContext.request.contextPath}?command=pay">
                     <fmt:message key="basket.pay" bundle="${rb}"/>
                 </a>
             </c:if>
 
             <input type="hidden" name="command" value="continueOrder"/>
-            <input type="submit" value=" <fmt:message key="order.check_order" bundle="${rb}"/>"/>
+
+            <button href="${pageContext.request.contextPath}controller?command=continueOrder">
+                <fmt:message key="order.order" bundle="${rb}"/>
+            </button>
         </form>
-        <c:if test="${requestScope.totalPrice == null}">
-            <a href="controller?command=mainPage">
-                <fmt:message key="basket.return" bundle="${rb}"/>
-            </a>
-            <a href="controller?command=clearBasket">
-                <fmt:message key="basket.clear_basket" bundle="${rb}"/>
-            </a>
-        </c:if>
+        <div class="button-group">
+            <c:if test="${requestScope.totalPrice == null}">
+
+                <a style="margin: 20px" href="${pageContext.request.contextPath}controller?command=mainPage">
+                    <fmt:message key="return" bundle="${rb}"/>
+                </a>
+
+                <a style="margin: 20px" href="${pageContext.request.contextPath}controller?command=clearBasket">
+                    <fmt:message key="basket.clear_basket" bundle="${rb}"/>
+                </a>
+            </c:if>
+        </div>
     </c:if>
 </div>

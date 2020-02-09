@@ -3,7 +3,6 @@ package com.epam.finalproject.pharmacy.connection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
@@ -45,7 +44,7 @@ public class ConnectionPool {
         return instance.get();
     }
 
-    public ProxyConnection getConnection() throws SQLException {
+    public ProxyConnection getConnection() {
         if (availableConnection.size() == 0) {
             availableConnection = ConnectionFactory.createPoolConnections();
         }

@@ -20,9 +20,6 @@ public class LocaleFilter implements Filter {
             session.setAttribute(SessionAttributeConst.LOCALE_LANG, DEFAULT_LOCALE_LANG);
         }
         String localeName = req.getParameter(RequestParameterConst.LANGUAGE);
-
-        System.out.println("localeName = " + localeName);
-
         if(localeName != null) {
             Locale locale;
             switch (localeName) {
@@ -38,6 +35,8 @@ public class LocaleFilter implements Filter {
                 default: locale = DEFAULT_LOCALE_LANG;
             }
             session.setAttribute(SessionAttributeConst.LOCALE_LANG, locale);
+            resp.setLocale(locale);
+            return;
         }
         chain.doFilter(req, resp);
     }

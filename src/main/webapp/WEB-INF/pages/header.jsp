@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -9,14 +10,13 @@
 </script>
 
 <c:set var="urlLocale">
-<%--    <c:url value="?language"/>--%>
-    <c:url value="controller?language"/>
+    <c:url value="${pageContext.request.contextPath}controller?command=switchLocale&language"/>
 </c:set>
 
 <div class="header">
     <div class="headerContent">
 
-        <div class="logo"><a href="?command=mainPage">Pharmacy<span class="pink">Online</span></a></div>
+        <div class="logo"><a href="${pageContext.request.contextPath}controller?command=mainPage">Pharmacy<span class="pink">Online</span></a></div>
 
         <div class="headerContentRight">
 
@@ -24,7 +24,7 @@
             <div class="hello">
                 <c:if test="${sessionScope.user != null}">
                     <fmt:message key="header.hello" bundle="${rb}"/> ${sessionScope.user.name}!
-                    <a class="signout" href="?command=logout"><fmt:message key="header.singout" bundle="${rb}"/></a>
+                    <a class="signout" href="${pageContext.request.contextPath}controller?command=logout"><fmt:message key="header.singout" bundle="${rb}"/></a>
                 </c:if>
                     <a href="javascript:switchLocale('${urlLocale}=en')">EN</a> |
                     <a  href="javascript:switchLocale('${urlLocale}=ru')">RU</a> |
@@ -34,7 +34,7 @@
                 <div class="basket">
                     <form action="openBasket" method="get"
                           style="display: inline-block; margin: 0;">
-                        <a href="controller?command=openBasket">
+                        <a href="${pageContext.request.contextPath}controller?command=openBasket">
                             <fmt:message key="header.basket" bundle="${rb}"/>:
                             <c:if test="${sessionScope.medicinesInBasket == null}">
                                 0

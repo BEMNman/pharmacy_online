@@ -8,6 +8,7 @@ import com.epam.finalproject.pharmacy.entity.MedicamentForm;
 import com.epam.finalproject.pharmacy.entity.Recipe;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
+import com.epam.finalproject.pharmacy.exception.NotFoundItemException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.util.InputDataValidator;
 
@@ -16,11 +17,11 @@ import java.util.*;
 
 public class MedicamentService {
 
-    public static final String MESSAGE_NOT_AVAILABLE_RECIPE = "You don't have recipe for this medicament!";
-    public static final String MESSAGE_NOT_ENOUGH_IN_STOCK = "Entered quantity is more than in stock!";
-    public static final String MESSAGE_EMPTY = "";
-    public static final String ENTERED_DATA_ARE_INCORRECT = "Entered data are incorrect!";
-    public static final String EMPTY = "";
+    private static final String MESSAGE_NOT_AVAILABLE_RECIPE = "message.not_available_recipe";
+    private static final String MESSAGE_NOT_ENOUGH_IN_STOCK = "message.not_enough_in_stock";
+    private static final String MESSAGE_EMPTY = "";
+    private static final String ENTERED_DATA_ARE_INCORRECT = "message.entered_data_incorrect";
+
 
     private DaoHelperFactory daoHelperFactory;
 
@@ -28,10 +29,10 @@ public class MedicamentService {
         this.daoHelperFactory = daoHelperFactory;
     }
 
-    public List<Medicament> showAll() throws ServerException {
+    public List<Medicament> showMedicinesOnPage(int startRow, int count) throws ServerException {
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
-            return medicamentDao.findAllAvailableMedicament();
+            return medicamentDao.findAllAvailableMedicamentForRequestedPage(startRow, count);
         } catch (DaoException e) {
             throw new ServerException(e);
         }
@@ -105,12 +106,18 @@ public class MedicamentService {
         return MESSAGE_EMPTY;
     }
 
-    public String checkQuantityInStock(User user, String stringMedicamentId, String stringCount,
-                                       Map<Medicament, Integer> medicamentCount) throws ServerException {
+    public String addMedicamentInBasket(User user, String stringMedicamentId, String stringCount,
+                                        Map<Medicament, Integer> medicamentCount) throws ServerException {
         Long medicamentId = Long.parseLong(stringMedicamentId);
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
-            Medicament medicament = findMedicamentById(medicamentId).get();
+            Optional<Medicament> optionalMedicament = findMedicamentById(medicamentId);
+            Medicament medicament = null;
+            if(optionalMedicament.isPresent()) {
+                medicament= optionalMedicament.get();
+            } else {
+                throw new NotFoundItemException("Medicament wasn't found in BD");
+            }
             Integer quantityMedicamentBasket = medicamentCount.getOrDefault(medicament, 0);
             Integer countMedicament = Integer.parseInt(stringCount);
             Integer tempTotalQuantity = countMedicament + quantityMedicamentBasket;
@@ -125,7 +132,7 @@ public class MedicamentService {
             }
             medicamentCount.put(medicament, tempTotalQuantity);
             return MESSAGE_EMPTY;
-        } catch (NumberFormatException | DaoException e) {
+        } catch (DaoException | NotFoundItemException e) {
             throw new ServerException(e);
         }
 
@@ -163,6 +170,16 @@ public class MedicamentService {
         } else {
             return ENTERED_DATA_ARE_INCORRECT;
         }
-        return EMPTY;
+        return MESSAGE_EMPTY;
+    }
+
+    public int calculateRowAvailableMedicines() throws ServerException {
+        try(DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
+            return medicamentDao.calculateRowAvailableMedicines().size();
+        } catch (DaoException e) {
+            throw new ServerException(e);
+        }
+
     }
 }

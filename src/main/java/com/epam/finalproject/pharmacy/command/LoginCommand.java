@@ -16,7 +16,7 @@ import java.util.Optional;
 public class LoginCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger(LoginCommand.class.getName());
-    public static final String INCORRECT_LOGIN = "Login or password is incorrect";
+    public static final String INCORRECT_LOGIN = "message.incorrect_login";
 
     private UserService service;
 
@@ -39,7 +39,7 @@ public class LoginCommand implements Command {
             session.setAttribute(SessionAttributeConst.USER, user.get());
         } else {
             logger.warn("Can't login");
-            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, "Login or password is incorrect");
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, INCORRECT_LOGIN);
             return CommandResult.forward(Page.LOGIN);
         }
         logger.debug("Command 'LoginCommand' was redirected to '/controller?command=mainPage'");

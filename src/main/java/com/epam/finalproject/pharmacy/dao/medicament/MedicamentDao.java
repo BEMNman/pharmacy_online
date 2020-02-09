@@ -9,7 +9,7 @@ import java.util.List;
 public interface MedicamentDao extends Dao<Medicament> {
     List<Medicament> findAllMedicamentForUsersOrder(Long userId, Long orderId) throws DaoException;
 
-    List<Medicament> findAllAvailableMedicament() throws DaoException;
+    List<Medicament> findAllAvailableMedicamentForRequestedPage(int startRow, int count) throws DaoException;
 
     boolean checkQuantityInStock(Long medicamentId, Integer count) throws DaoException;
 
@@ -18,4 +18,6 @@ public interface MedicamentDao extends Dao<Medicament> {
     void sendMedicamentToArchive(Long id) throws DaoException;
 
     List<Medicament> findAllMedicinesWithRecipe() throws DaoException;
+
+    List<Medicament> calculateRowAvailableMedicines() throws DaoException;
 }

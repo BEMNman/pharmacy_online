@@ -6,6 +6,7 @@
 
 html, body {
     width: 100%;
+    min-width: 920px;
     height: 100%;
 }
 
@@ -19,7 +20,7 @@ body {
 }
 
 ::selection {
-    background-color: #a45f93;
+    background-color: #16c3ee;
     color: white;
     text-shadow: none;
 }
@@ -101,7 +102,11 @@ input[type=text], textarea, select {
     -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-input[type=text], textarea, button {
+input[type=text], textarea, button,
+table.bordered input,
+.row-form input,
+form input,
+select {
     -webkit-transition: all linear 0.2s;
     -moz-transition: all linear 0.2s;
     -ms-transition: all linear 0.2s;
@@ -121,8 +126,29 @@ input[type=text] {
     width: 200px;
 }
 
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+}
+
+table.bordered input,
+.row-form input,
 select {
-    width: 210px;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    border: none;
+    padding: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-shadow: none;
+}
+
+select {
+    color: #4a243b;
+    width: auto;
+    padding: 4px;
+    background-color: #697689;
 }
 
 textarea {
@@ -150,18 +176,18 @@ input::-webkit-input-placeholder {
     color: #9c9c9c;
 }
 
-button{
+button {
     cursor: pointer;
     color: white;
     font-size: 12px;
-    background-color: #a45f93;
+    background-color: #894978;
     background-repeat: no-repeat;
-    background-image: -ms-linear-gradient(top, #b76da5, #a45f93);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b76da5), to(#a45f93));
-    background-image: -webkit-linear-gradient(top, #b76da5, #a45f93);
-    background-image: -o-linear-gradient(top, #b76da5, #a45f93);
-    background-image: linear-gradient(top, #b76da5, #a45f93);
-    background-image: -moz-linear-gradient(top, #b76da5, #a45f93);
+    background-image: -ms-linear-gradient(top, #b76da5, #894978);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b76da5), to(#894978));
+    background-image: -webkit-linear-gradient(top, #b76da5, #894978);
+    background-image: -o-linear-gradient(top, #b76da5, #894978);
+    background-image: linear-gradient(top, #b76da5, #894978);
+    background-image: -moz-linear-gradient(top, #b76da5, #894978);
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#b76da5', endColorstr='#a45f93', GradientType=0);
     border: none;
     padding: 8px 20px 9px;
@@ -170,6 +196,16 @@ button{
     -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
     text-shadow: none;
     height: auto;
+}
+
+form button {
+    width: 100%;
+}
+
+.button-group {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
 .errorMessage {
@@ -187,7 +223,7 @@ button:hover {
     height: 35px;
 }
 
-.row {
+.row-form {
     overflow: hidden;
     margin: 10px 0;
     padding: 3px 0;
@@ -199,7 +235,7 @@ button:hover {
     overflow: hidden;
 }
 
-table.bordered {
+table.bordered, table.bordered-order {
     font-size: 12px;
     margin: 10px 0;
     padding: 0;
@@ -214,24 +250,36 @@ table.bordered {
     border-spacing: 0;
 }
 
-table.bordered th, table.bordered td {
-    padding: 5px;
-    vertical-align: top;
+table.bordered-order td {
+    width: content-box;
+}
+
+table.bordered th, table.bordered td,
+table.bordered-order td {
+    padding: 9px;
+    vertical-align: middle;
     border-left: 1px solid #4c545e;
 }
 
-table.bordered td {
+table.bordered td,
+table.bordered-order td {
     border-top: 1px solid #4c545e;
+    text-align: center;
 }
 
 table.bordered thead tr th:first-child,
-table.bordered tbody tr td:first-child {
+table.bordered tbody tr td:first-child,
+table.bordered-order tbody tr td:first-child {
     border-left: none;
+}
+
+table.bordered td p {
+    margin: 0;
 }
 
 table.bordered th {
     background-color: #292e35;
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     color: white;
 }
@@ -264,6 +312,10 @@ table.bordered tbody tr:last-child td:last-child {
     -moz-border-radius: 0 0 3px 0;
 }
 
+#table-name {
+    text-align: left;
+}
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -277,7 +329,7 @@ table.bordered tbody tr:last-child td:last-child {
 }
 
 /*Header*/
-.header{
+.header {
     padding-top: 20px;
     margin-bottom: 20px;
 }
@@ -316,6 +368,7 @@ table.bordered tbody tr:last-child td:last-child {
     text-shadow: 0 1px 0 white;
     color: #373e47;
     padding-left: 10px;
+    /*background: url("${pageContext.request.contextPath}/resources/img/logo_pharmacy.jpg") 20px 90% no-repeat;*/
 }
 
 .logo a:hover {
@@ -340,8 +393,6 @@ table.bordered tbody tr:last-child td:last-child {
 }
 
 .headerContentRight {
-    /*display: inline-grid;*/
-    /*grid-gap: 5px;*/
     float: right;
     margin-inside: 5px;
 }
@@ -360,11 +411,9 @@ ul.nav li {
 }
 
 ul.nav li a,
-.basket a{
+.basket a {
     font-size: 16px;
     font-weight: bold;
-    /*color: white;*/
-    /*text-decoration: none;*/
     padding: 15px 30px;
     display: block;
     color: #143567;
@@ -374,23 +423,15 @@ ul.nav li a,
 .hello {
     font-size: 14px;
     font-weight: bold;
-    /*color: white;*/
     text-decoration: none;
     padding: 0 30px;
-    /*display: block;*/
     color: #143567;
     text-shadow: 0 1px 0 white;
 }
 
 .hello a {
-    /*font-size: 14px;*/
-    /*font-weight: bold;*/
-    /*!*color: white;*!*/
     text-decoration: none;
-    /*padding: 0;*/
-    /*display: block;*/
     color: #143567;
-    /*text-shadow: 0 1px 0 white;*/
 }
 
 ul.nav li a.active {
@@ -401,10 +442,11 @@ ul.nav li a:hover {
     color: #a45f93;
 }
 
-.signout{
+.signout {
     padding-right: 50px;
     padding-left: 10px;
 }
+
 .locale {
 
     /*padding-right: 5px;*/
@@ -418,7 +460,6 @@ ul.nav li a:hover {
 /*Content*/
 .content {
     flex: 1 0 auto;
-
     padding: 10px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -531,16 +572,45 @@ ul.leftNav li:last-child a {
 /*Footer*/
 .footer {
     flex: 0 0 auto;
+    text-shadow: none;
 }
 
-.footerContent {
-    background-color: #697689;
-    text-align: center;
+.author {
+    float: left;
+    margin-left: 2%;
+}
+
+.footer h3 {
+    color: #373e47;
+    font-size: 12px;
+    font-style: revert;
+
 }
 
 .infoPanel {
     float: right;
     padding-right: 4%;
+    display: inline-grid;
+    grid-gap: 15px;
+}
+
+.github, .telephone {
+    float: right;
+}
+
+.github {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.github img {
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+.github a {
+    color: #1d1553;
 }
 
 /*Login*/
@@ -569,10 +639,8 @@ ul.leftNav li:last-child a {
 }
 
 .form button {
-    /*font-family: "Roboto", sans-serif;*/
     text-transform: uppercase;
     outline: 0;
-    /*background: #181faf;*/
     width: 100%;
     border: 0;
     padding: 15px;
@@ -581,7 +649,10 @@ ul.leftNav li:last-child a {
     cursor: pointer;
 }
 
-.form button:hover, .form button:active, .form button:focus {
+.form button:hover,
+.form button:active,
+.form button:focus,
+table.bordered input {
     background: #475363;
 }
 
@@ -595,3 +666,94 @@ ul.leftNav li:last-child a {
     color: #1d1553;
     text-decoration: none;
 }
+
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+    margin: 0 -16px;
+}
+
+.col-50 {
+    -ms-flex: 50%; /* IE10 */
+    flex: 50%;
+    padding: 0 16px;
+}
+
+.col-50 label {
+    text-align: left;
+}
+
+
+label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+span.price {
+    float: right;
+    color: grey;
+}
+
+.order-wrapper {
+    justify-content: center;
+}
+
+.order-form {
+    width: 100%;
+}
+
+.payment, .bill {
+    width: 50%;
+}
+
+.row-form select,
+.button-create-form,
+.row-form input {
+    width: 220px;
+    height: 30px;
+    text-decoration-color: #ebd4e5;
+}
+
+.row-form select,
+.row-form input {
+    background: #697689;
+    color: #ffffff;
+    text-align: left;
+}
+
+.row-form label {
+    margin: 0;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+.pagination a,
+.pagination b{
+    font-style: normal;
+    color: #fd0cff;
+    padding: 0 5px;
+}
+
+.pagination b {
+    text-shadow: none;
+    font-size: 14px;
+}
+
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+    margin: 0 -16px;
+}
+
+span.message {
+    margin: 20%;
+    color: darkblue;
+}
+

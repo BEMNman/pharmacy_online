@@ -37,7 +37,7 @@ public class OrderService {
             Long userId = user.getId();
             Order order = Order.newOrder(userId, totalPriceOrder);
 
-            Long newOrderId = orderDao.saveAndGetIdLastSavedOrder(order);
+            long newOrderId = orderDao.saveAndGetIdLastSavedOrder(order);
             saveOrderDetails(newOrderId, medicinesInOrder);
         } catch (DaoException e) {
             throw new ServerException(e);

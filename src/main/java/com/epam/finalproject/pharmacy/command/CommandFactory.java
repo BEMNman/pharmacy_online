@@ -16,7 +16,6 @@ public class CommandFactory {
 
     private static final Logger logger = LogManager.getLogger(CommandFactory.class.getName());
 
-    public static final String CHANGE_LANG = "changeLang";
     public static final String SHOW_ERROR_PAGE = "errorPage";
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";
@@ -46,6 +45,9 @@ public class CommandFactory {
     public static final String OPEN_REQUESTS = "openRequests";
     public static final String REJECT_REQUEST = "rejectRequest";
     public static final String APPROVE_REQUEST = "approveRequest";
+
+    public static final String SWITCH_LOCALE = "switchLocale";
+
 
     public static Command create(String command) throws ServerException {
 

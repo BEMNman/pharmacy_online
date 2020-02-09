@@ -1,47 +1,22 @@
+<head>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/logo_pharmacy.jpg"/>
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<style>
-    .row {
-        display: -ms-flexbox; /* IE10 */
-        display: flex;
-        -ms-flex-wrap: wrap; /* IE10 */
-        flex-wrap: wrap;
-        margin: 0 -16px;
-    }
+    <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+    <fmt:setBundle basename="locale" var="rb"/>
 
-    span.message {
-        margin: 20%;
-        color: darkblue;
-    }
-
-    .btn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 12px;
-        margin: 10px 0;
-        border: none;
-        width: 100%;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 17px;
-    }
-
-
-    }
-</style>
-<div class="row">
-
-<span class="message">
-    ${requestScope.messageToPage}
-<%--    The order placed successfully.--%>
-<%--    Thanks for choosing us!--%>
-</span>
-
+</head>
+<div class="main">
+    <div class="mobile">
+        <div class="form">
+            <h2 class="errorMessage"><fmt:message key="${requestScope.messageToPage}" bundle="${rb}"/></h2>
+            <div class="button-group">
+                <a href="${pageContext.request.contextPath}controller?command=mainPage&page=${requestScope.page}">
+                    <fmt:message key="return" bundle="${rb}"/>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-
-</body>
-</html>
-
-

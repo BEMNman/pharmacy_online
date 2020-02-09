@@ -26,17 +26,10 @@ import java.sql.SQLException;
 
 public class DaoHelper implements AutoCloseable {
 
-    private static final Logger logger = LogManager.getLogger(DaoHelper.class.getName());
-
     private ProxyConnection connection;
 
-    public DaoHelper(ConnectionPool pool) throws DaoException {
-        try {
+    public DaoHelper(ConnectionPool pool) {
             this.connection = pool.getConnection();
-        } catch (SQLException e) {
-            logger.warn(e);
-            throw new DaoException(e);
-        }
     }
 
     public UserDao createUserDao() {

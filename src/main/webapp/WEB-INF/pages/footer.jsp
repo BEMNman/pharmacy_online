@@ -2,15 +2,18 @@
 
 <div class="footer">
     <div class="footerContent">
-        &copy; Олег Гоголинский
+        <div class="author">
+            <h3>&copy; Олег Гоголинский</h3>
+        </div>
         <div class="infoPanel">
-            <div id="github">
+            <div class="github">
                 <a href="https://github.com/BEMNman">
-                    <img src="${pageContext.request.contextPath}/resources/img/github.png" width="20px" height="20px" alt="">GitHub
+                    <h3> <img src="${pageContext.request.contextPath}/resources/img/github.png" width="20px" height="20px" alt="">
+                    GitHub</h3>
                 </a>
             </div>
             <div class="telephone">
-                +375-29-5737102
+               <h3>+375-29-5737102</h3>
             </div>
         </div>
     </div>
