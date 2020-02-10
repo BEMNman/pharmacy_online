@@ -8,6 +8,7 @@ import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
 import com.epam.finalproject.pharmacy.command.constant.SessionAttributeConst;
 import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.entity.User;
+import com.epam.finalproject.pharmacy.exception.NotAvailableActionException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.MedicamentService;
 
@@ -34,13 +35,14 @@ public class AddMedicamentInBasketCommand implements Command {
         User user = (User) session.getAttribute(SessionAttributeConst.USER);
         String stringMedicamentId = request.getParameter(RequestParameterConst.MEDICAMENT_ID);
         String stringCount = request.getParameter(RequestParameterConst.COUNT_MEDICAMENT);
-
-        String messageResultCommand = service.checkQuantityInStock(user, stringMedicamentId, stringCount, medicamentCountMap);
-        if (messageResultCommand.isEmpty()) {
-            session.setAttribute(SessionAttributeConst.MEDICINES_IN_BASKET, medicamentCountMap);
-            return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
+        try {
+            service.addMedicamentInBasket(user, stringMedicamentId, stringCount, medicamentCountMap);
+        } catch (NotAvailableActionException e) {
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, e.getMessage());
+            return CommandResult.forward(Page.PATIENT_MAIN);
         }
-        request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, messageResultCommand);
-        return CommandResult.forward(Page.PATIENT_MAIN);
+        int page = Integer.parseInt(request.getParameter(RequestParameterConst.PAGE));
+        session.setAttribute(SessionAttributeConst.MEDICINES_IN_BASKET, medicamentCountMap);
+        return CommandResult.redirectToCommandWithParam(CommandFactory.MAIN_PAGE, RequestParameterConst.PAGE, page);
     }
 }

@@ -17,20 +17,33 @@
         <div class="main">
             <div class="mobile">
                 <div class="form">
-                    <form class="register-form" action="logIn" method="post">
-                        <input type="text" required name="name"
-                               placeholder="<fmt:message key="login.full_name" bundle="${rb}"/>"/>
-                        <input type="text" required name="login"
-                               placeholder="<fmt:message key="login.name" bundle="${rb}"/>"/>
-                        <input type="password" required name="password"
-                               placeholder="<fmt:message key="login.password" bundle="${rb}"/>"/>
-                        <input type="password" required name="passwordForCheck"
-                               placeholder="<fmt:message key="login.repeat_password" bundle="${rb}"/>"/>
-                        <input type="hidden" name="command" value="saveNewPatient"/>
-                        <button>
-                            <fmt:message key="button.register" bundle="${rb}"/>
-                        </button>
-                    </form>
+                    <div class="row">
+                        <div class="col-50">
+                            <form class="register-form" action="logIn" method="post">
+                                <label><fmt:message key="login.full_name" bundle="${rb}"/> </label>
+                                <input type="text" required name="name"
+                                       placeholder="<fmt:message key="login.full_name" bundle="${rb}"/>"/>
+                                <label><fmt:message key="login.name" bundle="${rb}"/> </label>
+                                <input type="text" required name="login"
+                                       placeholder="<fmt:message key="login.name" bundle="${rb}"/>"/>
+                                <label><fmt:message key="login.password" bundle="${rb}"/> </label>
+                                <input type="password" required name="password"
+                                       placeholder="<fmt:message key="login.password" bundle="${rb}"/>"/>
+                                <label><fmt:message key="login.repeat_password" bundle="${rb}"/> </label>
+                                <input type="password" required name="passwordForCheck"
+                                       placeholder="<fmt:message key="login.repeat_password" bundle="${rb}"/>"/>
+                                <input type="hidden" name="command" value="saveNewPatient"/>
+                                <button>
+                                    <fmt:message key="button.register" bundle="${rb}"/>
+                                </button>
+                            </form>
+                            <div class="button-group">
+                                <a href="${pageContext.request.contextPath}controller?command=mainPage">
+                                    <fmt:message key="return" bundle="${rb}"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

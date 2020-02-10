@@ -8,13 +8,16 @@
 <style type="text/css">
     <%@include file="/resources/css/style.css"%>
 </style>
+<script type="text/javascript">
+    <%@include file="/resources/js/inputValidator.js"%>
+</script>
 
 <c:if test="${requestScope.messageToPage != null}">
-    <jsp:include page="../message.jsp"/>
+    <jsp:include page="../errorMessage.jsp"/>
 </c:if>
 <c:if test="${requestScope.messageToPage == null}">
     <h2>
-        <fmt:message key="order.check_order" bundle="${rb}"/>
+        <fmt:message key="order.order" bundle="${rb}"/>
     </h2>
     <div class="order-wrapper">
         <div class="order-form">
@@ -31,16 +34,13 @@
                                 </label>
                                 <input type="text" id="cname" name="cardname"
                                        placeholder="<fmt:message key="order.placeholder.name_surname" bundle="${rb}"/>"
-                                       required
-                                       pattern="[A-Z]+ [A-Z]+">
+                                       required pattern="[A-Z]+[ ][A-Z]+">
                                 <label for="ccnum">
                                     <fmt:message key="order.credit_card_number" bundle="${rb}"/>
                                 </label>
                                 <input type="text" id="ccnum" name="cardnumber"
                                        placeholder="<fmt:message key="order.placeholder.cart_number" bundle="${rb}"/>"
-                                       required
-                                       pattern="[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}( -)?[0-9]{4}"
-                                       maxlength="16">
+                                       required pattern="([0-9]{4}[-]?){3}[0-9]{4}">
                                 <label for="expdate"><fmt:message key="exp_date" bundle="${rb}"/></label>
                                 <input type="text" id="expdate" name="expdate"
                                        placeholder="<fmt:message key="order.placeholder.exp_date" bundle="${rb}"/>"
@@ -50,7 +50,7 @@
                                     <div class="col-50">
                                         <label for="cvv">CVV</label>
                                         <input type="text" id="cvv" required="required" name="cvv" placeholder="543"
-                                               pattern="[0-9]{3}" maxlength="3">
+                                               maxlength="3">
                                     </div>
                                 </div>
                             </div>

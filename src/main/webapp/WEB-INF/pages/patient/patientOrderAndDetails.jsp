@@ -1,5 +1,6 @@
 <html>
 <head>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/logo_pharmacy.jpg" />
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -31,7 +32,7 @@
                     <jsp:include page="/WEB-INF/pages/tables/orderTable.jsp"/>
                 </c:if>
                 <c:if test="${requestScope.messageToPage != null}">
-                    <jsp:include page="../message.jsp"/>
+                    <jsp:include page="../infoMessage.jsp"/>
                 </c:if>
             </div>
             <!--Table End-->

@@ -5,19 +5,29 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
+<script type="text/javascript">
+    <%@include file="/resources/js/inputValidatorCreateEdit.js"%>
+</script>
+
 <div class="main">
     <h1>
         <fmt:message key="header.basket" bundle="${rb}"/>
     </h1>
     <c:if test="${sessionScope.medicinesInBasket.size() == null}">
-    <span>
-        <fmt:message key="basket.empty" bundle="${rb}"/>
-        <fmt:message key="basket.click" bundle="${rb}"/>
-        <a href="controller?command=mainPage">
-                    <fmt:message key="basket.here" bundle="${rb}"/>
-        </a>
-                <fmt:message key="basket.continue" bundle="${rb}"/>
-    </span>
+        <div class="main">
+            <div class="mobile">
+                <div class="form">
+                    <h2>
+                        <fmt:message key="basket.empty" bundle="${rb}"/>
+                        <fmt:message key="basket.click" bundle="${rb}"/>
+                        <a href="$${pageContext.request.contextPath}controller?command=mainPage">
+                            <fmt:message key="basket.here" bundle="${rb}"/>
+                        </a>
+                        <fmt:message key="basket.continue" bundle="${rb}"/>
+                    </h2>
+                </div>
+            </div>
+        </div>
     </c:if>
     <c:if test="${sessionScope.medicinesInBasket.size() >= 1}">
         <form id="checkBasket" method="get">
@@ -81,7 +91,7 @@
                         <td><c:out value="${medicament.price}"/></td>
                         <td>
                             <input type="hidden" name="id" value="${medicament.id}">
-                            <input name="count"
+                            <input name="count" id="input-quantity"
                                    type="number"
                                    min="0"
                                    max="${medicament.quantity}"
@@ -99,26 +109,27 @@
                     <fmt:message key="basket.total_price" bundle="${rb}"/>
                         ${requestScope.totalPrice}
                 </h3>
-                <a href="controller?command=pay">
+                <a href="${pageContext.request.contextPath}?command=pay">
                     <fmt:message key="basket.pay" bundle="${rb}"/>
                 </a>
             </c:if>
 
             <input type="hidden" name="command" value="continueOrder"/>
 
-            <button href="controller?command=continueOrder">
-                <fmt:message key="order.check_order" bundle="${rb}"/>
+            <button href="${pageContext.request.contextPath}controller?command=continueOrder">
+                <fmt:message key="order.order" bundle="${rb}"/>
             </button>
-                <%--            <input type="submit" value=" <fmt:message key="order.check_order" bundle="${rb}"/>"/>--%>
         </form>
         <div class="button-group">
             <c:if test="${requestScope.totalPrice == null}">
-                <button href="controller?command=mainPage">
-                    <fmt:message key="basket.return" bundle="${rb}"/>
-                </button>
-                <button href="controller?command=clearBasket">
+
+                <a style="margin: 20px" href="${pageContext.request.contextPath}controller?command=mainPage">
+                    <fmt:message key="return" bundle="${rb}"/>
+                </a>
+
+                <a style="margin: 20px" href="${pageContext.request.contextPath}controller?command=clearBasket">
                     <fmt:message key="basket.clear_basket" bundle="${rb}"/>
-                </button>
+                </a>
             </c:if>
         </div>
     </c:if>

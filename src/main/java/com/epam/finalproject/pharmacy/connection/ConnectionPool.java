@@ -3,7 +3,6 @@ package com.epam.finalproject.pharmacy.connection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
@@ -14,14 +13,13 @@ public class ConnectionPool {
 
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class.getName());
 
+    private static final int POOL_SIZE = 10;
     private Queue<ProxyConnection> availableConnection;
     private Queue<ProxyConnection> connectionsInUse;
 
-    private static AtomicReference<ConnectionPool> instance = new AtomicReference<>(null);
-    private static ReentrantLock connectionLock = new ReentrantLock();
-    private static ReentrantLock instanceLock = new ReentrantLock();
-
-    private static final int POOL_SIZE = 10;
+    private static final AtomicReference<ConnectionPool> instance = new AtomicReference<>(null);
+    private static final ReentrantLock connectionLock = new ReentrantLock();
+    private static final ReentrantLock instanceLock = new ReentrantLock();
     private static final Semaphore SEMAPHORE = new Semaphore(POOL_SIZE);
 
     private ConnectionPool() {
@@ -45,9 +43,12 @@ public class ConnectionPool {
         return instance.get();
     }
 
-    public ProxyConnection getConnection() throws SQLException {
+    public ProxyConnection getConnection() {
         if (availableConnection.size() == 0) {
-            availableConnection = ConnectionFactory.createPoolConnections();
+            for (int i = 0; i < POOL_SIZE; i++) {
+                ConnectionFactory connectionFactory = new ConnectionFactory();
+                availableConnection.add(connectionFactory.createProxyConnection());
+            }
         }
         ProxyConnection proxyConnection = null;
         try {

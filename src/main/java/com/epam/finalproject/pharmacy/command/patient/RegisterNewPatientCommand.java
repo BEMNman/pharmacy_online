@@ -1,6 +1,7 @@
 package com.epam.finalproject.pharmacy.command.patient;
 
 import com.epam.finalproject.pharmacy.command.Command;
+import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
@@ -28,6 +29,6 @@ public class RegisterNewPatientCommand implements Command {
         if(registrationSuccessful) {
             return CommandResult.redirect(Page.INDEX);
         }
-        return CommandResult.redirect(Page.ERROR);
+        return CommandResult.redirectToCommand(CommandFactory.SHOW_ERROR_PAGE);
     }
 }

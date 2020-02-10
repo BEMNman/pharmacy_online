@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ShowRecipesCommand implements Command {
 
-
+    private static final String DONT_HAVE_RECIPES = "message.dont_have_recipes";
     private RecipeDtoService service;
 
     public ShowRecipesCommand(RecipeDtoService service) {
@@ -30,13 +30,19 @@ public class ShowRecipesCommand implements Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttributeConst.USER);
         List<RecipeDto> recipes = service.findAllRecipesDtoForUser(user);
-        request.setAttribute(RequestParameterConst.RECIPES, recipes);
-        LocalDate currentDate = LocalDate.now();
-        request.setAttribute(RequestParameterConst.CURRENT_DATE, currentDate);
-        if(user.getRole() == UserRole.PATIENT) {
-            return CommandResult.forward(Page.PATIENT_RECIPES);
+        if(!recipes.isEmpty()) {
+            request.setAttribute(RequestParameterConst.RECIPES, recipes);
+            LocalDate currentDate = LocalDate.now();
+            request.setAttribute(RequestParameterConst.CURRENT_DATE, currentDate);
         } else {
-            return CommandResult.forward(Page.DOCTOR_RECIPES);
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, DONT_HAVE_RECIPES);
         }
+        String page = null;
+        if (user.getRole() == UserRole.PATIENT) {
+            page = Page.PATIENT_RECIPES;
+        } else {
+            page = Page.DOCTOR_RECIPES;
+        }
+        return CommandResult.forward(page);
     }
 }

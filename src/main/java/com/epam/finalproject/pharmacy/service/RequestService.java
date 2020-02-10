@@ -36,7 +36,7 @@ public class RequestService {
             Optional<Request> optionalRequest = requestDao.findById(requestId);
             if (optionalRequest.isPresent()) {
                 Request request = optionalRequest.get();
-                request.setStatus(RequestStatus.CLOSED);
+                request.setStatus(RequestStatus.REJECT);
                 requestDao.save(request);
             }
         } catch (DaoException e) {

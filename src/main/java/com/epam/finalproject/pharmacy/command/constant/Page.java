@@ -19,6 +19,4 @@ public class Page {
     public static final String DOCTOR_RECIPES = "/WEB-INF/pages/doctor/doctorRecipes.jsp";
     public static final String DOCTOR_CREATE_RECIPE = "/WEB-INF/pages/doctor/createRecipeDoctor.jsp";
     public static final String DOCTOR_REQUESTS = "/WEB-INF/pages/doctor/doctorRequests.jsp";
-
-
 }

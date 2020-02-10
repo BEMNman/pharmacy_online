@@ -18,7 +18,8 @@ import java.util.Map;
 
 public class PayOrderCommand implements Command {
 
-    public static final String INVALID_CREDIT_CART_DATA = "Credit card's information entered is not correct";
+    private static final String INVALID_CREDIT_CART_DATA = "message.invalid_credit_cart_data";
+
     private OrderService service;
 
     public PayOrderCommand(OrderService service) {
@@ -39,7 +40,7 @@ public class PayOrderCommand implements Command {
         if (valid) {
             service.saveNewOrderWithDetailsForUser(user,medicinesOrder);
             session.removeAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
-            return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
+            return CommandResult.redirectToCommand(CommandFactory.OPEN_ORDERS);
         }
         request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, INVALID_CREDIT_CART_DATA);
         return CommandResult.forward(Page.PATIENT_BASKET);

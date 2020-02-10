@@ -19,24 +19,15 @@ import com.epam.finalproject.pharmacy.dao.request.RequestDtoDaoImpl;
 import com.epam.finalproject.pharmacy.dao.user.UserDao;
 import com.epam.finalproject.pharmacy.dao.user.UserDaoImpl;
 import com.epam.finalproject.pharmacy.exception.DaoException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 
 public class DaoHelper implements AutoCloseable {
 
-    private static final Logger logger = LogManager.getLogger(DaoHelper.class.getName());
-
     private ProxyConnection connection;
 
-    public DaoHelper(ConnectionPool pool) throws DaoException {
-        try {
-            this.connection = pool.getConnection();
-        } catch (SQLException e) {
-            logger.warn(e);
-            throw new DaoException(e);
-        }
+    public DaoHelper(ConnectionPool pool) {
+        this.connection = pool.getConnection();
     }
 
     public UserDao createUserDao() {
@@ -72,22 +63,34 @@ public class DaoHelper implements AutoCloseable {
     }
 
     @Override
-    public void close() throws DaoException {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+    public void close() {
+        connection.close();
     }
 
     public void startTransaction() throws DaoException {
-        try{
+        try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DaoException("Error rollback transaction", e);
+            }
             throw new DaoException(e);
         }
     }
 
-
-
+    public void endTransaction() throws DaoException{
+        try {
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DaoException("Error rollback transaction", e);
+            }
+            throw new DaoException("Error commit transaction", e);
+        }
+    }
 }

@@ -8,12 +8,15 @@ import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.entity.UserRole;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.MedicamentService;
+import com.epam.finalproject.pharmacy.util.Calculator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ShowMainPageCommand implements Command {
 
+    private static final int COUNT = 3;
+    private static final int MIN_NUMBER_PAGE = 1;
 
     private MedicamentService service;
 
@@ -23,12 +26,21 @@ public class ShowMainPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
+        int quantityRows = service.calculateRowsAvailableMedicines();
+        String startPage = request.getParameter(RequestParameterConst.PAGE);
+        int currentPage = (startPage != null && !startPage.isEmpty()) ?
+                Integer.parseInt(startPage) : 1;
+
+        int startRow = Calculator.calculateStartRow(currentPage, COUNT, quantityRows);
+
+        List<Medicament> medicines = service.showMedicinesOnPage(startRow, COUNT);
+        request.setAttribute(RequestParameterConst.LIST_MEDICINES, medicines);
+        int maxPage = Calculator.calculateMaxPage(COUNT, quantityRows);
+        int showedPage = currentPage > maxPage ? maxPage : Math.max(currentPage, MIN_NUMBER_PAGE);
+        request.setAttribute(RequestParameterConst.PAGE, showedPage);
+        request.setAttribute(RequestParameterConst.MAX_PAGE, maxPage);
         User user = (User) request.getSession().getAttribute(SessionAttributeConst.USER);
         UserRole userRole = user.getRole();
-
-        List<Medicament> medicines = service.showAll();
-        request.setAttribute(RequestParameterConst.LIST_MEDICINES, medicines);
-
         switch (userRole) {
             case PATIENT:
                 return CommandResult.forward(Page.PATIENT_MAIN);
@@ -37,7 +49,7 @@ public class ShowMainPageCommand implements Command {
             case PHARMACIST:
                 return CommandResult.forward(Page.PHARMACIST_MAIN);
             default:
-                return CommandResult.redirect(Page.ERROR);
+                return CommandResult.redirectToCommand(CommandFactory.SHOW_ERROR_PAGE);
         }
     }
 }

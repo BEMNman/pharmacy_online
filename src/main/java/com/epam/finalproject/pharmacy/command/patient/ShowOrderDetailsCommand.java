@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ShowOrderDetailsCommand implements Command {
 
+    public static final String DONT_HAVE_ORDERS = "message.dont_have_orders";
     private OrderService service;
 
     public ShowOrderDetailsCommand(OrderService service) {
@@ -26,6 +27,9 @@ public class ShowOrderDetailsCommand implements Command {
         User user = (User) request.getSession().getAttribute(SessionAttributeConst.USER);
         List<Order> orders = service.showAllForUser(user);
         request.setAttribute(RequestParameterConst.ORDERS, orders);
+        if(orders.isEmpty()) {
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, DONT_HAVE_ORDERS);
+        }
         return CommandResult.forward(Page.PATIENT_ORDER_DETAILS);
     }
 }

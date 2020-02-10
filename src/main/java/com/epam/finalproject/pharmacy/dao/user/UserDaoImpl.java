@@ -28,7 +28,6 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         mapFieldsValues.put(User.COLUMN_LOGIN, user.getLogin());
         mapFieldsValues.put(User.COLUMN_PASSWORD, "MD5('"+user.getPassword()+"')");
         mapFieldsValues.put(User.COLUMN_ROLE, user.getRole().name());
-        mapFieldsValues.put(User.COLUMN_LOCKED, user.isLocked() ? 1 : 0);
         return mapFieldsValues;
     }
 

@@ -29,13 +29,17 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
 
     private static final String SEND_MEDICAMENT_TO_ARCHIVE = "UPDATE medicines  SET archive = '1' WHERE id = ?";
 
-    private static final String SELECT_ALL_AVAILABLE_MEDICINES =
+    private static final String SELECT_ALL_AVAILABLE_MEDICINES_FOR_PAGE =
             "SELECT * FROM medicines WHERE archive = 0 " +
-                    "ORDER BY name, dosage";
+                    "ORDER BY name, dosage LIMIT ? OFFSET ?";
 
     private static final String ALL_MEDICINES_WITH_RECIPE =
             "SELECT * FROM medicines WHERE recipe = 1 AND archive = 0 " +
                     "ORDER BY name, dosage";
+    private static final String SELECT_ALL_AVAILABLE_MEDICINES = "SELECT * FROM medicines WHERE archive = 0";
+
+    public static final int INT_TRUE = 1;
+    public static final int INT_FALSE = 0;
 
     public MedicamentDaoImpl(Connection connection) {
         super(connection);
@@ -47,11 +51,11 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
         mapFieldsValues.put(Medicament.COLUMN_NAME, medicament.getName());
         mapFieldsValues.put(Medicament.COLUMN_FORM, medicament.getForm().name());
         mapFieldsValues.put(Medicament.COLUMN_DOSAGE, medicament.getDosage());
-        mapFieldsValues.put(Medicament.COLUMN_RECIPE, medicament.isRecipe() ? 1 : 0);
+        mapFieldsValues.put(Medicament.COLUMN_RECIPE, medicament.isRecipe() ? INT_TRUE : INT_FALSE);
         mapFieldsValues.put(Medicament.COLUMN_AMOUNT_IN_PACK, medicament.getAmountInPack());
         mapFieldsValues.put(Medicament.COLUMN_PRICE, medicament.getPrice());
         mapFieldsValues.put(Medicament.COLUMN_QUANTITY_IN_STOCK, medicament.getQuantity());
-        mapFieldsValues.put(Medicament.COLUMN_ARCHIVE, medicament.isArchive() ? 1 : 0);
+        mapFieldsValues.put(Medicament.COLUMN_ARCHIVE, medicament.isArchive() ? INT_TRUE : INT_FALSE);
 
         return mapFieldsValues;
     }
@@ -87,7 +91,12 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
     }
 
     @Override
-    public List<Medicament> findAllAvailableMedicament() throws DaoException {
-        return executeQuery(SELECT_ALL_AVAILABLE_MEDICINES, new MedicamentRowMapper());
+    public List<Medicament> findAllAvailableMedicamentForRequestedPage(int startRow, int count) throws DaoException {
+        return executeQuery(SELECT_ALL_AVAILABLE_MEDICINES_FOR_PAGE, new MedicamentRowMapper(), count, startRow);
+    }
+
+    @Override
+    public List<Medicament> calculateRowAvailableMedicines() throws DaoException {
+        return executeQuery(SELECT_ALL_AVAILABLE_MEDICINES, new MedicamentRowMapper(), null);
     }
 }

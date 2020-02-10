@@ -10,7 +10,6 @@ import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.util.InputDataValidator;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class RecipeService {
 
@@ -18,16 +17,6 @@ public class RecipeService {
 
     public RecipeService(DaoHelperFactory daoHelperFactory) {
         this.daoHelperFactory = daoHelperFactory;
-    }
-
-    public List<Recipe> findAllRecipesUserForMedicamentCurrentDate(Long userId, Long medicamentId)
-            throws ServerException {
-        try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            RecipeDao recipeDao = daoHelper.createRecipeDao();
-            return recipeDao.getAllUsersRecipesForMedicamentForCurrentDate(userId, medicamentId);
-        } catch (DaoException e) {
-            throw new ServerException(e);
-        }
     }
 
     public void saveNewRecipe(User user, String stringMedicamentId, String stringPatientId, String stringQuantity,

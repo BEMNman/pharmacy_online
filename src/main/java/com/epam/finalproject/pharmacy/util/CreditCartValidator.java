@@ -2,7 +2,7 @@ package com.epam.finalproject.pharmacy.util;
 
 public class CreditCartValidator {
     private static final String REG_EXP_FORMAT_OWNERS_NAME = "[A-Z]+ [A-Z]+";
-    private static final String REG_EXP_FORMAT_NUMBER = "(\\d{4}[ -]?){4}";
+    private static final String REG_EXP_FORMAT_NUMBER = "(\\d{4}[ -]?){3}\\d{4}";
     private static final String REG_EXP_FORMAT_EXP_DATE = "\\d{2}/\\d{2}";
     public static final String REG_EXP_FORMAT_CVV_CODE = "\\d{3}";
 

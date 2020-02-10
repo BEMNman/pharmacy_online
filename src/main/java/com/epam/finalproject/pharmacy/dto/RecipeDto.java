@@ -9,6 +9,7 @@ public class RecipeDto implements Identifable, Serializable {
 
     public final static String COLUMN_PATIENT_NAME = "patientName";
     public final static String COLUMN_DOCTOR_NAME = "doctorName";
+    public final static String COLUMN_REQUESTED = "requested";
 
     private final Long id;
     private final LocalDate createdDate;
@@ -18,9 +19,10 @@ public class RecipeDto implements Identifable, Serializable {
     private final Integer amount;
     private final String patientName;
     private final String doctorName;
+    private final boolean requested;
 
-    public RecipeDto(Long id, LocalDate createdDate, LocalDate expDate, String medicamentName,
-                     String medicamentDosage, Integer amount, String patientName, String doctorName) {
+    public RecipeDto(Long id, LocalDate createdDate, LocalDate expDate, String medicamentName, String medicamentDosage,
+                     Integer amount, String patientName, String doctorName, boolean requested) {
         this.id = id;
         this.createdDate = createdDate;
         this.expDate = expDate;
@@ -29,6 +31,7 @@ public class RecipeDto implements Identifable, Serializable {
         this.amount = amount;
         this.patientName = patientName;
         this.doctorName = doctorName;
+        this.requested = requested;
     }
 
     public Long getId() {
@@ -61,5 +64,9 @@ public class RecipeDto implements Identifable, Serializable {
 
     public String getMedicamentDosage() {
         return medicamentDosage;
+    }
+
+    public boolean isRequested() {
+        return requested;
     }
 }
