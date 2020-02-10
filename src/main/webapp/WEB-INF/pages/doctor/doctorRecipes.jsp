@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/logo_pharmacy.jpg" />
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/logo_pharmacy.jpg"/>
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -21,12 +21,9 @@
         <div class="main">
             <!--Table Begin-->
             <div class="mobile">
-                <c:if test="${requestScope.recipes != null
-                   && requestScope.messageToPage == null}">
-                    <jsp:include page="/WEB-INF/pages/tables/recipesTable.jsp"/>
-                </c:if>
+                <jsp:include page="/WEB-INF/pages/tables/recipesTable.jsp"/>
                 <c:if test="${requestScope.messageToPage != null}">
-                    <jsp:include page="../message.jsp"/>
+                    <jsp:include page="../infoMessage.jsp"/>
                 </c:if>
             </div>
             <!--Table End-->

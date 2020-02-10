@@ -25,7 +25,7 @@
                     <jsp:include page="/WEB-INF/pages/tables/medicinesTable.jsp"/>
                 </c:if>
                 <c:if test="${requestScope.messageToPage != null}">
-                    <jsp:include page="../message.jsp"/>
+                    <jsp:include page="../errorMessage.jsp"/>
                 </c:if>
             </div>
             <!--Table End-->

@@ -21,7 +21,6 @@ public class CommandFactory {
     public static final String LOGOUT = "logout";
     public static final String REGISTER_NEW_PATIENT = "registerNewPatient";
     public static final String SAVE_NEW_PATIENT = "saveNewPatient";
-
     public static final String OPEN_BASKET = "openBasket";
     public static final String MAIN_PAGE = "mainPage";
     public static final String ADD_MEDICAMENT_IN_BASKET = "addMedicamentInBasket";
@@ -34,12 +33,10 @@ public class CommandFactory {
     public static final String CLEAR_BASKET = "clearBasket";
     public static final String PAY = "pay";
     public static final String SEND_RECIPE_REQUEST = "sendRecipeRequest";
-
     public static final String DELETE_MEDICAMENT = "deleteMedicament";
     public static final String EDIT_MEDICAMENT = "editMedicament";
     public static final String SAVE_MEDICAMENT = "saveMedicament";
     public static final String OPEN_CREATION_FORM_MEDICAMENT = "openCreationFormMedicament";
-
     public static final String OPEN_CREATION_FORM_RECIPE = "openCreationFormRecipe";
     public static final String SAVE_RECIPE = "saveRecipe";
     public static final String OPEN_REQUESTS = "openRequests";
@@ -49,8 +46,7 @@ public class CommandFactory {
     public static final String SWITCH_LOCALE = "switchLocale";
 
 
-    public static Command create(String command) throws ServerException {
-
+    public static Command create(String command) {
         logger.debug("Command " + command + " was created");
 
         switch (command) {

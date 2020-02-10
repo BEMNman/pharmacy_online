@@ -16,7 +16,10 @@ import java.util.List;
 
 public class OpenRequestsCommand implements Command {
 
+    public static final String DONT_HAVE_REQUESTS = "message.dont_have_requests";
+
     private RequestDtoService service;
+
     public OpenRequestsCommand(RequestDtoService service) {
         this.service = service;
     }
@@ -27,6 +30,9 @@ public class OpenRequestsCommand implements Command {
         User user = (User) session.getAttribute(SessionAttributeConst.USER);
         List<RequestDto> requestsDto = service.findAllRequestsDtoForDoctor(user);
         request.setAttribute(RequestParameterConst.REQUESTS_FOR_DOCTOR, requestsDto);
+        if(requestsDto.isEmpty()) {
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, DONT_HAVE_REQUESTS);
+        }
         return CommandResult.forward(Page.DOCTOR_REQUESTS);
     }
 }

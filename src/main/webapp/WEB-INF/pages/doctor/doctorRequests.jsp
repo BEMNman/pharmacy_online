@@ -21,12 +21,11 @@
         <div class="main">
             <!--Table Begin-->
             <div class="mobile">
-                <c:if test="${requestScope.requestsDto != null
-                   && requestScope.messageToPage == null}">
+                <c:if test="${requestScope.requestsDto != null}">
                     <jsp:include page="/WEB-INF/pages/tables/requestsDoctorTable.jsp"/>
                 </c:if>
                 <c:if test="${requestScope.messageToPage != null}">
-                    <jsp:include page="../message.jsp"/>
+                    <jsp:include page="../infoMessage.jsp"/>
                 </c:if>
             </div>
             <!--Table End-->

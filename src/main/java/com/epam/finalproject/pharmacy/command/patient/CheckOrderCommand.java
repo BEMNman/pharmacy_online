@@ -8,12 +8,16 @@ import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
 import com.epam.finalproject.pharmacy.command.constant.SessionAttributeConst;
 import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.entity.User;
+import com.epam.finalproject.pharmacy.exception.NotAvailableActionException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.MedicamentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CheckOrderCommand implements Command {
 
@@ -28,13 +32,22 @@ public class CheckOrderCommand implements Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttributeConst.USER);
         String[] count = request.getParameterValues(RequestParameterConst.COUNT_MEDICAMENT);
+        List<Integer> inputQuantityMedicines = Arrays.stream(count)
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .collect(Collectors.toList());
         Map<Medicament, Integer> medicinesAndCountInBasket =
                 (Map) session.getAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
-        String message = service.checkOrder(user, medicinesAndCountInBasket, count);
-        if (message.isEmpty()) {
+        try {
+            Map<Medicament, Integer> newMedicinesInBasket =
+                    service.recountOrder(user, medicinesAndCountInBasket, inputQuantityMedicines);
+            request.getSession().setAttribute(SessionAttributeConst.MEDICINES_IN_BASKET, newMedicinesInBasket);
             return CommandResult.redirectToCommand(CommandFactory.OPEN_ORDER);
+        } catch (NotAvailableActionException e) {
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, e.getMessage());
+            return CommandResult.forward(Page.PATIENT_ORDER_DETAILS);
         }
-        request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, message);
-        return CommandResult.forward(Page.PATIENT_ORDER_DETAILS);
+
+
     }
 }

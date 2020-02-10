@@ -5,6 +5,10 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
+<script type="text/javascript">
+    <%@include file="/resources/js/inputValidatorCreateEdit.js"%>
+</script>
+
 <div class="main">
     <h2>
         <fmt:message key="recipe.create_new" bundle="${rb}"/>
@@ -13,7 +17,7 @@
     <form  action="saveRecipe" method="post">
         <div class="row-form">
             <label>
-                <fmt:message key="creation_date" bundle="${rb}"/>
+                <fmt:message key="exp_date" bundle="${rb}"/>
             </label>
             <input type="date" placeholder="exp date"
                    min="${requestScope.currentDate}" name="expDate" required/>
@@ -33,7 +37,7 @@
 
         <div class="row-form">
             <label><fmt:message key="medicines.quantity" bundle="${rb}"/></label>
-            <input type="number" name="quantity" required
+            <input type="number" id="input-quantity" name="quantity" required
                    min="1" step="1" value="1" maxlength="2"
                    placeholder="quantity"/>
         </div>

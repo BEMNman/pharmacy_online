@@ -18,6 +18,7 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
     private static final String SAVE_NEW_ITEM_IN_DB = "INSERT INTO ";
     private static final String VALUES = " VALUE(";
     public static final String MD5_FOR_PASSWORD_USER = "MD5(";
+    private static final int FIRST_INDEX_PARAMETER_QUERY = 1;
 
     private Connection connection;
 
@@ -35,8 +36,6 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
             }
             return entities;
         } catch (SQLException e) {
-            logger.warn("Error SQL query execute: ", e);
-
             throw new DaoException(e);
         }
     }
@@ -46,17 +45,14 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
         try {
             statement = connection.prepareStatement(query);
             if (params != null && params.length != 0) {
-                for (int i = 1; i <= params.length; i++) {
-                    statement.setObject(i, params[i - 1]);
+                for (int i = FIRST_INDEX_PARAMETER_QUERY; i <= params.length; i++) {
+                    statement.setObject(i, params[i - FIRST_INDEX_PARAMETER_QUERY]);
                 }
             }
         } catch (SQLException e) {
-            logger.warn("Error SQL query execute: ", e);
-
             throw new DaoException(e);
         }
         logger.debug("Statement was created and returned: " + statement);
-
         return statement;
     }
 
@@ -71,9 +67,7 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
     public Optional<T> findById(Long id) throws DaoException {
         String table = getTableName();
         RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);
-
         logger.debug("Start finding Item with 'RowMapper': " + mapper + " in table DB + " + table);
-
         return executeForSingleResult(SELECT_ALL_FROM + table + WHERE_VALUE_ID, mapper, id);
     }
 

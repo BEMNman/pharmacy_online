@@ -32,7 +32,7 @@
                     <jsp:include page="/WEB-INF/pages/tables/orderTable.jsp"/>
                 </c:if>
                 <c:if test="${requestScope.messageToPage != null}">
-                    <jsp:include page="../message.jsp"/>
+                    <jsp:include page="../infoMessage.jsp"/>
                 </c:if>
             </div>
             <!--Table End-->

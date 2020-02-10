@@ -26,9 +26,10 @@ public class ShowMainPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws ServerException {
-        int quantityRows = service.calculateRowAvailableMedicines();
+        int quantityRows = service.calculateRowsAvailableMedicines();
         String startPage = request.getParameter(RequestParameterConst.PAGE);
-        int currentPage = startPage != null ? Integer.parseInt(startPage) : 1;
+        int currentPage = (startPage != null && !startPage.isEmpty()) ?
+                Integer.parseInt(startPage) : 1;
 
         int startRow = Calculator.calculateStartRow(currentPage, COUNT, quantityRows);
 

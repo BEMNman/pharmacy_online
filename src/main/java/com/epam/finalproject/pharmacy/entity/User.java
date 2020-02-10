@@ -8,35 +8,31 @@ public class User implements Identifable{
     public static final String COLUMN_LOGIN = "login";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_ROLE = "role";
-    public static final String COLUMN_LOCKED = "locked";
 
     private final Long id;
     private final String name;
     private final String login;
     private final String password;
     private final UserRole role;
-    private final boolean locked;
 
-    public User(String name, String login, String password, UserRole role, boolean locked) {
+    public User(String name, String login, String password, UserRole role) {
         this.id = null;
         this.name = name;
         this.login = login;
         this.password = password;
         this.role = role;
-        this.locked = locked;
     }
 
-    public User(Long id, String name, String login, String password, UserRole role, boolean locked) {
+    public User(Long id, String name, String login, String password, UserRole role) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.password = password;
         this.role = role;
-        this.locked = locked;
     }
 
     public static User newPatient(String name, String login, String password){
-        return new User(name, login, password, UserRole.PATIENT, false);
+        return new User(name, login, password, UserRole.PATIENT);
     }
 
     public String getName() {
@@ -53,10 +49,6 @@ public class User implements Identifable{
 
     public UserRole getRole() {
         return role;
-    }
-
-    public boolean isLocked() {
-        return locked;
     }
 
     @Override

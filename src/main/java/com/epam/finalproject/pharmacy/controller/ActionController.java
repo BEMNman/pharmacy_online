@@ -19,6 +19,8 @@ import java.io.IOException;
 public class ActionController extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(ActionController.class.getName());
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String REQUEST_URL = "requestURL";
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -39,9 +41,9 @@ public class ActionController extends HttpServlet {
                 forward(request, response, page);
             }
         } catch (Exception e) {
-            logger.warn(e);
-            request.setAttribute("errorMessage", e.getMessage());
-            request.setAttribute("requestURL", request.getRequestURL());
+            logger.error(e);
+            request.setAttribute(ERROR_MESSAGE, e.getMessage());
+            request.setAttribute(REQUEST_URL, request.getRequestURL());
             page = Page.ERROR;
             forward (request, response, page);
         }

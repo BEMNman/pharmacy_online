@@ -38,6 +38,9 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
                     "ORDER BY name, dosage";
     private static final String SELECT_ALL_AVAILABLE_MEDICINES = "SELECT * FROM medicines WHERE archive = 0";
 
+    public static final int INT_TRUE = 1;
+    public static final int INT_FALSE = 0;
+
     public MedicamentDaoImpl(Connection connection) {
         super(connection);
     }
@@ -48,11 +51,11 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
         mapFieldsValues.put(Medicament.COLUMN_NAME, medicament.getName());
         mapFieldsValues.put(Medicament.COLUMN_FORM, medicament.getForm().name());
         mapFieldsValues.put(Medicament.COLUMN_DOSAGE, medicament.getDosage());
-        mapFieldsValues.put(Medicament.COLUMN_RECIPE, medicament.isRecipe() ? 1 : 0);
+        mapFieldsValues.put(Medicament.COLUMN_RECIPE, medicament.isRecipe() ? INT_TRUE : INT_FALSE);
         mapFieldsValues.put(Medicament.COLUMN_AMOUNT_IN_PACK, medicament.getAmountInPack());
         mapFieldsValues.put(Medicament.COLUMN_PRICE, medicament.getPrice());
         mapFieldsValues.put(Medicament.COLUMN_QUANTITY_IN_STOCK, medicament.getQuantity());
-        mapFieldsValues.put(Medicament.COLUMN_ARCHIVE, medicament.isArchive() ? 1 : 0);
+        mapFieldsValues.put(Medicament.COLUMN_ARCHIVE, medicament.isArchive() ? INT_TRUE : INT_FALSE);
 
         return mapFieldsValues;
     }

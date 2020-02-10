@@ -7,12 +7,16 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
+<script type="text/javascript">
+    <%@include file="/resources/js/inputValidatorCreateEdit.js"%>
+</script>
+
 <div class="main">
     <h1>
         <fmt:message key="medicines" bundle="${rb}"/>
     </h1>
     <c:if test="${requestScope.messageToPage != null}">
-        <jsp:include page="../../pages/message.jsp"/>
+        <jsp:include page="../errorMessage.jsp"/>
     </c:if>
     <c:if test="${sessionScope.user.role =='PHARMACIST'}">
         <form name="create">
@@ -93,7 +97,7 @@
                                 <input type="hidden" name="command" value="addMedicamentInBasket"/>
                                 <input type="hidden" name="medicamentId" value="${medicament.id}">
                                 <input type="hidden" name="page" value="${requestScope.page}">
-                                <input name="count" type="number" size="2" min="1" max="${medicament.quantity}"
+                                <input name="count" id="input-quantity" type="number" size="2" min="1" max="${medicament.quantity}"
                                        value="1" placeholder="${1}" style="width: 4em"/>
                                 <input type="submit"
                                        value="<fmt:message key="add" bundle="${rb}"/>"/>

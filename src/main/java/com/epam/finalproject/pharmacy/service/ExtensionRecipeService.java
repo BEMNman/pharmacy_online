@@ -22,12 +22,13 @@ public class ExtensionRecipeService {
     }
 
     public void approveRequest(Long requestId) throws ServerException {
-        if(requestId < 0) {
+        if(requestId <= 0) {
             throw new ServerException("This request isn't exist");
         }
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             RecipeDao recipeDao = daoHelper.createRecipeDao();
             RequestDao requestDao = daoHelper.createRequestDao();
+            daoHelper.startTransaction();
             Optional<Request> optionalRequest = requestDao.findById(requestId);
             if(optionalRequest.isPresent()) {
                 Request request = optionalRequest.get();
@@ -39,9 +40,10 @@ public class ExtensionRecipeService {
                     recipe.setExpDate(newExpDate);
                     recipeDao.save(recipe);
                 }
-                request.setStatus(RequestStatus.CLOSED);
+                request.setStatus(RequestStatus.APPROVE);
                 requestDao.save(request);
             }
+            daoHelper.endTransaction();
         } catch (DaoException e) {
             throw new ServerException(e);
         }

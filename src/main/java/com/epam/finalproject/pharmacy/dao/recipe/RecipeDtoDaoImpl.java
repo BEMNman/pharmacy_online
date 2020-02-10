@@ -14,13 +14,14 @@ import java.util.Map;
 public class RecipeDtoDaoImpl extends AbstractDao<RecipeDto> implements RecipeDtoDao {
 
     private static final String GET_ALL_RECIPES_DTO_FOR_USER =
-            "SELECT r.id, r.creationDate, r.expDate,  m.name, m.dosage, r.amount, u1.name patientName, u2.name doctorName " +
+            "SELECT r.id, r.creationDate, r.expDate,  m.name, m.dosage, r.amount, u1.name patientName, u2.name doctorName, " +
+                    "IF((SELECT count(*) FROM request WHERE recipeId=r.id and status='NEW'), true, false) requested " +
                     "FROM recipes AS r " +
                     "JOIN medicines AS m ON r.medicamentId=m.id " +
                     "JOIN users AS u1 ON r.patientId=u1.id " +
                     "JOIN users AS u2 ON r.doctorId=u2.id ";
-    private static final String WHERE_PATIENT_ID = "WHERE r.patientId = ?";
-    private static final String WHERE_DOCTOR_ID = "WHERE r.doctorId = ?";
+    private static final String WHERE_PATIENT_ID = "WHERE r.patientId = ? ORDER BY r.creationDate DESC";
+    private static final String WHERE_DOCTOR_ID = "WHERE r.doctorId = ? ORDER BY r.creationDate DESC";
 
     public RecipeDtoDaoImpl(Connection connection) {
         super(connection);

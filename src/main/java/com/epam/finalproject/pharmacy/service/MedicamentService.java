@@ -3,12 +3,13 @@ package com.epam.finalproject.pharmacy.service;
 import com.epam.finalproject.pharmacy.dao.DaoHelper;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
 import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDao;
+import com.epam.finalproject.pharmacy.dao.recipe.RecipeDao;
 import com.epam.finalproject.pharmacy.entity.Medicament;
 import com.epam.finalproject.pharmacy.entity.MedicamentForm;
 import com.epam.finalproject.pharmacy.entity.Recipe;
 import com.epam.finalproject.pharmacy.entity.User;
 import com.epam.finalproject.pharmacy.exception.DaoException;
-import com.epam.finalproject.pharmacy.exception.NotFoundItemException;
+import com.epam.finalproject.pharmacy.exception.NotAvailableActionException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.util.InputDataValidator;
 
@@ -17,11 +18,11 @@ import java.util.*;
 
 public class MedicamentService {
 
-    private static final String MESSAGE_NOT_AVAILABLE_RECIPE = "message.not_available_recipe";
-    private static final String MESSAGE_NOT_ENOUGH_IN_STOCK = "message.not_enough_in_stock";
-    private static final String MESSAGE_EMPTY = "";
-    private static final String ENTERED_DATA_ARE_INCORRECT = "message.entered_data_incorrect";
 
+    private static final String NOT_AVAILABLE_RECIPE = "message.not_available_recipe";
+    private static final String NOT_ENOUGH_IN_STOCK = "message.not_enough_in_stock";
+    private static final String ENTERED_DATA_ARE_INCORRECT = "message.entered_data_incorrect";
+    private static final String ENTERED_QUANTITY_MORE_THAN_IN_RECIPE = "message.entered_quantity_recipe";
 
     private DaoHelperFactory daoHelperFactory;
 
@@ -66,8 +67,12 @@ public class MedicamentService {
     }
 
     private List<Recipe> getActualRecipesForUserMedicament(Long userId, Medicament medicament) throws ServerException {
-        RecipeService recipeService = new RecipeService(new DaoHelperFactory());
-        return recipeService.findAllRecipesUserForMedicamentCurrentDate(userId, medicament.getId());
+        try(DaoHelper daoHelper = daoHelperFactory.create()) {
+            RecipeDao recipeDao = daoHelper.createRecipeDao();
+            return recipeDao.getAllUsersRecipesForMedicamentForCurrentDate(userId, medicament.getId());
+        } catch (DaoException e) {
+            throw new ServerException(e);
+        }
     }
 
 
@@ -82,41 +87,42 @@ public class MedicamentService {
         return false;
     }
 
-    public String checkOrder(User user, Map<Medicament, Integer> medicinesCount, String[] count) throws ServerException {
+    public Map<Medicament, Integer> recountOrder(User user, Map<Medicament, Integer> medicinesInBasket, List<Integer> inputQuantityMedicines)
+            throws ServerException, NotAvailableActionException {
+        Map<Medicament, Integer> checkedBasket = new HashMap<>(medicinesInBasket);
         int indexCount = 0;
-        for (Medicament medicament : medicinesCount.keySet()) {
-            Integer quantity = Integer.parseInt(count[indexCount++]);
-            medicinesCount.put(medicament, quantity);
+        for (Medicament medicament : checkedBasket.keySet()) {
+            checkedBasket.put(medicament, inputQuantityMedicines.get(indexCount++));
         }
-        medicinesCount.values().removeIf(value -> value == 0);
-        boolean isQuantityCorrect = checkQuantityMedicinesInUsersOrder(medicinesCount);
+        checkedBasket.values().removeIf(value -> value == 0);
+        boolean isQuantityCorrect = checkQuantityMedicinesInUsersOrder(checkedBasket);
         if (!isQuantityCorrect) {
-            return "Quantity more than in the stock";
+            throw  new NotAvailableActionException(NOT_ENOUGH_IN_STOCK);
         }
-
-        for (Medicament medicament : medicinesCount.keySet()) {
+        for (Medicament medicament : checkedBasket.keySet()) {
             if (medicament.isRecipe()) {
-                Integer realQuantity = medicinesCount.get(medicament);
+                Integer realQuantity = checkedBasket.get(medicament);
                 boolean hasRecipeForQuantity = checkOrderForHavingRecipes(user.getId(), medicament, realQuantity);
                 if (!hasRecipeForQuantity) {
-                    return "Entered quantity for " + medicament.getName() + " is more than quantity specified in recipe";
+                    throw  new NotAvailableActionException(ENTERED_QUANTITY_MORE_THAN_IN_RECIPE);
                 }
             }
         }
-        return MESSAGE_EMPTY;
+        return checkedBasket;
     }
 
-    public String addMedicamentInBasket(User user, String stringMedicamentId, String stringCount,
-                                        Map<Medicament, Integer> medicamentCount) throws ServerException {
+    public void addMedicamentInBasket(User user, String stringMedicamentId, String stringCount,
+                                      Map<Medicament, Integer> medicamentCount)
+            throws ServerException, NotAvailableActionException {
         Long medicamentId = Long.parseLong(stringMedicamentId);
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             Optional<Medicament> optionalMedicament = findMedicamentById(medicamentId);
             Medicament medicament = null;
-            if(optionalMedicament.isPresent()) {
-                medicament= optionalMedicament.get();
+            if (optionalMedicament.isPresent()) {
+                medicament = optionalMedicament.get();
             } else {
-                throw new NotFoundItemException("Medicament wasn't found in BD");
+                throw new ServerException("Medicament wasn't found");
             }
             Integer quantityMedicamentBasket = medicamentCount.getOrDefault(medicament, 0);
             Integer countMedicament = Integer.parseInt(stringCount);
@@ -125,14 +131,13 @@ public class MedicamentService {
             if (hasEnoughQuantity) {
                 boolean availableRecipe = medicamentDao.checkAvailableRecipe(user.getId(), medicamentId, tempTotalQuantity);
                 if (medicament.isRecipe() && !availableRecipe) {
-                    return MESSAGE_NOT_AVAILABLE_RECIPE;
+                    throw new NotAvailableActionException(NOT_AVAILABLE_RECIPE);
                 }
             } else {
-                return MESSAGE_NOT_ENOUGH_IN_STOCK;
+                throw new NotAvailableActionException(NOT_ENOUGH_IN_STOCK);
             }
             medicamentCount.put(medicament, tempTotalQuantity);
-            return MESSAGE_EMPTY;
-        } catch (DaoException | NotFoundItemException e) {
+        } catch (DaoException e) {
             throw new ServerException(e);
         }
 
@@ -147,8 +152,9 @@ public class MedicamentService {
         }
     }
 
-    public String updateMedicament(Long id, String stringName, String stringForm, String stringDosage, boolean recipe,
-                                   String stringAmountInPack, String stringPrice, String stringQuantity) throws ServerException {
+    public void updateMedicament(Long id, String stringName, String stringForm, String stringDosage, boolean recipe,
+                                 String stringAmountInPack, String stringPrice, String stringQuantity)
+            throws ServerException, NotAvailableActionException {
         if (InputDataValidator.notNullOrEmpty(stringName, stringForm, stringDosage,
                 stringAmountInPack, stringPrice, stringQuantity)) {
             try (DaoHelper daoHelper = daoHelperFactory.create()) {
@@ -159,7 +165,7 @@ public class MedicamentService {
                 Integer quantity = Integer.parseInt(stringQuantity);
 
                 if (price.compareTo(BigDecimal.valueOf(0)) <= 0 || quantity < 0 || amountInPack <= 0) {
-                    return ENTERED_DATA_ARE_INCORRECT;
+                    throw new NotAvailableActionException(ENTERED_DATA_ARE_INCORRECT);
                 }
                 Medicament medicament =
                         Medicament.newMedicament(id, stringName, form, stringDosage, recipe, amountInPack, price, quantity);
@@ -168,13 +174,12 @@ public class MedicamentService {
                 throw new ServerException(e);
             }
         } else {
-            return ENTERED_DATA_ARE_INCORRECT;
+            throw new NotAvailableActionException(ENTERED_DATA_ARE_INCORRECT);
         }
-        return MESSAGE_EMPTY;
     }
 
-    public int calculateRowAvailableMedicines() throws ServerException {
-        try(DaoHelper daoHelper = daoHelperFactory.create()) {
+    public int calculateRowsAvailableMedicines() throws ServerException {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
             MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
             return medicamentDao.calculateRowAvailableMedicines().size();
         } catch (DaoException e) {

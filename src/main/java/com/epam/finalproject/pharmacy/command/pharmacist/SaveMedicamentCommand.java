@@ -5,12 +5,11 @@ import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
-import com.epam.finalproject.pharmacy.entity.MedicamentForm;
+import com.epam.finalproject.pharmacy.exception.NotAvailableActionException;
 import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.MedicamentService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 
 public class SaveMedicamentCommand implements Command {
 
@@ -34,13 +33,12 @@ public class SaveMedicamentCommand implements Command {
         String stringAmountInPack = request.getParameter(RequestParameterConst.MEDICAMENT_AMOUNT_IN_PACK);
         String medicamentPrice = request.getParameter(RequestParameterConst.MEDICAMENT_PRICE);
         String medicamentQuantity = request.getParameter(RequestParameterConst.MEDICAMENT_QUANTITY);
-        String resultCommand =
-                service.updateMedicament(id, name, stringForm, dosage, recipe, stringAmountInPack, medicamentPrice, medicamentQuantity);
-        if(!resultCommand.isEmpty()){
-            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, resultCommand);
+        try {
+            service.updateMedicament(id, name, stringForm, dosage, recipe, stringAmountInPack, medicamentPrice, medicamentQuantity);
+        } catch (NotAvailableActionException e) {
+            request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, e.getMessage());
             return CommandResult.forward(Page.PHARMACIST_EDIT_CREATE_MEDICAMENT);
         }
-
         return CommandResult.redirectToCommand(CommandFactory.MAIN_PAGE);
     }
 }

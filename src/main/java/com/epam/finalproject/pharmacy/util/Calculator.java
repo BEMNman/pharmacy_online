@@ -7,9 +7,6 @@ import java.util.Map;
 
 public class Calculator {
 
-    public static final String PREVIOUS = "previous";
-    public static final String NEXT = "next";
-
     public static BigDecimal calculateTotalPrice(Map<Medicament, Integer> medicinesCountInBasket) {
         BigDecimal totalPrice = new BigDecimal(0);
         for (Medicament medicament : medicinesCountInBasket.keySet()) {

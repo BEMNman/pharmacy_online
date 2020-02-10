@@ -10,45 +10,45 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayDeque;
 import java.util.Properties;
-import java.util.Queue;
 
 public class ConnectionFactory {
 
     private static final Logger logger = LogManager.getLogger(ProxyConnection.class.getName());
 
     private static final URL PATH_PROPERTY_FILE = ConnectionFactory.class
-            .getClassLoader()
-            .getResource("database.properties");
+                                                                   .getClassLoader()
+                                                                   .getResource("database.properties");
     private static final String DRIVER = "db.driver";
     private static final String URL = "db.url";
     private static final String USER = "db.user";
     private static final String PASSWORD = "db.password";
-    private static final String POOL_SIZE = "db.poolsize";
 
-    public static Queue<ProxyConnection> createPoolConnections() {
+    private final String url;
+    private final String user;
+    private final String pass;
+
+    public ConnectionFactory() {
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(PATH_PROPERTY_FILE.getFile())) {
             properties.load(fis);
             String driver = properties.getProperty(DRIVER);
             Class.forName(driver);
+            url = properties.getProperty(URL);
+            user = properties.getProperty(USER);
+            pass = properties.getProperty(PASSWORD);
+        } catch (ClassNotFoundException | IOException e) {
+            logger.error(e);
+            throw new CreateConnectionException(e);
+        }
+    }
 
-            String url = properties.getProperty(URL);
-            String user = properties.getProperty(USER);
-            String pass = properties.getProperty(PASSWORD);
-
-            Queue<ProxyConnection> proxyConnections = new ArrayDeque<>();
-            String poolSizeString = properties.getProperty(POOL_SIZE);
-            int poolSize = Integer.parseInt(poolSizeString);
+    public ProxyConnection createProxyConnection() {
+        try {
             Connection connection = DriverManager.getConnection(url, user, pass);
-            ProxyConnection proxyConnection = new ProxyConnection(connection, ConnectionPool.getInstance());
-            for (int i = 0; i < poolSize; i++) {
-                proxyConnections.add(proxyConnection);
-            }
-            return proxyConnections;
-        } catch (ClassNotFoundException | IOException | SQLException e) {
-            logger.warn(e);
+            return new ProxyConnection(connection, ConnectionPool.getInstance());
+        } catch (SQLException e) {
+            logger.error(e);
             throw new CreateConnectionException(e);
         }
     }

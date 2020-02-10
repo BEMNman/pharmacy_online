@@ -19,7 +19,9 @@ public class RecipeDtoRowMapper implements RowMapper<RecipeDto> {
         Integer amount = resultSet.getInt(Recipe.COLUMN_AMOUNT);
         String patientName = resultSet.getString(RecipeDto.COLUMN_PATIENT_NAME);
         String doctorName = resultSet.getString(RecipeDto.COLUMN_DOCTOR_NAME);
+        boolean requested = resultSet.getBoolean(RecipeDto.COLUMN_REQUESTED);
 
-        return new RecipeDto(id, creationDate, expDate, medicamentName, medicamentDosage, amount, patientName, doctorName);
+        return new RecipeDto(id, creationDate, expDate, medicamentName, medicamentDosage, amount,
+                patientName, doctorName, requested);
     }
 }

@@ -237,7 +237,7 @@ button:hover {
 
 table.bordered, table.bordered-order {
     font-size: 12px;
-    margin: 10px 0;
+    margin: 13px 0;
     padding: 0;
     border-collapse: separate;
     *border-collapse: collapse;
@@ -256,7 +256,7 @@ table.bordered-order td {
 
 table.bordered th, table.bordered td,
 table.bordered-order td {
-    padding: 9px;
+    padding: 10px;
     vertical-align: middle;
     border-left: 1px solid #4c545e;
 }
@@ -735,7 +735,7 @@ span.price {
 .pagination a,
 .pagination b{
     font-style: normal;
-    color: #fd0cff;
+    color: white;
     padding: 0 5px;
 }
 

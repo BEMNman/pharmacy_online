@@ -9,7 +9,6 @@ CREATE TABLE pharmacy.users
     `login`    varchar(45)                              NOT NULL UNIQUE,
     `password` varchar(45)                              NOT NULL,
     `role`     enum ('PATIENT', 'DOCTOR', 'PHARMACIST') NOT NULL,
-    `locked`   boolean DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
@@ -87,11 +86,11 @@ CREATE TABLE pharmacy.recipes
 DROP TABLE IF EXISTS pharmacy.request;
 CREATE TABLE pharmacy.request
 (
-    `id`              int(11)                NOT NULL AUTO_INCREMENT,
-    `creationDate`    date                   NOT NULL,
-    `recipeId`        int(11)                NOT NULL,
-    `requestedPeriod` int(2)                 NOT NULL,
-    `status`          enum ('NEW', 'CLOSED') NOT NULL,
+    `id`              int(11)                           NOT NULL AUTO_INCREMENT,
+    `creationDate`    date                              NOT NULL,
+    `recipeId`        int(11)                           NOT NULL,
+    `requestedPeriod` int(2)                            NOT NULL,
+    `status`          enum ('NEW', 'APPROVE', 'REJECT') NOT NULL,
     PRIMARY KEY (`id`),
     KEY `fk_request_recipe_idx` (`recipeId`),
     CONSTRAINT `fk_request_recipes` FOREIGN KEY (`recipeId`) REFERENCES pharmacy.recipes (`id`)

@@ -1,7 +1,6 @@
 package com.epam.finalproject.pharmacy.dao;
 
 import com.epam.finalproject.pharmacy.connection.ConnectionPool;
-import com.epam.finalproject.pharmacy.exception.DaoException;
 
 public class DaoHelperFactory {
 

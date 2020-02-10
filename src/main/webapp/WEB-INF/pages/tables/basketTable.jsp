@@ -5,6 +5,10 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
+<script type="text/javascript">
+    <%@include file="/resources/js/inputValidatorCreateEdit.js"%>
+</script>
+
 <div class="main">
     <h1>
         <fmt:message key="header.basket" bundle="${rb}"/>
@@ -87,7 +91,7 @@
                         <td><c:out value="${medicament.price}"/></td>
                         <td>
                             <input type="hidden" name="id" value="${medicament.id}">
-                            <input name="count"
+                            <input name="count" id="input-quantity"
                                    type="number"
                                    min="0"
                                    max="${medicament.quantity}"
