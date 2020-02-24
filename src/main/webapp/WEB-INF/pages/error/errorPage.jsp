@@ -15,14 +15,14 @@
 </head>
 <body>
 <div class="wrapper">
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="../header.jsp"/>
     <div class="content">
         <div class="main">
             <div class="mobile">
                 <div class="form">
-                    <h2>Request from ${requestScope.requestURL} is failed </h2>
+                    <h1>Error ${requestScope['javax.servlet.error.status_code']} </h1>
                     <br/>
-                    <h2>Exception: ${requestScope.errorMessage}</h2>
+                    <h2>Exception: ${requestScope['javax.servlet.error.message']}</h2>
                     <br/>
                     <div class="button-group">
                         <a href="${pageContext.request.contextPath}controller?command=mainPage">

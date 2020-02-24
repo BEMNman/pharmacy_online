@@ -16,7 +16,7 @@
         <fmt:message key="medicines" bundle="${rb}"/>
     </h1>
     <c:if test="${requestScope.messageToPage != null}">
-        <jsp:include page="../errorMessage.jsp"/>
+        <jsp:include page="../error/errorMessage.jsp"/>
     </c:if>
     <c:if test="${sessionScope.user.role =='PHARMACIST'}">
         <form name="create">

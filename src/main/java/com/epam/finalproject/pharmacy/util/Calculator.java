@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Calculator {
 
-    public static BigDecimal calculateTotalPrice(Map<Medicament, Integer> medicinesCountInBasket) {
+    public BigDecimal calculateTotalPrice(Map<Medicament, Integer> medicinesCountInBasket) {
         BigDecimal totalPrice = new BigDecimal(0);
         for (Medicament medicament : medicinesCountInBasket.keySet()) {
             Integer amountItem = medicinesCountInBasket.get(medicament);
@@ -17,7 +17,7 @@ public class Calculator {
         return totalPrice;
     }
 
-    public static int calculateStartRow(int currentPage, int quantityItemOnPage, int quantityRows) {
+    public int calculateStartRow(int currentPage, int quantityItemOnPage, int quantityRows) {
         int maxNumberPage = calculateMaxPage(quantityItemOnPage, quantityRows);
         if(currentPage <= 0) {
             return  0;
@@ -29,7 +29,7 @@ public class Calculator {
         return (currentPage - 1) * quantityItemOnPage;
     }
 
-    public static int calculateMaxPage(int quantityItemOnPage, int quantityRows) {
+    public int calculateMaxPage(int quantityItemOnPage, int quantityRows) {
         return quantityRows / quantityItemOnPage + (quantityRows % quantityItemOnPage > 0 ? 1 : 0);
     }
 }

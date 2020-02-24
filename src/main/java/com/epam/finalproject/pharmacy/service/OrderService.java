@@ -34,17 +34,21 @@ public class OrderService {
             }
             Long userId = user.getId();
             Order order = Order.newOrder(userId, totalPriceOrder);
-            daoHelper.startTransaction();
-            long newOrderId = orderDao.saveAndGetIdLastSavedOrder(order);
-            OrderDetailsDao orderDetailsDao = daoHelper.createOrderDetailsDao();
-            for (Medicament medicament : medicinesInOrder.keySet()) {
-                Long medicamentId = medicament.getId();
-                BigDecimal quantity = new BigDecimal(medicinesInOrder.get(medicament));
-                BigDecimal totalPrice = medicament.getPrice().multiply(quantity);
-                OrderDetails orderDetails = new OrderDetails(newOrderId, medicamentId, quantity.intValue(), totalPrice);
-                orderDetailsDao.save(orderDetails);
+            try {
+                daoHelper.startTransaction();
+                long newOrderId = orderDao.saveAndGetIdLastSavedOrder(order);
+                OrderDetailsDao orderDetailsDao = daoHelper.createOrderDetailsDao();
+                for (Medicament medicament : medicinesInOrder.keySet()) {
+                    Long medicamentId = medicament.getId();
+                    BigDecimal quantity = new BigDecimal(medicinesInOrder.get(medicament));
+                    BigDecimal totalPrice = medicament.getPrice().multiply(quantity);
+                    OrderDetails orderDetails = new OrderDetails(newOrderId, medicamentId, quantity.intValue(), totalPrice);
+                    orderDetailsDao.save(orderDetails);
+                }
+                daoHelper.endTransaction();
+            } catch (DaoException e) {
+                daoHelper.rollbackTransaction();
             }
-            daoHelper.endTransaction();
         } catch (DaoException e) {
             throw new ServerException(e);
         }

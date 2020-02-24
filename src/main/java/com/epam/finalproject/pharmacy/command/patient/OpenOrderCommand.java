@@ -21,7 +21,8 @@ public class OpenOrderCommand implements Command {
         HttpSession session = request.getSession();
         Map<Medicament, Integer> medicinesCountInBasket =
                 (Map) session.getAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);
-        BigDecimal totalPrice = Calculator.calculateTotalPrice(medicinesCountInBasket);
+        Calculator calculator = new Calculator();
+        BigDecimal totalPrice = calculator.calculateTotalPrice(medicinesCountInBasket);
         request.setAttribute(RequestParameterConst.TOTAL_PRICE, totalPrice);
         return CommandResult.forward(Page.PATIENT_ORDER_DETAILS);
     }

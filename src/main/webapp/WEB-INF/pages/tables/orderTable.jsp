@@ -13,7 +13,7 @@
 </script>
 
 <c:if test="${requestScope.messageToPage != null}">
-    <jsp:include page="../errorMessage.jsp"/>
+    <jsp:include page="../error/errorMessage.jsp"/>
 </c:if>
 <c:if test="${requestScope.messageToPage == null}">
     <h2>

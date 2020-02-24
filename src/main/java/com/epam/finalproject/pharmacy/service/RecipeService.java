@@ -22,7 +22,8 @@ public class RecipeService {
     public void saveNewRecipe(User user, String stringMedicamentId, String stringPatientId, String stringQuantity,
                               String stringExpDate) throws ServerException {
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
-            if (InputDataValidator.notNullOrEmpty(stringMedicamentId, stringPatientId, stringQuantity, stringExpDate)) {
+            InputDataValidator inputDataValidator = new InputDataValidator();
+            if (inputDataValidator.notNullOrEmpty(stringMedicamentId, stringPatientId, stringQuantity, stringExpDate)) {
                 Long medicamentId = Long.parseLong(stringMedicamentId);
                 Long patientId = Long.parseLong(stringPatientId);
                 Integer quantity = Integer.parseInt(stringQuantity);
@@ -31,9 +32,11 @@ public class RecipeService {
                     RecipeDao recipeDao = daoHelper.createRecipeDao();
                     Recipe recipe = Recipe.newRecipe(expDate, medicamentId, quantity, patientId, user.getId());
                     recipeDao.save(recipe);
+                    return;
                 }
             }
-        } catch (IllegalArgumentException | DaoException e) {
+                throw new ServerException("Date for creating recipe isn't valid");
+        } catch (DaoException e) {
             throw new ServerException(e);
         }
     }

@@ -3,8 +3,8 @@ package com.epam.finalproject.pharmacy.controller;
 import com.epam.finalproject.pharmacy.command.Command;
 import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
-import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
+import com.epam.finalproject.pharmacy.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,8 +19,6 @@ import java.io.IOException;
 public class ActionController extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(ActionController.class.getName());
-    public static final String ERROR_MESSAGE = "errorMessage";
-    public static final String REQUEST_URL = "requestURL";
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -42,10 +40,11 @@ public class ActionController extends HttpServlet {
             }
         } catch (Exception e) {
             logger.error(e);
-            request.setAttribute(ERROR_MESSAGE, e.getMessage());
-            request.setAttribute(REQUEST_URL, request.getRequestURL());
-            page = Page.ERROR;
-            forward (request, response, page);
+            int codStatus = 404;
+            if (e.getCause() instanceof DaoException) {
+                codStatus = 500;
+            }
+            response.sendError(codStatus, e.getMessage());
         }
     }
 

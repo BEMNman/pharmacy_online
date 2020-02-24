@@ -18,32 +18,36 @@ public class ExtensionRecipeService {
     private DaoHelperFactory daoHelperFactory;
 
     public ExtensionRecipeService(DaoHelperFactory daoHelperFactory) {
-       this.daoHelperFactory = daoHelperFactory;
+        this.daoHelperFactory = daoHelperFactory;
     }
 
     public void approveRequest(Long requestId) throws ServerException {
-        if(requestId <= 0) {
+        if (requestId <= 0) {
             throw new ServerException("This request isn't exist");
         }
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             RecipeDao recipeDao = daoHelper.createRecipeDao();
             RequestDao requestDao = daoHelper.createRequestDao();
-            daoHelper.startTransaction();
-            Optional<Request> optionalRequest = requestDao.findById(requestId);
-            if(optionalRequest.isPresent()) {
-                Request request = optionalRequest.get();
-                Optional<Recipe> optionalRecipe = recipeDao.findById(request.getRecipeId());
-                if(optionalRecipe.isPresent()) {
-                    Recipe recipe = optionalRecipe.get();
-                    Integer requestedPeriod = request.getRequestedPeriod();
-                    LocalDate newExpDate = recipe.getExpDate().plusMonths(requestedPeriod);
-                    recipe.setExpDate(newExpDate);
-                    recipeDao.save(recipe);
+            try {
+                daoHelper.startTransaction();
+                Optional<Request> optionalRequest = requestDao.findById(requestId);
+                if (optionalRequest.isPresent()) {
+                    Request request = optionalRequest.get();
+                    Optional<Recipe> optionalRecipe = recipeDao.findById(request.getRecipeId());
+                    if (optionalRecipe.isPresent()) {
+                        Recipe recipe = optionalRecipe.get();
+                        Integer requestedPeriod = request.getRequestedPeriod();
+                        LocalDate newExpDate = recipe.getExpDate().plusMonths(requestedPeriod);
+                        recipe.setExpDate(newExpDate);
+                        recipeDao.save(recipe);
+                    }
+                    request.setStatus(RequestStatus.APPROVE);
+                    requestDao.save(request);
                 }
-                request.setStatus(RequestStatus.APPROVE);
-                requestDao.save(request);
+                daoHelper.endTransaction();
+            } catch (DaoException e) {
+                daoHelper.rollbackTransaction();
             }
-            daoHelper.endTransaction();
         } catch (DaoException e) {
             throw new ServerException(e);
         }

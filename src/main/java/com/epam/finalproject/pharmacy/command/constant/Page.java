@@ -2,7 +2,6 @@ package com.epam.finalproject.pharmacy.command.constant;
 
 public class Page {
     public static final String INDEX = "index.jsp";
-    public static final String ERROR = "/WEB-INF/pages/error.jsp";
     public static final String LOGIN = "/WEB-INF/pages/login.jsp";
     public static final String REGISTRATION_NEW_PATIENT = "/WEB-INF/pages/patient/registerNewPatient.jsp";
 

@@ -6,11 +6,11 @@
         </Console>
         <RollingFile
                 name="RollingFile"
-                fileName="logs/log4j2.log"
-                filePattern="%d{yyyy-MM-dd}-%i.log">
+                fileName="D:/_PROGRAMMING_/EPAM/EPAM_JAVA_WEB/pharmacy/logs/log4j2.log"
+                filePattern="${sys:logFilename}-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %c{1}:%L - %m%n"/>
             <Policies>
-                <SizeBasedTriggeringPolicy size="1 MB"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>

@@ -36,7 +36,8 @@ public class PayOrderCommand implements Command {
         String cardNumber = request.getParameter(RequestParameterConst.CARD_NUMBER);
         String expDate  = request.getParameter(RequestParameterConst.CARD_EXP_DATE);
         String cvv  = request.getParameter(RequestParameterConst.CARD_CVV);
-        boolean valid = CreditCartValidator.isValid(cardName, cardNumber, expDate, cvv);
+        CreditCartValidator creditCartValidator = new CreditCartValidator();
+        boolean valid = creditCartValidator.isValid(cardName, cardNumber, expDate, cvv);
         if (valid) {
             service.saveNewOrderWithDetailsForUser(user,medicinesOrder);
             session.removeAttribute(SessionAttributeConst.MEDICINES_IN_BASKET);

@@ -11,7 +11,7 @@
 
 <div class="main">
     <div class="mobile">
-        <div class="form">
+        <div class="form-infoMessage">
             <h2 class="infoMessage"><fmt:message key="${requestScope.messageToPage}" bundle="${rb}"/></h2>
             <div class="button-group">
                 <c:if test="${requestScope.messageToPage.contains('invalid_credit_cart_dat')

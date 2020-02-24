@@ -16,6 +16,11 @@ VALUES ('Acetaminophen', 'SOLUTION', '50ml', true, 20, 10.2, 1000, false),
        ('Xanax', 'PILL', '12500me', true, 10, 1.05, 1000, true),
        ('Asperin', 'PILL', '1g', true, 10, 5.5, 26, false),
        ('Ativan', 'POWDER', '1.25g', false, 60, 4.74, 39, false),
+       ('Avaksim', 'SOLUTION', '5ml', true, 10, 5.00, 100, false),
+       ('Avaksim', 'SOLUTION', '0.5ml', true, 1, 0.60, 200, false),
+       ('Avirol', 'PILL', '1g', false, 90, 23.6, 54, false),
+       ('Citalopram', 'SOLUTION', '10mg', true, 20, 17.35, 125, false),
+       ('FLUDEX', 'PILL', '1.5mg', false, 30, 12.37, 1000, false),
        ('Lyrica', 'CREAM', '60ml', false, 15, 8.25, 120, false);
 
 INSERT INTO pharmacy.recipes (creationDate, expDate, medicamentId, amount, patientId, doctorId)

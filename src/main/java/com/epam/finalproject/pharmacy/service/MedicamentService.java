@@ -18,7 +18,6 @@ import java.util.*;
 
 public class MedicamentService {
 
-
     private static final String NOT_AVAILABLE_RECIPE = "message.not_available_recipe";
     private static final String NOT_ENOUGH_IN_STOCK = "message.not_enough_in_stock";
     private static final String ENTERED_DATA_ARE_INCORRECT = "message.entered_data_incorrect";
@@ -114,9 +113,9 @@ public class MedicamentService {
     public void addMedicamentInBasket(User user, String stringMedicamentId, String stringCount,
                                       Map<Medicament, Integer> medicamentCount)
             throws ServerException, NotAvailableActionException {
-        Long medicamentId = Long.parseLong(stringMedicamentId);
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
+            Long medicamentId = Long.parseLong(stringMedicamentId);
             Optional<Medicament> optionalMedicament = findMedicamentById(medicamentId);
             Medicament medicament = null;
             if (optionalMedicament.isPresent()) {
@@ -155,7 +154,8 @@ public class MedicamentService {
     public void updateMedicament(Long id, String stringName, String stringForm, String stringDosage, boolean recipe,
                                  String stringAmountInPack, String stringPrice, String stringQuantity)
             throws ServerException, NotAvailableActionException {
-        if (InputDataValidator.notNullOrEmpty(stringName, stringForm, stringDosage,
+        InputDataValidator inputDataValidator = new InputDataValidator();
+        if (inputDataValidator.notNullOrEmpty(stringName, stringForm, stringDosage,
                 stringAmountInPack, stringPrice, stringQuantity)) {
             try (DaoHelper daoHelper = daoHelperFactory.create()) {
                 MedicamentDao medicamentDao = daoHelper.createMedicamentDao();

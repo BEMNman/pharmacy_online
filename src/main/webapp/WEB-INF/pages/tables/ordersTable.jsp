@@ -12,13 +12,13 @@
     <c:if test="${requestScope.orders.size()>0}">
         <table class="bordered">
             <tr>
-                <th>
+                <th width="320px">
                     <fmt:message key="date" bundle="${rb}"/>
                 </th>
-                <th>
+                <th width="170px">
                     <fmt:message key="order.price" bundle="${rb}"/>
                 </th>
-                <th>
+                <th width="170px">
                     <fmt:message key="order.status" bundle="${rb}"/>
                 </th>
                 <th>

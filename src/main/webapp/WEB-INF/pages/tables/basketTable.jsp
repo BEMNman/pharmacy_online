@@ -16,7 +16,7 @@
     <c:if test="${sessionScope.medicinesInBasket.size() == null}">
         <div class="main">
             <div class="mobile">
-                <div class="form">
+                <div class="form-infoMessage">
                     <h2>
                         <fmt:message key="basket.empty" bundle="${rb}"/>
                         <fmt:message key="basket.click" bundle="${rb}"/>

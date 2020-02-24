@@ -7,7 +7,6 @@ import com.epam.finalproject.pharmacy.command.pharmacist.DeleteMedicamentCommand
 import com.epam.finalproject.pharmacy.command.pharmacist.EditMedicamentCommand;
 import com.epam.finalproject.pharmacy.command.pharmacist.SaveMedicamentCommand;
 import com.epam.finalproject.pharmacy.dao.DaoHelperFactory;
-import com.epam.finalproject.pharmacy.exception.ServerException;
 import com.epam.finalproject.pharmacy.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +15,6 @@ public class CommandFactory {
 
     private static final Logger logger = LogManager.getLogger(CommandFactory.class.getName());
 
-    public static final String SHOW_ERROR_PAGE = "errorPage";
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";
     public static final String REGISTER_NEW_PATIENT = "registerNewPatient";
@@ -42,16 +40,12 @@ public class CommandFactory {
     public static final String OPEN_REQUESTS = "openRequests";
     public static final String REJECT_REQUEST = "rejectRequest";
     public static final String APPROVE_REQUEST = "approveRequest";
-
     public static final String SWITCH_LOCALE = "switchLocale";
-
 
     public static Command create(String command) {
         logger.debug("Command " + command + " was created");
 
         switch (command) {
-            case SHOW_ERROR_PAGE:
-                return new ShowPageCommand(Page.ERROR);
             case LOGIN:
                 return new LoginCommand(new UserService(new DaoHelperFactory()));
             case LOGOUT:

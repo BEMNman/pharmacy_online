@@ -1,7 +1,6 @@
 package com.epam.finalproject.pharmacy.command.patient;
 
 import com.epam.finalproject.pharmacy.command.Command;
-import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.Page;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
@@ -28,7 +27,8 @@ public class RegisterNewPatientCommand implements Command {
                 service.registerNewUserByPatient(patientName, login, password, passwordForCheck);
         if(registrationSuccessful) {
             return CommandResult.redirect(Page.INDEX);
+        } else {
+            throw new ServerException("Error in registration.");
         }
-        return CommandResult.redirectToCommand(CommandFactory.SHOW_ERROR_PAGE);
     }
 }

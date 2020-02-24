@@ -23,7 +23,7 @@
             <div class="mobile">
                 <jsp:include page="/WEB-INF/pages/tables/recipesTable.jsp"/>
                 <c:if test="${requestScope.messageToPage != null}">
-                    <jsp:include page="../infoMessage.jsp"/>
+                    <jsp:include page="../message/infoMessage.jsp"/>
                 </c:if>
             </div>
             <!--Table End-->
