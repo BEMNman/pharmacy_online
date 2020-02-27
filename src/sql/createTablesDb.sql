@@ -19,7 +19,7 @@ CREATE TABLE pharmacy.medicines
 (
     `id`           int(11)                                             NOT NULL AUTO_INCREMENT,
     `name`         varchar(45)                                         NOT NULL,
-    `form`         enum ('PILL', 'SOLUTION', 'POWDER', 'CREAM', 'GEL') NOT NULL,
+    `form`         enum ('PILL', 'SOLUTION', 'POWDER', 'CREAM', 'GEL', 'CAPSULE') NOT NULL,
     `dosage`       varchar(10),
     `recipe`       boolean DEFAULT '0',
     `amountInPack` int(11) DEFAULT '0',

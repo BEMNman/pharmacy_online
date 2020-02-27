@@ -78,6 +78,9 @@
                         <c:when test="${medicament.form.name()=='GEL'}">
                             <fmt:message key="medicines.gel" bundle="${rb}"/>
                         </c:when>
+                        <c:when test="${medicament.form.name()=='CAPSULE'}">
+                            <fmt:message key="medicines.capsule" bundle="${rb}"/>
+                        </c:when>
                         </c:choose>
                     <td><c:out value="${medicament.dosage}"/></td>
                     <td>
@@ -97,7 +100,8 @@
                                 <input type="hidden" name="command" value="addMedicamentInBasket"/>
                                 <input type="hidden" name="medicamentId" value="${medicament.id}">
                                 <input type="hidden" name="page" value="${requestScope.page}">
-                                <input name="count" id="input-quantity" type="number" size="2" min="1" max="${medicament.quantity}"
+                                <input name="count" id="input-quantity" type="number" size="2" min="1"
+                                       max="${medicament.quantity}"
                                        value="1" placeholder="${1}" style="width: 4em"/>
                                 <input type="submit"
                                        value="<fmt:message key="add" bundle="${rb}"/>"/>
@@ -111,12 +115,29 @@
                                 <input type="hidden" name="medicamentId" value="${medicament.id}">
                                 <input id="submit" type="submit" value="<fmt:message key="edit" bundle="${rb}"/>"/>
                             </form>
-                            <form
-                                    style="display: inline-block; margin: 0;">
-                                <input type="hidden" name="command" value="deleteMedicament"/>
-                                <input type="hidden" name="medicamentId" value="${medicament.id}">
+                            <form action="#select-action" style="display: inline-block; margin: 0;" method="post">
+                                <input type="hidden" name="command" value="mainPage"/>
                                 <input type="submit" value="<fmt:message key="delete" bundle="${rb}"/>"/>
                             </form>
+                            <div id="select-action">
+                                <div id="window">
+                                    <h3>
+                                        <fmt:message key="delete.this.medicament" bundle="${rb}"/>
+                                    </h3>
+                                    <br>
+                                    <form class="close" action="#" style="display: inline-block; margin: 0;">
+                                        <input type="hidden" name="command" value="mainPage"/>
+                                        <input type="hidden" name="page" value="${requestScope.page}">
+                                        <input type="submit" value="<fmt:message key="no_b" bundle="${rb}"/>"/>
+                                    </form>
+                                    <form action="${pageContext.request.contextPath}?controller" method="post"
+                                          style="display: inline-block; margin: 0;">
+                                        <input type="hidden" name="command" value="deleteMedicament"/>
+                                        <input type="hidden" name="medicamentId" value="${medicament.id}">
+                                        <input type="submit" value="<fmt:message key="yes_b" bundle="${rb}"/>"/>
+                                    </form>
+                                </div>
+                            </div>
                         </td>
                     </c:if>
                 </tr>
@@ -128,3 +149,5 @@
         </div>
     </c:if>
 </div>
+
+

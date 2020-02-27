@@ -5,5 +5,6 @@ public enum MedicamentForm {
     SOLUTION,
     POWDER,
     CREAM,
+    CAPSULE,
     GEL;
 }

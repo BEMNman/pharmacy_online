@@ -66,7 +66,7 @@ public class MedicamentService {
     }
 
     private List<Recipe> getActualRecipesForUserMedicament(Long userId, Medicament medicament) throws ServerException {
-        try(DaoHelper daoHelper = daoHelperFactory.create()) {
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
             RecipeDao recipeDao = daoHelper.createRecipeDao();
             return recipeDao.getAllUsersRecipesForMedicamentForCurrentDate(userId, medicament.getId());
         } catch (DaoException e) {
@@ -96,14 +96,14 @@ public class MedicamentService {
         checkedBasket.values().removeIf(value -> value == 0);
         boolean isQuantityCorrect = checkQuantityMedicinesInUsersOrder(checkedBasket);
         if (!isQuantityCorrect) {
-            throw  new NotAvailableActionException(NOT_ENOUGH_IN_STOCK);
+            throw new NotAvailableActionException(NOT_ENOUGH_IN_STOCK);
         }
         for (Medicament medicament : checkedBasket.keySet()) {
             if (medicament.isRecipe()) {
                 Integer realQuantity = checkedBasket.get(medicament);
                 boolean hasRecipeForQuantity = checkOrderForHavingRecipes(user.getId(), medicament, realQuantity);
                 if (!hasRecipeForQuantity) {
-                    throw  new NotAvailableActionException(ENTERED_QUANTITY_MORE_THAN_IN_RECIPE);
+                    throw new NotAvailableActionException(ENTERED_QUANTITY_MORE_THAN_IN_RECIPE);
                 }
             }
         }
@@ -113,19 +113,19 @@ public class MedicamentService {
     public void addMedicamentInBasket(User user, String stringMedicamentId, String stringCount,
                                       Map<Medicament, Integer> medicamentCount)
             throws ServerException, NotAvailableActionException {
+        Long medicamentId = Long.parseLong(stringMedicamentId);
+        Optional<Medicament> optionalMedicament = findMedicamentById(medicamentId);
+        Medicament medicament = null;
+        if (optionalMedicament.isPresent()) {
+            medicament = optionalMedicament.get();
+        } else {
+            throw new ServerException("Medicament wasn't found");
+        }
+        Integer quantityMedicamentBasket = medicamentCount.getOrDefault(medicament, 0);
+        Integer countMedicament = Integer.parseInt(stringCount);
+        Integer tempTotalQuantity = countMedicament + quantityMedicamentBasket;
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
-            Long medicamentId = Long.parseLong(stringMedicamentId);
-            Optional<Medicament> optionalMedicament = findMedicamentById(medicamentId);
-            Medicament medicament = null;
-            if (optionalMedicament.isPresent()) {
-                medicament = optionalMedicament.get();
-            } else {
-                throw new ServerException("Medicament wasn't found");
-            }
-            Integer quantityMedicamentBasket = medicamentCount.getOrDefault(medicament, 0);
-            Integer countMedicament = Integer.parseInt(stringCount);
-            Integer tempTotalQuantity = countMedicament + quantityMedicamentBasket;
             boolean hasEnoughQuantity = medicamentDao.checkQuantityInStock(medicamentId, tempTotalQuantity);
             if (hasEnoughQuantity) {
                 boolean availableRecipe = medicamentDao.checkAvailableRecipe(user.getId(), medicamentId, tempTotalQuantity);
@@ -186,5 +186,24 @@ public class MedicamentService {
             throw new ServerException(e);
         }
 
+    }
+
+    public Map<Medicament, Integer> refreshBasket(Map<Medicament, Integer> medicinesAndCountInBasket) throws ServerException {
+        Map<Medicament, Integer> refreshedBasket = new LinkedHashMap<>();
+        try (DaoHelper daoHelper = daoHelperFactory.create()) {
+            MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
+
+            for (Medicament medicament : medicinesAndCountInBasket.keySet()) {
+                Optional<Medicament> optionalMedicament = medicamentDao.findById(medicament.getId());
+                if(!optionalMedicament.isPresent()) {
+                    throw new ServerException("Can't find medicament");
+                }
+                Medicament refreshedMedicament = optionalMedicament.get();
+                refreshedBasket.put(refreshedMedicament, medicinesAndCountInBasket.get(medicament));
+            }
+            return refreshedBasket;
+        } catch (DaoException e) {
+            throw new ServerException(e);
+        }
     }
 }

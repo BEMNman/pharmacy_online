@@ -76,6 +76,9 @@
                                 <c:when test="${medicament.form.name()=='GEL'}">
                                     <fmt:message key="medicines.gel" bundle="${rb}"/>
                                 </c:when>
+                                <c:when test="${medicament.form.name()=='CAPSULE'}">
+                                    <fmt:message key="medicines.capsule" bundle="${rb}"/>
+                                </c:when>
                             </c:choose>
                         </td>
                         <td><c:out value="${medicament.dosage}"/></td>

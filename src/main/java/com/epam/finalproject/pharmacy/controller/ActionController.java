@@ -4,6 +4,7 @@ import com.epam.finalproject.pharmacy.command.Command;
 import com.epam.finalproject.pharmacy.command.CommandFactory;
 import com.epam.finalproject.pharmacy.command.CommandResult;
 import com.epam.finalproject.pharmacy.command.constant.RequestParameterConst;
+import com.epam.finalproject.pharmacy.connection.ConnectionPool;
 import com.epam.finalproject.pharmacy.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,5 +69,11 @@ public class ActionController extends HttpServlet {
     protected void redirect( HttpServletResponse response, String page) throws IOException {
         logger.debug("Redirect to page: " + page);
         response.sendRedirect(page);
+    }
+
+    @Override
+    public void destroy() {
+        ConnectionPool.getInstance().closeAllConnection();
+        super.destroy();
     }
 }

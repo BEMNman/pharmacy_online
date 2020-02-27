@@ -3,6 +3,7 @@ package com.epam.finalproject.pharmacy.connection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
@@ -78,6 +79,19 @@ public class ConnectionPool {
         } finally {
             connectionLock.unlock();
             SEMAPHORE.release();
+        }
+    }
+
+    public void closeAllConnection() {
+        try {
+            for (ProxyConnection connection : availableConnection) {
+                connection.reallyClose();
+            }
+            for (ProxyConnection connection : connectionsInUse) {
+                connection.reallyClose();
+            }
+        } catch (SQLException e) {
+            logger.error(e);
         }
     }
 }

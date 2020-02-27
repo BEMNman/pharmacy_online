@@ -55,7 +55,7 @@ public class CommandFactory {
             case SAVE_NEW_PATIENT:
                 return new RegisterNewPatientCommand(new UserService(new DaoHelperFactory()));
             case OPEN_BASKET:
-                return new OpenBasketCommand();
+                return new OpenBasketCommand(new MedicamentService(new DaoHelperFactory()));
             case MAIN_PAGE:
                 return new ShowMainPageCommand(new MedicamentService(new DaoHelperFactory()));
             case ADD_MEDICAMENT_IN_BASKET:

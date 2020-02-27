@@ -19,10 +19,14 @@
     <div class="content">
         <div class="main">
             <div class="mobile">
-                <div class="form">
+                <div class="form" style="max-width: min-content; min-width: 360px">
                     <h1>Error ${requestScope['javax.servlet.error.status_code']} </h1>
                     <br/>
-                    <h2>Exception: ${requestScope['javax.servlet.error.message']}</h2>
+                    <h2>Exception:
+                        <p>
+                            ${requestScope['javax.servlet.error.message']}
+                        </p>
+                    </h2>
                     <br/>
                     <div class="button-group">
                         <a href="${pageContext.request.contextPath}controller?command=mainPage">

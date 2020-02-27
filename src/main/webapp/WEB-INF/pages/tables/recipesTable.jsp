@@ -44,7 +44,7 @@
                     </c:if>
                 </th>
                 <c:if test="${sessionScope.user.role == 'PATIENT'}">
-                    <th>
+                    <th width="200px">
                         <fmt:message key="request.action" bundle="${rb}"/>
                     </th>
                 </c:if>
@@ -93,6 +93,7 @@
                                     </select>
                                     <input type="submit" value="<fmt:message key="recipe.request" bundle="${rb}"/>"/>
                                 </c:if>
+
                             </form>
                         </c:if>
                     </td>

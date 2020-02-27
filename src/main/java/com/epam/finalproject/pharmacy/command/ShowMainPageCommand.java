@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ShowMainPageCommand implements Command {
 
-    private static final int COUNT = 10;
+    private static final int COUNT = 13;
     private static final int MIN_NUMBER_PAGE = 1;
 
     private MedicamentService service;

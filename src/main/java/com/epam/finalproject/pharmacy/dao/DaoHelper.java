@@ -2,6 +2,7 @@ package com.epam.finalproject.pharmacy.dao;
 
 import com.epam.finalproject.pharmacy.connection.ConnectionPool;
 import com.epam.finalproject.pharmacy.connection.ProxyConnection;
+import com.epam.finalproject.pharmacy.controller.ActionController;
 import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDao;
 import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDaoImpl;
 import com.epam.finalproject.pharmacy.dao.order.OrderDao;
@@ -19,10 +20,14 @@ import com.epam.finalproject.pharmacy.dao.request.RequestDtoDaoImpl;
 import com.epam.finalproject.pharmacy.dao.user.UserDao;
 import com.epam.finalproject.pharmacy.dao.user.UserDaoImpl;
 import com.epam.finalproject.pharmacy.exception.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 
 public class DaoHelper implements AutoCloseable {
+
+    private static final Logger logger = LogManager.getLogger(DaoHelper.class.getName());
 
     private ProxyConnection connection;
 
@@ -75,21 +80,31 @@ public class DaoHelper implements AutoCloseable {
         }
     }
 
-    public void endTransaction() throws DaoException{
+    public void endTransaction() throws DaoException {
         try {
             connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             rollbackTransaction();
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                logger.error(e);
+            }
         }
     }
 
     public void rollbackTransaction() throws DaoException {
         try {
             connection.rollback();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             throw new DaoException("Error rollback transaction", e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                logger.error(e);
+            }
         }
     }
 }
