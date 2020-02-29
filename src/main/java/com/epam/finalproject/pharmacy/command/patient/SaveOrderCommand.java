@@ -13,6 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
+/**
+ * The {@code SaveOrderCommand} class is implementation of {@link Command}.
+ * This command is used to save new <code>order</code> in data base.
+ *
+ * <p> An object {@code SaveOrderCommand} contains a
+ * single field whose type is {@code OrderService}.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ * @see com.epam.finalproject.pharmacy.service.OrderService
+ */
+
 public class SaveOrderCommand implements Command {
 
     private OrderService service;

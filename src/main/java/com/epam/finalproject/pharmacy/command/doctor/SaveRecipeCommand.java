@@ -13,6 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
+/**
+ * The {@code SaveRecipeCommand} class is implementation of {@link Command}.
+ * This command is used to save new<code>recipe</code>.
+ *
+ * <p> An object {@code SaveRecipeCommand} contains a
+ * single field whose type is {@code RecipeService}.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ * @see com.epam.finalproject.pharmacy.service.RecipeService
+ */
+
 public class SaveRecipeCommand implements Command {
     private RecipeService service;
 
@@ -30,7 +43,7 @@ public class SaveRecipeCommand implements Command {
         String stringQuantity = request.getParameter(RequestParameterConst.MEDICAMENT_QUANTITY);
         String stringExpDate = request.getParameter(RequestParameterConst.EXP_DATE);
 
-        service.saveNewRecipe(user, stringMedicamentId, stringPatientId, stringQuantity, stringExpDate );
+        service.saveNewRecipe(user, stringMedicamentId, stringPatientId, stringQuantity, stringExpDate);
         return CommandResult.redirectToCommand(CommandFactory.OPEN_RECIPES);
     }
 }

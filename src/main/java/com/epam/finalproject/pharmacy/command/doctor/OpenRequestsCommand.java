@@ -14,6 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * The {@code OpenRequestsCommand} class is implementation of {@link Command}.
+ * This command is used to open new <code>request</code> extension.
+ *
+ * <p> An object {@code OpenRequestsCommand} contains a
+ * single field whose type is {@code RequestDtoService}.
+ *
+ * @author Gogolinsky
+ *
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ * @see com.epam.finalproject.pharmacy.service.RequestDtoService
+ */
+
 public class OpenRequestsCommand implements Command {
 
     public static final String DONT_HAVE_REQUESTS = "message.dont_have_requests";

@@ -16,6 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
+/**
+ * The {@code AddMedicamentInBasketCommand} class is implementation of {@link Command}.
+ * This command is used to add new <code>medicament</code> in basket./
+ *
+ * <p> An object {@code AddMedicamentInBasketCommand} contains a
+ * single field whose type is {@code MedicamentService}.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ * @see com.epam.finalproject.pharmacy.service.MedicamentService
+ */
+
 public class AddMedicamentInBasketCommand implements Command {
 
     private MedicamentService service;

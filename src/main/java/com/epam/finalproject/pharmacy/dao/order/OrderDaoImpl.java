@@ -34,20 +34,20 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     }
 
     @Override
-    public long saveAndGetIdLastSavedOrder(Order order) throws DaoException {
+    public Long saveAndGetIdLastSavedOrder(Order order) throws DaoException {
         String query = buildQueryForSave(order);
         try (PreparedStatement ps = prepareStatementFoReturnGeneratedId(query)) {
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
-            return rs.getInt(1);
+            return Long.valueOf(rs.getInt(1));
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public List<Order> getAllOrdersForUser(long userId) throws DaoException {
+    public List<Order> getAllOrdersForUser(Long userId) throws DaoException {
         return executeQuery(FIND_ALL_ORDER_FOR_USER_BY_ID, new OrderRowMapper(), userId);
     }
 }

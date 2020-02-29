@@ -181,7 +181,7 @@ public class MedicamentService {
     public int calculateRowsAvailableMedicines() throws ServerException {
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
             MedicamentDao medicamentDao = daoHelper.createMedicamentDao();
-            return medicamentDao.calculateRowAvailableMedicines().size();
+            return medicamentDao.getAllAvailableMedicines().size();
         } catch (DaoException e) {
             throw new ServerException(e);
         }

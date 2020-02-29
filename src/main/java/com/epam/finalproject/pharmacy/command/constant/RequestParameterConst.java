@@ -1,5 +1,11 @@
 package com.epam.finalproject.pharmacy.command.constant;
 
+/**
+ * The {@code RequestParameterConst} class contains constants of parameters witch are used in Request.
+ *
+ * @author Gogolinsky
+ */
+
 public class RequestParameterConst {
     public static final String USER_LOGIN = "login";
     public static final String USER_PASSWORD = "password";

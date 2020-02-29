@@ -16,9 +16,19 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * The {@code ShowRecipesCommand} class is implementation of {@link Command}.
+ * This command is used to show <code>recipes</code>.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ */
+
 public class ShowRecipesCommand implements Command {
 
     private static final String DONT_HAVE_RECIPES = "message.dont_have_recipes";
+
     private RecipeDtoService service;
 
     public ShowRecipesCommand(RecipeDtoService service) {
@@ -30,7 +40,7 @@ public class ShowRecipesCommand implements Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttributeConst.USER);
         List<RecipeDto> recipes = service.findAllRecipesDtoForUser(user);
-        if(!recipes.isEmpty()) {
+        if (!recipes.isEmpty()) {
             request.setAttribute(RequestParameterConst.RECIPES, recipes);
             LocalDate currentDate = LocalDate.now();
             request.setAttribute(RequestParameterConst.CURRENT_DATE, currentDate);

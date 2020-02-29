@@ -57,13 +57,6 @@ public abstract class AbstractDao<T extends Identifable> implements Dao<T> {
     }
 
     @Override
-    public List<T> findAll() throws DaoException {
-        String table = getTableName();
-        RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);
-        return executeQuery(SELECT_ALL_FROM + table, mapper);
-    }
-
-    @Override
     public Optional<T> findById(Long id) throws DaoException {
         String table = getTableName();
         RowMapper<T> mapper = (RowMapper<T>) RowMapper.create(table);

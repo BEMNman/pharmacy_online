@@ -9,6 +9,17 @@ import com.epam.finalproject.pharmacy.exception.ServerException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * The {@code ClearBasketCommand} class is implementation of {@link Command}.
+ * This command is used to clean basket./
+ *
+ * <p> An object {@code CheckOrderCommand} doesn't contain any fields.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ */
+
 public class ClearBasketCommand implements Command {
 
     @Override

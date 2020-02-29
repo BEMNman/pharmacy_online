@@ -19,6 +19,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * The {@code CheckOrderCommand} class is implementation of {@link Command}.
+ * This command is used to check <code>medicaments</code> in basket before pay./
+ *
+ * <p> An object {@code CheckOrderCommand} contains a
+ * single field whose type is {@code MedicamentService}.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ * @see com.epam.finalproject.pharmacy.service.MedicamentService
+ */
+
 public class CheckOrderCommand implements Command {
 
     private MedicamentService service;

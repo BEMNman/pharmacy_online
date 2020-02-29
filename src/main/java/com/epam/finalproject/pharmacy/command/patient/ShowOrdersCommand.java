@@ -13,12 +13,22 @@ import com.epam.finalproject.pharmacy.service.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class ShowOrderDetailsCommand implements Command {
+/**
+ * The {@code ShowOrdersCommand} class is implementation of {@link Command}.
+ * This command is used to show <code>orders</code> for user.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ */
+
+public class ShowOrdersCommand implements Command {
 
     public static final String DONT_HAVE_ORDERS = "message.dont_have_orders";
+
     private OrderService service;
 
-    public ShowOrderDetailsCommand(OrderService service) {
+    public ShowOrdersCommand(OrderService service) {
         this.service = service;
     }
 
@@ -27,7 +37,7 @@ public class ShowOrderDetailsCommand implements Command {
         User user = (User) request.getSession().getAttribute(SessionAttributeConst.USER);
         List<Order> orders = service.showAllForUser(user);
         request.setAttribute(RequestParameterConst.ORDERS, orders);
-        if(orders.isEmpty()) {
+        if (orders.isEmpty()) {
             request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, DONT_HAVE_ORDERS);
         }
         return CommandResult.forward(Page.PATIENT_ORDER_DETAILS);

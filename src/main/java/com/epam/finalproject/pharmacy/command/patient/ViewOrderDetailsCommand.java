@@ -14,6 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * The {@code ViewOrderDetailsCommand} class is implementation of {@link Command}.
+ * This command is used to show details of <code>order</code> for user.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ */
+
 public class ViewOrderDetailsCommand implements Command {
 
     private final MedicamentService service;

@@ -14,6 +14,18 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Map;
 
+/**
+ * The {@code OpenOrderCommand} class is implementation of {@link Command}.
+ * This command is used to open new order.
+ *
+ * <p> An object {@code OpenOrderCommand} doesn't contain any fields.
+ *
+ * @author Gogolinsky
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ */
+
+
 public class OpenOrderCommand implements Command {
 
     @Override

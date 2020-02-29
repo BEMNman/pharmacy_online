@@ -9,6 +9,20 @@ import com.epam.finalproject.pharmacy.service.MedicamentService;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The {@code DeleteMedicamentCommand} class is implementation of {@link Command}.
+ * This command is used to delete <code>medicament</code> in data base.
+ *
+ * <p> An object {@code DeleteMedicamentCommand} contains a
+ * single field whose type is {@code MedicamentService}.
+ *
+ * @author Gogolinsky
+ *
+ * @see com.epam.finalproject.pharmacy.command.Command
+ * @see com.epam.finalproject.pharmacy.entity.Request
+ * @see com.epam.finalproject.pharmacy.service.MedicamentService
+ */
+
 public class DeleteMedicamentCommand implements Command {
 
     private MedicamentService service;

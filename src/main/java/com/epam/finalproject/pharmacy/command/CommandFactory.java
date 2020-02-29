@@ -63,7 +63,7 @@ public class CommandFactory {
             case SAVE_ORDER:
                 return new SaveOrderCommand(new OrderService(new DaoHelperFactory()));
             case OPEN_ORDERS:
-                return new ShowOrderDetailsCommand(new OrderService(new DaoHelperFactory()));
+                return new ShowOrdersCommand(new OrderService(new DaoHelperFactory()));
             case VIEW_ORDER_DETAILS:
                 return new ViewOrderDetailsCommand(new MedicamentService(new DaoHelperFactory()));
             case OPEN_RECIPES:

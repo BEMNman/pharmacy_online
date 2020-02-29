@@ -96,7 +96,7 @@ public class MedicamentDaoImpl extends AbstractDao<Medicament> implements Medica
     }
 
     @Override
-    public List<Medicament> calculateRowAvailableMedicines() throws DaoException {
+    public List<Medicament> getAllAvailableMedicines() throws DaoException {
         return executeQuery(SELECT_ALL_AVAILABLE_MEDICINES, new MedicamentRowMapper(), null);
     }
 }
