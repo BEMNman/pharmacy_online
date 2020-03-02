@@ -12,7 +12,9 @@ import java.util.Map;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
-    private static final String FIND_ALL_ORDER_FOR_USER_BY_ID = "SELECT * FROM orders WHERE userId = ?";
+    private static final String FIND_ALL_ORDER_FOR_USER_BY_ID = "SELECT * FROM orders " +
+            "WHERE userId = ? " +
+            "ORDER BY creationDate DESC";
 
     public OrderDaoImpl(Connection connection) {
         super(connection);

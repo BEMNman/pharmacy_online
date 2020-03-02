@@ -82,6 +82,7 @@
                             <fmt:message key="medicines.capsule" bundle="${rb}"/>
                         </c:when>
                         </c:choose>
+                    </td>
                     <td><c:out value="${medicament.dosage}"/></td>
                     <td>
                         <c:if test="${medicament.recipe}">

@@ -38,7 +38,28 @@
     <c:forEach items="${requestScope.medicinesInOrder}" var="medicament">
         <tr>
             <td><c:out value="${medicament.name}"/></td>
-            <td><c:out value="${medicament.form}"/></td>
+            <td>
+                <c:choose>
+                    <c:when test="${medicament.form.name()=='PILL'}">
+                        <fmt:message key="medicines.pill" bundle="${rb}"/>
+                    </c:when>
+                    <c:when test="${medicament.form.name()=='SOLUTION'}">
+                        <fmt:message key="medicines.solution" bundle="${rb}"/>
+                    </c:when>
+                    <c:when test="${medicament.form.name()=='POWDER'}">
+                        <fmt:message key="medicines.powder" bundle="${rb}"/>
+                    </c:when>
+                    <c:when test="${medicament.form.name()=='CREAM'}">
+                        <fmt:message key="medicines.cream" bundle="${rb}"/>
+                    </c:when>
+                    <c:when test="${medicament.form.name()=='GEL'}">
+                        <fmt:message key="medicines.gel" bundle="${rb}"/>
+                    </c:when>
+                    <c:when test="${medicament.form.name()=='CAPSULE'}">
+                        <fmt:message key="medicines.capsule" bundle="${rb}"/>
+                    </c:when>
+                </c:choose>
+            </td>
             <td><c:out value="${medicament.dosage}"/></td>
             <td><c:out value="${medicament.amountInPack}"/></td>
             <td>
