@@ -39,9 +39,5 @@ window.onload = function () {
     // setInputFilter(document.getElementById("price"), function (value) {
     //     return /^\d{1,3}[.,]?[\d]{0,2}?$/.test(value);
     // });
-    //
-    // setInputFilter(document.getElementById("amount-pack"), function (value) {
-    //     return /^\d{1,4}$/.test(value);
-    // });
 
 }

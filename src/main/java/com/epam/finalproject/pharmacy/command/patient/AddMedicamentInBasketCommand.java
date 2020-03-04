@@ -49,7 +49,7 @@ public class AddMedicamentInBasketCommand implements Command {
         String stringMedicamentId = request.getParameter(RequestParameterConst.MEDICAMENT_ID);
         String stringCount = request.getParameter(RequestParameterConst.COUNT_MEDICAMENT);
         try {
-            service.addMedicamentInBasket(user, stringMedicamentId, stringCount, medicamentCountMap);
+            medicamentCountMap = service.addMedicamentInBasket(user, stringMedicamentId, stringCount, medicamentCountMap);
         } catch (NotAvailableActionException e) {
             request.setAttribute(RequestParameterConst.MESSAGE_TO_JSP, e.getMessage());
             return CommandResult.forward(Page.PATIENT_MAIN);

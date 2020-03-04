@@ -20,8 +20,8 @@ window.onload = function () {
         return /^\d{1,4}$/.test(value);
     });
 
-    setInputFilter(document.getElementById("price"), function (value) {
-        return /^\d*[.,]?\d{0,2}$/.test(value);
+    setInputFilter(document.getElementById("input-price"), function (value) {
+        return /^\d{1,3}[,.]?[\d]{0,2}?$/.test(value);
     });
 
     setInputFilter(document.getElementById("amount-pack"), function (value) {

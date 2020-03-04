@@ -45,16 +45,16 @@ public class ConnectionPool {
     }
 
     public ProxyConnection getConnection() {
-        if (availableConnection.size() == 0) {
-            for (int i = 0; i < POOL_SIZE; i++) {
-                ConnectionFactory connectionFactory = new ConnectionFactory();
-                availableConnection.add(connectionFactory.createProxyConnection());
-            }
-        }
         ProxyConnection proxyConnection = null;
         try {
-            SEMAPHORE.acquire();
             connectionLock.lock();
+            if (availableConnection.size() + connectionsInUse.size() == 0) {
+                ConnectionFactory connectionFactory = new ConnectionFactory();
+                for (int i = 0; i < POOL_SIZE; i++) {
+                    availableConnection.add(connectionFactory.createProxyConnection());
+                }
+            }
+            SEMAPHORE.acquire();
             proxyConnection = availableConnection.poll();
             connectionsInUse.add(proxyConnection);
         } catch (InterruptedException e) {
@@ -62,14 +62,14 @@ public class ConnectionPool {
         } finally {
             connectionLock.unlock();
         }
-        logger.debug("Connection in using: " + proxyConnection);
+        logger.debug("Connection to use: " + proxyConnection);
 
         return proxyConnection;
     }
 
     public void returnConnection(ProxyConnection proxyConnection) {
-        connectionLock.lock();
         try {
+            connectionLock.lock();
             if (connectionsInUse.contains(proxyConnection)) {
                 availableConnection.offer(proxyConnection);
                 connectionsInUse.remove(proxyConnection);

@@ -66,14 +66,14 @@
 
         <div class="row-form">
             <label><fmt:message key="medicines.amount_in_pack" bundle="${rb}"/></label>
-            <input id="amount-pack" type="number" required step="1" min="0"
+            <input id="amount-pack" type="number" required step="1" min="1"
                    placeholder="<fmt:message key="medicines.amount_in_pack_l" bundle="${rb}"/>"
                    name="amountInPack"
                    value="${requestScope.medicament.amountInPack}"/>
         </div>
         <div class="row-form">
             <label><fmt:message key="medicines.price" bundle="${rb}"/></label>
-            <input id="price" type="number" step="0.01" min="0" required
+            <input id="input-price" type="number" step="0.01" min="0" required
                    placeholder="<fmt:message key="medicines.price_l" bundle="${rb}"/>"
                    name="price"
                    value="${requestScope.medicament.price}"/>

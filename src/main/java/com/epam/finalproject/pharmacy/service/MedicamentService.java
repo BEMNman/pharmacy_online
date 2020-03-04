@@ -110,7 +110,7 @@ public class MedicamentService {
         return checkedBasket;
     }
 
-    public void addMedicamentInBasket(User user, String stringMedicamentId, String stringCount,
+    public Map<Medicament, Integer> addMedicamentInBasket(User user, String stringMedicamentId, String stringCount,
                                       Map<Medicament, Integer> medicamentCount)
             throws ServerException, NotAvailableActionException {
         Long medicamentId = Long.parseLong(stringMedicamentId);
@@ -121,7 +121,8 @@ public class MedicamentService {
         } else {
             throw new ServerException("Medicament wasn't found");
         }
-        Integer quantityMedicamentBasket = medicamentCount.getOrDefault(medicament, 0);
+        Map<Medicament, Integer> tempMedicinesInBasket = new HashMap<>(medicamentCount);
+        Integer quantityMedicamentBasket = tempMedicinesInBasket.getOrDefault(medicament, 0);
         Integer countMedicament = Integer.parseInt(stringCount);
         Integer tempTotalQuantity = countMedicament + quantityMedicamentBasket;
         try (DaoHelper daoHelper = daoHelperFactory.create()) {
@@ -135,7 +136,8 @@ public class MedicamentService {
             } else {
                 throw new NotAvailableActionException(NOT_ENOUGH_IN_STOCK);
             }
-            medicamentCount.put(medicament, tempTotalQuantity);
+            tempMedicinesInBasket.put(medicament, tempTotalQuantity);
+            return tempMedicinesInBasket;
         } catch (DaoException e) {
             throw new ServerException(e);
         }
