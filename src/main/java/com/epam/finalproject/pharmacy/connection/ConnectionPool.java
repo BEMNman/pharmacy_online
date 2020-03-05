@@ -49,9 +49,11 @@ public class ConnectionPool {
         try {
             SEMAPHORE.acquire();
             connectionLock.lock();
-            ConnectionFactory connectionFactory = new ConnectionFactory();
-            for (int i = 0; i < POOL_SIZE; i++) {
-                availableConnection.add(connectionFactory.createProxyConnection());
+            if(availableConnection.size()  + connectionsInUse.size() < 10) {
+                ConnectionFactory connectionFactory = new ConnectionFactory();
+                for (int i = 0; i < POOL_SIZE; i++) {
+                    availableConnection.add(connectionFactory.createProxyConnection());
+                }
             }
             proxyConnection = availableConnection.poll();
             connectionsInUse.add(proxyConnection);
