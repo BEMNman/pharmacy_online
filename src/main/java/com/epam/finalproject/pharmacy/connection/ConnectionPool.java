@@ -26,10 +26,18 @@ public class ConnectionPool {
     private ConnectionPool() {
         availableConnection = new ArrayDeque<>();
         connectionsInUse = new ArrayDeque<>();
+        init();
+    }
+
+    private void init() {
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        for (int i = 0; i < POOL_SIZE; i++) {
+            availableConnection.add(connectionFactory.createProxyConnection());
+        }
     }
 
     public static ConnectionPool getInstance() {
-        ConnectionPool instanceTemp = null;
+        ConnectionPool instanceTemp;
         if (instance.get() == null) {
             instanceLock.lock();
             try {
@@ -47,14 +55,8 @@ public class ConnectionPool {
     public ProxyConnection getConnection() {
         ProxyConnection proxyConnection = null;
         try {
-            connectionLock.lock();
-            if (availableConnection.size() + connectionsInUse.size() == 0) {
-                ConnectionFactory connectionFactory = new ConnectionFactory();
-                for (int i = 0; i < POOL_SIZE; i++) {
-                    availableConnection.add(connectionFactory.createProxyConnection());
-                }
-            }
             SEMAPHORE.acquire();
+            connectionLock.lock();
             proxyConnection = availableConnection.poll();
             connectionsInUse.add(proxyConnection);
         } catch (InterruptedException e) {
