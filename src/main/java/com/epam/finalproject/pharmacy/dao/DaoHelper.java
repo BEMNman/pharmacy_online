@@ -2,7 +2,6 @@ package com.epam.finalproject.pharmacy.dao;
 
 import com.epam.finalproject.pharmacy.connection.ConnectionPool;
 import com.epam.finalproject.pharmacy.connection.ProxyConnection;
-import com.epam.finalproject.pharmacy.controller.ActionController;
 import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDao;
 import com.epam.finalproject.pharmacy.dao.medicament.MedicamentDaoImpl;
 import com.epam.finalproject.pharmacy.dao.order.OrderDao;

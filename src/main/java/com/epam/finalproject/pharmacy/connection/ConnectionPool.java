@@ -15,8 +15,8 @@ public class ConnectionPool {
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class.getName());
 
     private static final int POOL_SIZE = 10;
-    private Queue<ProxyConnection> availableConnection;
-    private Queue<ProxyConnection> connectionsInUse;
+    private final Queue<ProxyConnection> availableConnection;
+    private final Queue<ProxyConnection> connectionsInUse;
 
     private static final AtomicReference<ConnectionPool> instance = new AtomicReference<>(null);
     private static final ReentrantLock connectionLock = new ReentrantLock();
@@ -26,14 +26,6 @@ public class ConnectionPool {
     private ConnectionPool() {
         availableConnection = new ArrayDeque<>();
         connectionsInUse = new ArrayDeque<>();
-        init();
-    }
-
-    private void init() {
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        for (int i = 0; i < POOL_SIZE; i++) {
-            availableConnection.add(connectionFactory.createProxyConnection());
-        }
     }
 
     public static ConnectionPool getInstance() {
@@ -57,6 +49,10 @@ public class ConnectionPool {
         try {
             SEMAPHORE.acquire();
             connectionLock.lock();
+            ConnectionFactory connectionFactory = new ConnectionFactory();
+            for (int i = 0; i < POOL_SIZE; i++) {
+                availableConnection.add(connectionFactory.createProxyConnection());
+            }
             proxyConnection = availableConnection.poll();
             connectionsInUse.add(proxyConnection);
         } catch (InterruptedException e) {
